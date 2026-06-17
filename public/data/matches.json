@@ -1955,10 +1955,46 @@
     "team2Slug": "croatia",
     "team1Flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
     "team2Flag": "🇭🇷",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        4,
+        2
+      ],
+      "ht": [
+        2,
+        2
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Harry Kane",
+        "minute": "12",
+        "penalty": true
+      },
+      {
+        "name": "Harry Kane",
+        "minute": "42"
+      },
+      {
+        "name": "Jude Bellingham",
+        "minute": "47"
+      },
+      {
+        "name": "Marcus Rashford",
+        "minute": "85"
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Martin Baturina",
+        "minute": "36"
+      },
+      {
+        "name": "Petar Musa",
+        "minute": "45+5"
+      }
+    ]
   },
   {
     "id": 68,
