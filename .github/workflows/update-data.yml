@@ -1,0 +1,49 @@
+name: Update data
+
+on:
+  schedule:
+    # Hourly. The fetch script itself skips the network unless a match is
+    # expected to have ended since the last fetch (see scripts/fetch-data.mjs).
+    - cron: '0 * * * *'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Force a refresh even if no match has ended'
+        type: boolean
+        default: false
+
+# Allow the job to push the regenerated JSON back to the repo.
+permissions:
+  contents: write
+
+concurrency:
+  group: update-data
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Fetch & normalize data
+        env:
+          FORCE: ${{ inputs.force && '1' || '' }}
+        run: node scripts/fetch-data.mjs
+
+      - name: Commit updated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if [ -n "$(git status --porcelain public/data)" ]; then
+            git add public/data
+            git commit -m "chore(data): refresh World Cup 2026 data"
+            git push
+            echo "Data updated and pushed."
+          else
+            echo "No data changes to commit."
+          fi

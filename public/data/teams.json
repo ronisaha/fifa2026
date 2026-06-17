@@ -1,0 +1,290 @@
+[
+  {
+    "name": "Algeria",
+    "slug": "algeria",
+    "flag": "🇩🇿",
+    "group": "Group J"
+  },
+  {
+    "name": "Argentina",
+    "slug": "argentina",
+    "flag": "🇦🇷",
+    "group": "Group J"
+  },
+  {
+    "name": "Australia",
+    "slug": "australia",
+    "flag": "🇦🇺",
+    "group": "Group D"
+  },
+  {
+    "name": "Austria",
+    "slug": "austria",
+    "flag": "🇦🇹",
+    "group": "Group J"
+  },
+  {
+    "name": "Belgium",
+    "slug": "belgium",
+    "flag": "🇧🇪",
+    "group": "Group G"
+  },
+  {
+    "name": "Bosnia & Herzegovina",
+    "slug": "bosnia-and-herzegovina",
+    "flag": "🇧🇦",
+    "group": "Group B"
+  },
+  {
+    "name": "Brazil",
+    "slug": "brazil",
+    "flag": "🇧🇷",
+    "group": "Group C"
+  },
+  {
+    "name": "Canada",
+    "slug": "canada",
+    "flag": "🇨🇦",
+    "group": "Group B"
+  },
+  {
+    "name": "Cape Verde",
+    "slug": "cape-verde",
+    "flag": "🇨🇻",
+    "group": "Group H"
+  },
+  {
+    "name": "Colombia",
+    "slug": "colombia",
+    "flag": "🇨🇴",
+    "group": "Group K"
+  },
+  {
+    "name": "Croatia",
+    "slug": "croatia",
+    "flag": "🇭🇷",
+    "group": "Group L"
+  },
+  {
+    "name": "Curaçao",
+    "slug": "curacao",
+    "flag": "🇨🇼",
+    "group": "Group E"
+  },
+  {
+    "name": "Czech Republic",
+    "slug": "czech-republic",
+    "flag": "🇨🇿",
+    "group": "Group A"
+  },
+  {
+    "name": "DR Congo",
+    "slug": "dr-congo",
+    "flag": "🇨🇩",
+    "group": "Group K"
+  },
+  {
+    "name": "Ecuador",
+    "slug": "ecuador",
+    "flag": "🇪🇨",
+    "group": "Group E"
+  },
+  {
+    "name": "Egypt",
+    "slug": "egypt",
+    "flag": "🇪🇬",
+    "group": "Group G"
+  },
+  {
+    "name": "England",
+    "slug": "england",
+    "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+    "group": "Group L"
+  },
+  {
+    "name": "France",
+    "slug": "france",
+    "flag": "🇫🇷",
+    "group": "Group I"
+  },
+  {
+    "name": "Germany",
+    "slug": "germany",
+    "flag": "🇩🇪",
+    "group": "Group E"
+  },
+  {
+    "name": "Ghana",
+    "slug": "ghana",
+    "flag": "🇬🇭",
+    "group": "Group L"
+  },
+  {
+    "name": "Haiti",
+    "slug": "haiti",
+    "flag": "🇭🇹",
+    "group": "Group C"
+  },
+  {
+    "name": "Iran",
+    "slug": "iran",
+    "flag": "🇮🇷",
+    "group": "Group G"
+  },
+  {
+    "name": "Iraq",
+    "slug": "iraq",
+    "flag": "🇮🇶",
+    "group": "Group I"
+  },
+  {
+    "name": "Ivory Coast",
+    "slug": "ivory-coast",
+    "flag": "🇨🇮",
+    "group": "Group E"
+  },
+  {
+    "name": "Japan",
+    "slug": "japan",
+    "flag": "🇯🇵",
+    "group": "Group F"
+  },
+  {
+    "name": "Jordan",
+    "slug": "jordan",
+    "flag": "🇯🇴",
+    "group": "Group J"
+  },
+  {
+    "name": "Mexico",
+    "slug": "mexico",
+    "flag": "🇲🇽",
+    "group": "Group A"
+  },
+  {
+    "name": "Morocco",
+    "slug": "morocco",
+    "flag": "🇲🇦",
+    "group": "Group C"
+  },
+  {
+    "name": "Netherlands",
+    "slug": "netherlands",
+    "flag": "🇳🇱",
+    "group": "Group F"
+  },
+  {
+    "name": "New Zealand",
+    "slug": "new-zealand",
+    "flag": "🇳🇿",
+    "group": "Group G"
+  },
+  {
+    "name": "Norway",
+    "slug": "norway",
+    "flag": "🇳🇴",
+    "group": "Group I"
+  },
+  {
+    "name": "Panama",
+    "slug": "panama",
+    "flag": "🇵🇦",
+    "group": "Group L"
+  },
+  {
+    "name": "Paraguay",
+    "slug": "paraguay",
+    "flag": "🇵🇾",
+    "group": "Group D"
+  },
+  {
+    "name": "Portugal",
+    "slug": "portugal",
+    "flag": "🇵🇹",
+    "group": "Group K"
+  },
+  {
+    "name": "Qatar",
+    "slug": "qatar",
+    "flag": "🇶🇦",
+    "group": "Group B"
+  },
+  {
+    "name": "Saudi Arabia",
+    "slug": "saudi-arabia",
+    "flag": "🇸🇦",
+    "group": "Group H"
+  },
+  {
+    "name": "Scotland",
+    "slug": "scotland",
+    "flag": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+    "group": "Group C"
+  },
+  {
+    "name": "Senegal",
+    "slug": "senegal",
+    "flag": "🇸🇳",
+    "group": "Group I"
+  },
+  {
+    "name": "South Africa",
+    "slug": "south-africa",
+    "flag": "🇿🇦",
+    "group": "Group A"
+  },
+  {
+    "name": "South Korea",
+    "slug": "south-korea",
+    "flag": "🇰🇷",
+    "group": "Group A"
+  },
+  {
+    "name": "Spain",
+    "slug": "spain",
+    "flag": "🇪🇸",
+    "group": "Group H"
+  },
+  {
+    "name": "Sweden",
+    "slug": "sweden",
+    "flag": "🇸🇪",
+    "group": "Group F"
+  },
+  {
+    "name": "Switzerland",
+    "slug": "switzerland",
+    "flag": "🇨🇭",
+    "group": "Group B"
+  },
+  {
+    "name": "Tunisia",
+    "slug": "tunisia",
+    "flag": "🇹🇳",
+    "group": "Group F"
+  },
+  {
+    "name": "Turkey",
+    "slug": "turkey",
+    "flag": "🇹🇷",
+    "group": "Group D"
+  },
+  {
+    "name": "Uruguay",
+    "slug": "uruguay",
+    "flag": "🇺🇾",
+    "group": "Group H"
+  },
+  {
+    "name": "USA",
+    "slug": "usa",
+    "flag": "🇺🇸",
+    "group": "Group D"
+  },
+  {
+    "name": "Uzbekistan",
+    "slug": "uzbekistan",
+    "flag": "🇺🇿",
+    "group": "Group K"
+  }
+]
