@@ -53,8 +53,9 @@ export function formatKickoff(
   const zone = resolveZone(tz);
   const date = new Date(iso);
   const time = new Intl.DateTimeFormat(undefined, {
-    hour: '2-digit',
+    hour: 'numeric',
     minute: '2-digit',
+    hour12: true,
     timeZone: zone,
   }).format(date);
   if (!opts.withDate) return time;

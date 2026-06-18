@@ -25,6 +25,7 @@ function Footer() {
           {new Date(meta.lastUpdated).toLocaleString(undefined, {
             dateStyle: 'medium',
             timeStyle: 'short',
+            hour12: true,
           })}{' '}
           · {meta.counts.finished}/{meta.counts.matches} matches played
         </p>
