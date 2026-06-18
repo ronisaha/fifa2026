@@ -101,10 +101,30 @@
     "team2Slug": "south-africa",
     "team1Flag": "🇨🇿",
     "team2Flag": "🇿🇦",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        1,
+        1
+      ],
+      "ht": [
+        1,
+        0
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Michal Sadílek",
+        "minute": "6"
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Teboho Mokoena",
+        "minute": "83",
+        "penalty": true
+      }
+    ]
   },
   {
     "id": 4,
