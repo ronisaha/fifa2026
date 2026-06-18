@@ -1,12 +1,12 @@
 {
-  "lastFetchAt": "2026-06-18T19:15:38.830Z",
-  "lastUpdated": "2026-06-18T19:15:38.830Z",
+  "lastFetchAt": "2026-06-18T21:56:19.241Z",
+  "lastUpdated": "2026-06-18T21:56:19.241Z",
   "source": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json",
   "sourceName": "openfootball/worldcup.json (public domain)",
   "counts": {
     "matches": 104,
     "teams": 48,
     "groups": 12,
-    "finished": 25
+    "finished": 26
   }
 }

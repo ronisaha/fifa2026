@@ -292,10 +292,42 @@
     "team2Slug": "bosnia-and-herzegovina",
     "team1Flag": "🇨🇭",
     "team2Flag": "🇧🇦",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        4,
+        1
+      ],
+      "ht": [
+        0,
+        0
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Johan Manzambi",
+        "minute": "74"
+      },
+      {
+        "name": "Rubén Vargas",
+        "minute": "84"
+      },
+      {
+        "name": "Johan Manzambi",
+        "minute": "90"
+      },
+      {
+        "name": "Granit Xhaka",
+        "minute": "90+7",
+        "penalty": true
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Ermin Mahmic",
+        "minute": "90+3"
+      }
+    ]
   },
   {
     "id": 10,

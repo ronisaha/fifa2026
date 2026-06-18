@@ -175,17 +175,17 @@
   ],
   "Group B": [
     {
-      "team": "Bosnia & Herzegovina",
-      "slug": "bosnia-and-herzegovina",
-      "flag": "🇧🇦",
-      "played": 1,
-      "won": 0,
+      "team": "Switzerland",
+      "slug": "switzerland",
+      "flag": "🇨🇭",
+      "played": 2,
+      "won": 1,
       "draw": 1,
       "lost": 0,
-      "gf": 1,
-      "ga": 1,
-      "gd": 0,
-      "points": 1,
+      "gf": 5,
+      "ga": 2,
+      "gd": 3,
+      "points": 4,
       "rank": 1
     },
     {
@@ -217,16 +217,16 @@
       "rank": 3
     },
     {
-      "team": "Switzerland",
-      "slug": "switzerland",
-      "flag": "🇨🇭",
-      "played": 1,
+      "team": "Bosnia & Herzegovina",
+      "slug": "bosnia-and-herzegovina",
+      "flag": "🇧🇦",
+      "played": 2,
       "won": 0,
       "draw": 1,
-      "lost": 0,
-      "gf": 1,
-      "ga": 1,
-      "gd": 0,
+      "lost": 1,
+      "gf": 2,
+      "ga": 5,
+      "gd": -3,
       "points": 1,
       "rank": 4
     }
