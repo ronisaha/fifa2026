@@ -11,8 +11,8 @@ only ever reads local files (no API keys, no CORS, no rate limits).
 ## How it works
 
 ```
-openfootball/worldcup.json  ──(hourly Action)──►  scripts/fetch-data.mjs
-        (public domain)                                   │ normalize + compute
+upbound-web/worldcup-live.json  ──(hourly Action)──►  scripts/fetch-data.mjs
+                                                          │ normalize + compute
                                                           ▼
                                             public/data/*.json (committed)
                                                           │ push to main
@@ -20,7 +20,7 @@ openfootball/worldcup.json  ──(hourly Action)──►  scripts/fetch-data.m
                                         deploy.yml → Vite build → GitHub Pages
 ```
 
-- **Source:** [openfootball/worldcup.json](https://github.com/openfootball/worldcup.json) — public domain, no API key. Updated ~daily upstream.
+- **Source:** [upbound-web/worldcup-live.json](https://github.com/upbound-web/worldcup-live.json) — no API key, refreshed frequently during matches. Override with the `SRC_URL` env var.
 - **`scripts/fetch-data.mjs`** downloads the upstream JSON, validates it, and emits the app's own schema:
   - `matches.json`, `teams.json`, `groups.json`, `standings.json` (computed), `bracket.json`, `meta.json`.
 - **Optimization:** the Action runs hourly, but the script **skips the network** unless a match is expected to have ended since the last fetch (tracked via `meta.json → lastFetchAt`). Override with `FORCE=1`.

@@ -33,14 +33,14 @@ function Footer() {
       <p className="mt-1">
         Source:{' '}
         <a
-          href="https://github.com/openfootball/worldcup.json"
+          href="https://github.com/upbound-web/worldcup-live.json"
           className="underline hover:text-slate-300"
           target="_blank"
           rel="noreferrer"
         >
-          openfootball/worldcup.json
-        </a>{' '}
-        (public domain). Unofficial fan site.
+          upbound-web/worldcup-live.json
+        </a>
+        . Unofficial fan site.
       </p>
     </footer>
   );

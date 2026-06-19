@@ -18,7 +18,7 @@ const DATA_DIR = join(ROOT, 'public', 'data');
 
 const SRC_URL =
   process.env.SRC_URL ||
-  'https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json';
+  'https://raw.githubusercontent.com/upbound-web/worldcup-live.json/master/2026/worldcup.json';
 
 // A match is treated as "finished" this long after kickoff (90' + half-time +
 // stoppage + a buffer). Used both for the skip-check and result expectations.
@@ -98,6 +98,13 @@ function toUtcIso(date, time) {
   return { kickoff: new Date(trueUtc).toISOString(), offsetLabel: `UTC${off ?? '+0'}` };
 }
 
+// Goal minute may arrive as a number (upbound-web) or string (openfootball);
+// store it consistently as a string.
+function normalizeGoals(goals) {
+  if (!Array.isArray(goals)) return [];
+  return goals.map((g) => ({ name: g.name, minute: String(g.minute ?? '') }));
+}
+
 function normalize(raw) {
   const matches = raw.matches.map((m, i) => {
     const { kickoff, offsetLabel } = toUtcIso(m.date, m.time);
@@ -123,8 +130,8 @@ function normalize(raw) {
       team2Flag: flagFor(m.team2),
       finished,
       score: finished ? { ft, ht } : null,
-      goals1: m.goals1 ?? [],
-      goals2: m.goals2 ?? [],
+      goals1: normalizeGoals(m.goals1),
+      goals2: normalizeGoals(m.goals2),
     };
   });
 
@@ -297,7 +304,7 @@ async function main() {
     lastFetchAt: nowIso,
     lastUpdated: changed ? nowIso : prevMeta?.lastUpdated ?? nowIso,
     source: SRC_URL,
-    sourceName: 'openfootball/worldcup.json (public domain)',
+    sourceName: 'upbound-web/worldcup-live.json',
     counts: {
       matches: matches.length,
       teams: teams.length,

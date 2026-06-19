@@ -69,17 +69,17 @@
     },
     "goals1": [
       {
-        "name": "Hwang In-Beom",
+        "name": "Hwang In-beom",
         "minute": "67"
       },
       {
-        "name": "Oh Hyeon-Gyu",
+        "name": "Oh Hyeon-gyu",
         "minute": "80"
       }
     ],
     "goals2": [
       {
-        "name": "Ladislav Krejcí",
+        "name": "Ladislav Krejčí",
         "minute": "59"
       }
     ]
@@ -121,8 +121,7 @@
     "goals2": [
       {
         "name": "Teboho Mokoena",
-        "minute": "83",
-        "penalty": true
+        "minute": "83"
       }
     ]
   },
@@ -143,9 +142,23 @@
     "team2Slug": "south-korea",
     "team1Flag": "🇲🇽",
     "team2Flag": "🇰🇷",
-    "finished": false,
-    "score": null,
-    "goals1": [],
+    "finished": true,
+    "score": {
+      "ft": [
+        1,
+        0
+      ],
+      "ht": [
+        0,
+        0
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Luis Romo",
+        "minute": "50"
+      }
+    ],
     "goals2": []
   },
   {
@@ -228,7 +241,7 @@
     ],
     "goals2": [
       {
-        "name": "Jovo Lukić",
+        "name": "Jovo Lukic",
         "minute": "21"
       }
     ]
@@ -264,14 +277,13 @@
     "goals1": [
       {
         "name": "Boualem Khoukhi",
-        "minute": "90+4"
+        "minute": "90"
       }
     ],
     "goals2": [
       {
         "name": "Breel Embolo",
-        "minute": "17",
-        "penalty": true
+        "minute": "17"
       }
     ]
   },
@@ -313,19 +325,18 @@
         "minute": "84"
       },
       {
-        "name": "Johan Manzambi",
+        "name": "Granit Xhaka",
         "minute": "90"
       },
       {
-        "name": "Granit Xhaka",
-        "minute": "90+7",
-        "penalty": true
+        "name": "Johan Manzambi",
+        "minute": "90"
       }
     ],
     "goals2": [
       {
         "name": "Ermin Mahmic",
-        "minute": "90+3"
+        "minute": "90"
       }
     ]
   },
@@ -368,7 +379,7 @@
       },
       {
         "name": "Jonathan David",
-        "minute": "45+3"
+        "minute": "45"
       },
       {
         "name": "Nathan Saliba",
@@ -376,12 +387,11 @@
       },
       {
         "name": "Mohamed Manai",
-        "minute": "75",
-        "owngoal": true
+        "minute": "75"
       },
       {
         "name": "Jonathan David",
-        "minute": "90+2"
+        "minute": "90"
       }
     ],
     "goals2": []
@@ -625,9 +635,8 @@
     },
     "goals1": [
       {
-        "name": "Damian Bobadilla",
-        "minute": "7",
-        "owngoal": true
+        "name": "Damián Bobadilla",
+        "minute": "7"
       },
       {
         "name": "Folarin Balogun",
@@ -635,16 +644,16 @@
       },
       {
         "name": "Folarin Balogun",
-        "minute": "45+5"
+        "minute": "45"
       },
       {
         "name": "Giovanni Reyna",
-        "minute": "90+8"
+        "minute": "90"
       }
     ],
     "goals2": [
       {
-        "name": "Mauricio",
+        "name": "Maurício",
         "minute": "73"
       }
     ]
@@ -816,12 +825,7 @@
       },
       {
         "name": "Kai Havertz",
-        "minute": "45+5",
-        "penalty": true
-      },
-      {
-        "name": "Kai Havertz",
-        "minute": "88"
+        "minute": "45"
       },
       {
         "name": "Jamal Musiala",
@@ -834,6 +838,10 @@
       {
         "name": "Deniz Undav",
         "minute": "78"
+      },
+      {
+        "name": "Kai Havertz",
+        "minute": "88"
       }
     ],
     "goals2": [
@@ -1063,7 +1071,7 @@
       },
       {
         "name": "Yasin Ayari",
-        "minute": "90+6"
+        "minute": "90"
       }
     ],
     "goals2": [
@@ -1192,8 +1200,7 @@
     "goals1": [
       {
         "name": "Mohamed Hany",
-        "minute": "66",
-        "owngoal": true
+        "minute": "66"
       }
     ],
     "goals2": [
@@ -1539,13 +1546,13 @@
       },
       {
         "name": "Kylian Mbappé",
-        "minute": "90+6"
+        "minute": "90"
       }
     ],
     "goals2": [
       {
         "name": "Ibrahim Mbaye",
-        "minute": "90+5"
+        "minute": "90"
       }
     ]
   },
@@ -1598,8 +1605,7 @@
       },
       {
         "name": "Aymen Hussein",
-        "minute": "90+6",
-        "owngoal": true
+        "minute": "90"
       }
     ]
   },
@@ -1770,13 +1776,11 @@
       },
       {
         "name": "Yazan Al-Arab",
-        "minute": "76",
-        "owngoal": true
+        "minute": "76"
       },
       {
         "name": "Marko Arnautovic",
-        "minute": "90+12",
-        "penalty": true
+        "minute": "90"
       }
     ],
     "goals2": [
@@ -1911,7 +1915,7 @@
     "goals2": [
       {
         "name": "Yoane Wissa",
-        "minute": "45+5"
+        "minute": "45"
       }
     ]
   },
@@ -1960,7 +1964,7 @@
       },
       {
         "name": "Jáminton Campaz",
-        "minute": "90+9"
+        "minute": "90"
       }
     ]
   },
@@ -2083,8 +2087,7 @@
     "goals1": [
       {
         "name": "Harry Kane",
-        "minute": "12",
-        "penalty": true
+        "minute": "12"
       },
       {
         "name": "Harry Kane",
@@ -2106,7 +2109,7 @@
       },
       {
         "name": "Petar Musa",
-        "minute": "45+5"
+        "minute": "45"
       }
     ]
   },
@@ -2141,7 +2144,7 @@
     "goals1": [
       {
         "name": "Caleb Yirenkyi",
-        "minute": "90+5"
+        "minute": "90"
       }
     ],
     "goals2": []

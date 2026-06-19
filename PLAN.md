@@ -15,7 +15,7 @@ pre-fetched into static JSON by a scheduled GitHub Action.
 | Decision | Choice |
 |---|---|
 | Data delivery | **Static JSON** committed by a scheduled **GitHub Action** |
-| Data source | **openfootball/worldcup.json** (public domain, **no API key**) |
+| Data source | **upbound-web/worldcup-live.json** (**no API key**, refreshed frequently) |
 | Result freshness | **Daily** (Action runs ~once/day); no live in-match scores |
 | Features | Fixtures, Results, Group standings, Knockout bracket, Timezone localization, Team profiles & filtering |
 | Stack | **React + Vite + Tailwind CSS** |
@@ -24,7 +24,7 @@ pre-fetched into static JSON by a scheduled GitHub Action.
 ## 3. Data strategy
 
 ### Source
-- Primary: `https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json`
+- Primary: `https://raw.githubusercontent.com/upbound-web/worldcup-live.json/master/2026/worldcup.json`
   - Contains fixtures **and** results: rounds, dates/times (UTC), teams, venues,
     full-time + half-time scores, goal scorers w/ minutes, group assignments.
   - Updated ~once per day upstream (good enough for the "daily" freshness choice).
