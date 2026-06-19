@@ -175,6 +175,20 @@
   ],
   "Group B": [
     {
+      "team": "Canada",
+      "slug": "canada",
+      "flag": "🇨🇦",
+      "played": 2,
+      "won": 1,
+      "draw": 1,
+      "lost": 0,
+      "gf": 7,
+      "ga": 1,
+      "gd": 6,
+      "points": 4,
+      "rank": 1
+    },
+    {
       "team": "Switzerland",
       "slug": "switzerland",
       "flag": "🇨🇭",
@@ -186,35 +200,7 @@
       "ga": 2,
       "gd": 3,
       "points": 4,
-      "rank": 1
-    },
-    {
-      "team": "Canada",
-      "slug": "canada",
-      "flag": "🇨🇦",
-      "played": 1,
-      "won": 0,
-      "draw": 1,
-      "lost": 0,
-      "gf": 1,
-      "ga": 1,
-      "gd": 0,
-      "points": 1,
       "rank": 2
-    },
-    {
-      "team": "Qatar",
-      "slug": "qatar",
-      "flag": "🇶🇦",
-      "played": 1,
-      "won": 0,
-      "draw": 1,
-      "lost": 0,
-      "gf": 1,
-      "ga": 1,
-      "gd": 0,
-      "points": 1,
-      "rank": 3
     },
     {
       "team": "Bosnia & Herzegovina",
@@ -227,6 +213,20 @@
       "gf": 2,
       "ga": 5,
       "gd": -3,
+      "points": 1,
+      "rank": 3
+    },
+    {
+      "team": "Qatar",
+      "slug": "qatar",
+      "flag": "🇶🇦",
+      "played": 2,
+      "won": 0,
+      "draw": 1,
+      "lost": 1,
+      "gf": 1,
+      "ga": 7,
+      "gd": -6,
       "points": 1,
       "rank": 4
     }

@@ -346,9 +346,44 @@
     "team2Slug": "qatar",
     "team1Flag": "🇨🇦",
     "team2Flag": "🇶🇦",
-    "finished": false,
-    "score": null,
-    "goals1": [],
+    "finished": true,
+    "score": {
+      "ft": [
+        6,
+        0
+      ],
+      "ht": [
+        3,
+        0
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Cyle Larin",
+        "minute": "16"
+      },
+      {
+        "name": "Jonathan David",
+        "minute": "29"
+      },
+      {
+        "name": "Jonathan David",
+        "minute": "45+3"
+      },
+      {
+        "name": "Nathan Saliba",
+        "minute": "64"
+      },
+      {
+        "name": "Mohamed Manai",
+        "minute": "75",
+        "owngoal": true
+      },
+      {
+        "name": "Jonathan David",
+        "minute": "90+2"
+      }
+    ],
     "goals2": []
   },
   {
