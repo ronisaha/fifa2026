@@ -715,9 +715,27 @@
     "team2Slug": "australia",
     "team1Flag": "🇺🇸",
     "team2Flag": "🇦🇺",
-    "finished": false,
-    "score": null,
-    "goals1": [],
+    "finished": true,
+    "score": {
+      "ft": [
+        2,
+        0
+      ],
+      "ht": [
+        2,
+        0
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Cameron Burgess",
+        "minute": "11"
+      },
+      {
+        "name": "Alex Freeman",
+        "minute": "43"
+      }
+    ],
     "goals2": []
   },
   {
