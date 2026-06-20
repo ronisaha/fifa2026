@@ -534,10 +534,24 @@
     "team2Slug": "morocco",
     "team1Flag": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
     "team2Flag": "🇲🇦",
-    "finished": false,
-    "score": null,
+    "finished": true,
+    "score": {
+      "ft": [
+        0,
+        1
+      ],
+      "ht": [
+        0,
+        1
+      ]
+    },
     "goals1": [],
-    "goals2": []
+    "goals2": [
+      {
+        "name": "Ismael Saibari",
+        "minute": "2"
+      }
+    ]
   },
   {
     "id": 16,
@@ -556,9 +570,31 @@
     "team2Slug": "haiti",
     "team1Flag": "🇧🇷",
     "team2Flag": "🇭🇹",
-    "finished": false,
-    "score": null,
-    "goals1": [],
+    "finished": true,
+    "score": {
+      "ft": [
+        3,
+        0
+      ],
+      "ht": [
+        3,
+        0
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Matheus Cunha",
+        "minute": "23"
+      },
+      {
+        "name": "Matheus Cunha",
+        "minute": "36"
+      },
+      {
+        "name": "Vinícius Júnior",
+        "minute": "45"
+      }
+    ],
     "goals2": []
   },
   {
