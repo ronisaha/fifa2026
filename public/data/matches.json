@@ -1166,10 +1166,45 @@
     "team2Slug": "sweden",
     "team1Flag": "🇳🇱",
     "team2Flag": "🇸🇪",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        5,
+        1
+      ],
+      "ht": [
+        2,
+        0
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Brian Brobbey",
+        "minute": "5"
+      },
+      {
+        "name": "Brian Brobbey",
+        "minute": "17"
+      },
+      {
+        "name": "Cody Gakpo",
+        "minute": "47"
+      },
+      {
+        "name": "Cody Gakpo",
+        "minute": "54"
+      },
+      {
+        "name": "Crysencio Summerville",
+        "minute": "89"
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Anthony Elanga",
+        "minute": "59"
+      }
+    ]
   },
   {
     "id": 34,
