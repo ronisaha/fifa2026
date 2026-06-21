@@ -45,11 +45,14 @@ npm run fetch-data  # respects the skip-optimization
 
 1. Push to `main`. In the repo: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 2. The `deploy.yml` workflow builds and publishes on every push to `main`.
-3. The `update-data.yml` workflow refreshes data hourly and commits changes, which re-triggers a deploy.
+3. The `update-data.yml` workflow refreshes data hourly; when the data changes it commits the JSON **and** builds + deploys the site itself. (A `GITHUB_TOKEN` push does not trigger `deploy.yml`, so the data workflow handles its own deploy.)
 
 ### Custom domain
 
-1. Rename `public/CNAME.example` to `public/CNAME` and set it to your domain (one line, e.g. `worldcup2026.example.com`).
+The site is served at **<https://fifa2026.xiidea.net>** via `public/CNAME` (committed
+so the custom domain persists across Pages deployments). To change or set up a domain:
+
+1. Edit `public/CNAME` to your domain (one line, e.g. `worldcup2026.example.com`).
 2. Point DNS at GitHub Pages:
    - Apex domain: `A`/`AAAA` records to GitHub Pages IPs, **or** an `ALIAS`/`ANAME` to `<user>.github.io`.
    - Subdomain: `CNAME` record to `<user>.github.io`.
