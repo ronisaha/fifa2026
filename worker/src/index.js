@@ -111,14 +111,23 @@ async function serve(request, env, ctx, opts) {
         const upstream = await opts.fetchUpstream(env);
         if (upstream.ok) {
           const data = await upstream.json();
+          // API-Football returns HTTP 200 even on problems (key/param/plan),
+          // signalling them in `errors`. Surface that for diagnosis.
+          const hasErrors = Array.isArray(data.errors)
+            ? data.errors.length > 0
+            : data.errors && Object.keys(data.errors).length > 0;
           state = {
             matches: slimFixtures(data, opts.leagueId),
             fetchedAt: now,
             date: today,
             count: state.count + 1,
+            upstream: {
+              results: data.results ?? (Array.isArray(data.response) ? data.response.length : 0),
+              errors: hasErrors ? data.errors : null,
+            },
           };
           if (env.LIVE_KV) ctx.waitUntil(env.LIVE_KV.put(opts.kvKey, JSON.stringify(state)));
-          status = 'fresh';
+          status = hasErrors ? 'upstream_errors' : 'fresh';
         } else {
           status = `upstream_${upstream.status}`;
         }
@@ -136,6 +145,7 @@ async function serve(request, env, ctx, opts) {
       refreshIntervalSeconds: opts.refreshS,
       budgetRemaining: Math.max(0, opts.dailyCap - state.count),
       status,
+      upstream: state.upstream ?? null,
     },
   };
 
@@ -170,14 +180,17 @@ export default {
       });
     }
 
-    // Default + /live: currently-live matches, filtered to the World Cup.
+    // Default + /live: all currently-live matches. We do NOT filter by league
+    // id here — the WC 2026 live league id can differ from our guess, and the
+    // site pins the right match by team name (both teams must match). This makes
+    // the banner robust regardless of how API-Football labels the competition.
     return serve(request, env, ctx, {
       cachePath: '/live',
       kvKey: 'live:state',
       refreshS: num(env.REFRESH_INTERVAL_S, DEFAULTS.LIVE_REFRESH_S),
       dailyCap: num(env.LIVE_DAILY_CAP, DEFAULTS.LIVE_DAILY_CAP),
       edgeS: num(env.EDGE_CACHE_S, DEFAULTS.LIVE_EDGE_S),
-      leagueId: league,
+      leagueId: 0, // no filter; frontend matches by team name
       fetchUpstream: (e) => apiGet(e, `/fixtures?live=all`),
     });
   },
