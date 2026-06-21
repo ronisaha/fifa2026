@@ -1017,8 +1017,17 @@
     "team2Slug": "curacao",
     "team1Flag": "🇪🇨",
     "team2Flag": "🇨🇼",
-    "finished": false,
-    "score": null,
+    "finished": true,
+    "score": {
+      "ft": [
+        0,
+        0
+      ],
+      "ht": [
+        0,
+        0
+      ]
+    },
     "goals1": [],
     "goals2": []
   },
