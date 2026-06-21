@@ -1,6 +1,6 @@
 import { NavLink, Route, Routes } from 'react-router-dom';
 import TzSelect from './components/TzSelect';
-import { useData, getMeta } from './lib/data';
+import { useAutoRefresh, useData, getMeta } from './lib/data';
 import Schedule from './routes/Schedule';
 import Results from './routes/Results';
 import Standings from './routes/Standings';
@@ -47,6 +47,7 @@ function Footer() {
 }
 
 export default function App() {
+  useAutoRefresh();
   return (
     <div className="mx-auto flex min-h-screen max-w-5xl flex-col px-4">
       <header className="sticky top-0 z-10 -mx-4 border-b border-slate-800 bg-slate-950/90 px-4 py-3 backdrop-blur">
