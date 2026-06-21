@@ -2,9 +2,10 @@ name: Update data
 
 on:
   schedule:
-    # Hourly. The fetch script itself skips the network unless a match is
-    # expected to have ended since the last fetch (see scripts/fetch-data.mjs).
-    - cron: '0 * * * *'
+    # Every 30 min. The fetch script skips entirely unless a match has started
+    # or ended since the last sync (see scripts/fetch-data.mjs), so most ticks
+    # are no-ops and the API-Football fixtures budget is only spent on match days.
+    - cron: '*/30 * * * *'
   workflow_dispatch:
     inputs:
       force:
@@ -40,6 +41,9 @@ jobs:
       - name: Fetch & normalize data
         env:
           FORCE: ${{ inputs.force && '1' || '' }}
+          # Authoritative finished-score overlay via the Worker (optional).
+          # Empty when the LIVE_API_URL repo Variable is unset -> upbound only.
+          LIVE_FIXTURES_URL: ${{ vars.LIVE_API_URL != '' && format('{0}/fixtures', vars.LIVE_API_URL) || '' }}
         run: node scripts/fetch-data.mjs
 
       - name: Commit updated data

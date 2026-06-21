@@ -20,10 +20,11 @@ upbound-web/worldcup-live.json  ──(hourly Action)──►  scripts/fetch-da
                                         deploy.yml → Vite build → GitHub Pages
 ```
 
-- **Source:** [upbound-web/worldcup-live.json](https://github.com/upbound-web/worldcup-live.json) — no API key, refreshed frequently during matches. Override with the `SRC_URL` env var.
+- **Base source:** [upbound-web/worldcup-live.json](https://github.com/upbound-web/worldcup-live.json) — no API key; provides the full schedule, venues and knockout placeholders. Override with the `SRC_URL` env var.
+- **Authoritative results overlay (optional):** when `LIVE_FIXTURES_URL` is set, the pipeline overlays **finished** match scores from API-Football (via the [Worker](worker/README.md) `/fixtures` endpoint) on top of the upbound base, so results are authoritative. Falls back to upbound alone if unavailable.
 - **`scripts/fetch-data.mjs`** downloads the upstream JSON, validates it, and emits the app's own schema:
   - `matches.json`, `teams.json`, `groups.json`, `standings.json` (computed), `bracket.json`, `meta.json`.
-- **Optimization:** the Action runs hourly, but the script **skips the network** unless a match is expected to have ended since the last fetch (tracked via `meta.json → lastFetchAt`). Override with `FORCE=1`.
+- **Optimization:** the Action runs every 30 min, but the script **skips entirely** unless a match has started or ended since the last sync (tracked via `meta.json → lastFetchAt`). So most ticks are no-ops and the API-Football fixtures budget is only spent on match days. Override with `FORCE=1`.
 
 ## Local development
 
@@ -64,11 +65,12 @@ to `'/fifa2026/'`.
 
 ## Live scores (optional)
 
-The schedule page's featured banner can show **real-time in-match scores** via a
-small [Cloudflare Worker](worker/README.md) that proxies API-Football's free tier.
-The Worker holds the API key (kept off the client), throttles upstream calls, and
-caps them so the free ~100/day quota can never be exhausted. See
-[`worker/README.md`](worker/README.md) to deploy it.
+A small [Cloudflare Worker](worker/README.md) proxies API-Football's free tier to
+power two things: **real-time in-match scores** in the schedule banner (`/live`)
+and the **authoritative finished-results overlay** in the data pipeline
+(`/fixtures`). The Worker holds the API key (kept off the client), throttles
+upstream calls, and gives each endpoint its own daily cap so the free ~100/day
+quota can never be exhausted. See [`worker/README.md`](worker/README.md) to deploy it.
 
 To enable it on the site, set the build-time env var `VITE_LIVE_API_URL` to the
 Worker URL (locally via `.env`, or as a GitHub repo **Variable** named

@@ -105,6 +105,80 @@ function normalizeGoals(goals) {
   return goals.map((g) => ({ name: g.name, minute: String(g.minute ?? '') }));
 }
 
+// ---------------------------------------------------------------------------
+// Authoritative score overlay (API-Football, via the Worker /fixtures endpoint).
+// We keep upbound as the structural base (schedule, venues, knockout
+// placeholders) and overlay only FINISHED match scores from API-Football so
+// results are authoritative. In-match freshness is handled client-side by the
+// Worker /live banner, so we deliberately do NOT overlay in-play scores here.
+// ---------------------------------------------------------------------------
+const FINISHED_STATUSES = new Set(['FT', 'AET', 'PEN']);
+
+const NAME_ALIASES = {
+  usa: 'united states',
+  'united states': 'usa',
+  'south korea': 'korea republic',
+  'korea republic': 'south korea',
+  'ivory coast': 'cote divoire',
+  'cote divoire': 'ivory coast',
+  'czech republic': 'czechia',
+  czechia: 'czech republic',
+  'dr congo': 'congo dr',
+  'congo dr': 'dr congo',
+};
+
+function normName(s) {
+  return String(s || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/&/g, 'and')
+    .replace(/[^a-z ]/g, '')
+    .trim();
+}
+
+function sameTeamName(a, b) {
+  const na = normName(a);
+  const nb = normName(b);
+  return na === nb || NAME_ALIASES[na] === nb || NAME_ALIASES[nb] === na;
+}
+
+// Mutates `rawMatches`, replacing scores for matches API-Football reports as
+// finished. Returns the number of matches overlaid.
+function applyScoreOverlay(rawMatches, apiMatches) {
+  let applied = 0;
+  for (const m of rawMatches) {
+    if (isPlaceholder(m.team1) || isPlaceholder(m.team2)) continue;
+
+    const candidates = apiMatches.filter(
+      (a) =>
+        FINISHED_STATUSES.has(a.short) &&
+        a.goalsHome != null &&
+        a.goalsAway != null &&
+        ((sameTeamName(a.home, m.team1) && sameTeamName(a.away, m.team2)) ||
+          (sameTeamName(a.home, m.team2) && sameTeamName(a.away, m.team1))),
+    );
+    if (!candidates.length) continue;
+
+    // Disambiguate rematches (rare) by choosing the fixture nearest m.date.
+    const target = m.date ? Date.parse(`${m.date}T00:00:00Z`) : NaN;
+    if (Number.isFinite(target) && candidates.length > 1) {
+      candidates.sort(
+        (x, y) =>
+          Math.abs(Date.parse(x.dateUtc) - target) - Math.abs(Date.parse(y.dateUtc) - target),
+      );
+    }
+    const a = candidates[0];
+    const homeIsTeam1 = sameTeamName(a.home, m.team1);
+    const g1 = homeIsTeam1 ? a.goalsHome : a.goalsAway;
+    const g2 = homeIsTeam1 ? a.goalsAway : a.goalsHome;
+
+    m.score = { ft: [g1, g2], ht: m.score?.ht };
+    applied++;
+  }
+  return applied;
+}
+
 function normalize(raw) {
   const matches = raw.matches.map((m, i) => {
     const { kickoff, offsetLabel } = toUtcIso(m.date, m.time);
@@ -231,7 +305,8 @@ function computeBracket(matches) {
 }
 
 // Should we bother hitting the network? Yes if forced, data missing, no prior
-// fetch, or a match is expected to have ended since lastFetchAt.
+// fetch, or a match has kicked off OR is expected to have ended since the last
+// sync (so a 30-min cadence only does work when the schedule has progressed).
 function shouldFetch(prevMatches, lastFetchAt) {
   if (process.env.FORCE === '1') return { run: true, reason: 'FORCE=1' };
   if (!prevMatches || !prevMatches.length) return { run: true, reason: 'no existing data' };
@@ -241,12 +316,16 @@ function shouldFetch(prevMatches, lastFetchAt) {
   const last = new Date(lastFetchAt).getTime();
   for (const m of prevMatches) {
     if (!m.kickoff) continue;
-    const ended = new Date(m.kickoff).getTime() + MATCH_DURATION_MIN * 60_000;
+    const kickoff = new Date(m.kickoff).getTime();
+    const ended = kickoff + MATCH_DURATION_MIN * 60_000;
+    if (kickoff <= now && kickoff > last) {
+      return { run: true, reason: `match ${m.num} (${m.team1} v ${m.team2}) kicked off since last sync` };
+    }
     if (ended <= now && ended > last) {
-      return { run: true, reason: `match ${m.num} (${m.team1} v ${m.team2}) finished since last fetch` };
+      return { run: true, reason: `match ${m.num} (${m.team1} v ${m.team2}) finished since last sync` };
     }
   }
-  return { run: false, reason: 'no match has ended since last fetch' };
+  return { run: false, reason: 'no match has started or ended since last sync' };
 }
 
 async function readJson(path) {
@@ -288,6 +367,28 @@ async function main() {
   if (!raw || !Array.isArray(raw.matches)) throw new Error('Invalid upstream: missing matches[]');
   if (raw.matches.length < 64) throw new Error(`Suspicious match count: ${raw.matches.length}`);
 
+  // Overlay authoritative finished-match scores from API-Football (via Worker).
+  // Best-effort: any failure leaves the resilient upbound base untouched.
+  const fixturesUrl = process.env.LIVE_FIXTURES_URL;
+  let overlaid = 0;
+  if (fixturesUrl) {
+    try {
+      const fr = await fetch(fixturesUrl, { headers: { accept: 'application/json' } });
+      if (fr.ok) {
+        const fj = await fr.json();
+        const apiMatches = Array.isArray(fj.matches) ? fj.matches : [];
+        overlaid = applyScoreOverlay(raw.matches, apiMatches);
+        console.log(
+          `• API-Football overlay: ${overlaid} finished score(s) from ${apiMatches.length} fixtures (status: ${fj.meta?.status ?? 'n/a'}).`,
+        );
+      } else {
+        console.warn(`• Overlay skipped: fixtures endpoint HTTP ${fr.status}.`);
+      }
+    } catch (e) {
+      console.warn(`• Overlay skipped: ${e.message}.`);
+    }
+  }
+
   const { matches, teams, groups, standings, bracket } = normalize(raw);
   if (Object.keys(groups).length < 8) throw new Error(`Suspicious group count: ${Object.keys(groups).length}`);
 
@@ -304,12 +405,15 @@ async function main() {
     lastFetchAt: nowIso,
     lastUpdated: changed ? nowIso : prevMeta?.lastUpdated ?? nowIso,
     source: SRC_URL,
-    sourceName: 'upbound-web/worldcup-live.json',
+    sourceName: fixturesUrl
+      ? 'upbound-web (base) + API-Football (results)'
+      : 'upbound-web/worldcup-live.json',
     counts: {
       matches: matches.length,
       teams: teams.length,
       groups: Object.keys(groups).length,
       finished: finishedCount,
+      overlaid,
     },
   };
   // meta always reflects lastFetchAt, so write it directly.

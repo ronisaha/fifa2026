@@ -12,11 +12,21 @@ kv_namespaces = [
 [vars]
 # Lock CORS to your site (use "*" only for local testing).
 ALLOW_ORIGIN = "https://fifa2026.xiidea.net"
-# Tunables (safe defaults keep upstream calls <= 90/day, under the 100 free cap).
-REFRESH_INTERVAL_S = "90"
-DAILY_BUDGET = "90"
-EDGE_CACHE_S = "30"
+
+# World Cup league + season in API-Football.
 WC_LEAGUE_ID = "1"
+SEASON = "2026"
+
+# /live tunables (browser banner). Refresh interval + its own daily cap.
+REFRESH_INTERVAL_S = "90"
+LIVE_DAILY_CAP = "70"
+EDGE_CACHE_S = "30"
+
+# /fixtures tunables (Action results overlay). Separate cap so it can never be
+# starved by live polling. LIVE_DAILY_CAP + FIXTURES_DAILY_CAP must stay < 100.
+FIXTURES_REFRESH_S = "300"
+FIXTURES_DAILY_CAP = "25"
+FIXTURES_EDGE_S = "120"
 
 # APIFOOTBALL_KEY is a SECRET, not set here. Add it with:
 #   npx wrangler secret put APIFOOTBALL_KEY
