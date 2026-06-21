@@ -1,16 +1,17 @@
 import { Link } from 'react-router-dom';
 import type { Match } from '../types';
 import { matchStatus } from '../lib/featured';
+import { findLiveFor, sameTeam, useLiveScores, type LiveMatch } from '../lib/live';
 import { useTz } from '../lib/tz-context';
 import { formatDateHeading, formatKickoff } from '../lib/time';
 import FlagImg from './FlagImg';
 
-function StatusBadge({ status }: { status: ReturnType<typeof matchStatus> }) {
+function StatusBadge({ status, elapsed }: { status: string; elapsed?: number | null }) {
   if (status === 'live') {
     return (
       <span className="inline-flex items-center gap-1.5 rounded-full bg-red-500/15 px-3 py-1 text-xs font-bold uppercase tracking-wide text-red-400">
         <span className="h-2 w-2 animate-pulse rounded-full bg-red-500" />
-        Live
+        {elapsed != null ? `Live ${elapsed}'` : 'Live'}
       </span>
     );
   }
@@ -59,56 +60,104 @@ function Side({
   );
 }
 
+/** Live goals oriented to our team1/team2 order (the feed may be home/away swapped). */
+function liveGoalsFor(match: Match, live: LiveMatch): [number, number] | null {
+  if (live.goalsHome == null || live.goalsAway == null) return null;
+  const team1IsHome = sameTeam(live.home, match.team1);
+  return team1IsHome ? [live.goalsHome, live.goalsAway] : [live.goalsAway, live.goalsHome];
+}
+
 export default function FeaturedMatch({ match }: { match: Match }) {
   const { tz } = useTz();
   const status = matchStatus(match);
-  const ft = match.score?.ft ?? null;
-  const showScore = ft != null;
+
+  const liveResp = useLiveScores(status === 'live');
+  const live = status === 'live' ? findLiveFor(liveResp?.matches, match.team1, match.team2) : null;
+  const liveGoals = live ? liveGoalsFor(match, live) : null;
+
+  const staticFt = match.score?.ft ?? null;
+  const goals = liveGoals ?? staticFt;
+  const showScore = goals != null;
 
   return (
-    <section className="mb-8 overflow-hidden rounded-2xl border border-slate-800 bg-gradient-to-br from-slate-900 via-brand-dark/40 to-slate-900 shadow-xl">
-      <div className="px-4 py-6 sm:px-10 sm:py-8">
-        {/* header */}
-        <div className="mb-6 flex items-center justify-center gap-3 text-sm text-slate-300">
-          <span className="font-medium">{match.round}</span>
-          {match.group && (
-            <>
-              <span className="text-slate-600">·</span>
-              <span className="font-medium">{match.group}</span>
-            </>
-          )}
-          <span className="text-slate-600">·</span>
-          <StatusBadge status={status} />
-        </div>
-
-        {/* teams + center */}
-        <div className="grid grid-cols-3 items-center gap-2 sm:gap-6">
-          <Side name={match.team1} flag={match.team1Flag} slug={match.team1Slug} align="left" />
-
-          <div className="flex flex-col items-center gap-1.5 text-center">
-            {showScore ? (
-              <div className="text-4xl font-extrabold tabular-nums tracking-tight text-white sm:text-5xl">
-                {ft![0]} <span className="text-slate-500">–</span> {ft![1]}
-              </div>
-            ) : (
-              <div className="text-3xl font-extrabold tracking-tight text-amber-400 sm:text-5xl">
-                {formatKickoff(match.kickoff, tz)}
-              </div>
+    <>
+      <section className="overflow-hidden rounded-2xl border border-slate-800 bg-gradient-to-br from-slate-900 via-brand-dark/40 to-slate-900 shadow-xl">
+        <div className="px-4 py-6 sm:px-10 sm:py-8">
+          {/* header */}
+          <div className="mb-6 flex items-center justify-center gap-3 text-sm text-slate-300">
+            <span className="font-medium">{match.round}</span>
+            {match.group && (
+              <>
+                <span className="text-slate-600">·</span>
+                <span className="font-medium">{match.group}</span>
+              </>
             )}
-            <div className="text-xs text-slate-400 sm:text-sm">
-              {formatDateHeading(match.kickoff, tz)}
-            </div>
+            <span className="text-slate-600">·</span>
+            <StatusBadge status={status} elapsed={live?.elapsed} />
           </div>
 
-          <Side name={match.team2} flag={match.team2Flag} slug={match.team2Slug} align="right" />
-        </div>
-      </div>
+          {/* teams + center */}
+          <div className="grid grid-cols-3 items-center gap-2 sm:gap-6">
+            <Side name={match.team1} flag={match.team1Flag} slug={match.team1Slug} align="left" />
 
-      {/* footer */}
-      <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-1 border-t border-white/5 bg-black/20 px-4 py-3 text-xs text-slate-400 sm:text-sm">
-        {match.venue && <span>🏟️ {match.venue}</span>}
-        <span>🗓️ {formatKickoff(match.kickoff, tz, { withDate: true })}</span>
-      </div>
-    </section>
+            <div className="flex flex-col items-center gap-1.5 text-center">
+              {showScore ? (
+                <div
+                  className={`text-4xl font-extrabold tabular-nums tracking-tight sm:text-5xl ${
+                    liveGoals ? 'text-red-400' : 'text-white'
+                  }`}
+                >
+                  {goals[0]} <span className="text-slate-500">–</span> {goals[1]}
+                </div>
+              ) : (
+                <div className="text-3xl font-extrabold tracking-tight text-amber-400 sm:text-5xl">
+                  {formatKickoff(match.kickoff, tz)}
+                </div>
+              )}
+              <div className="text-xs text-slate-400 sm:text-sm">
+                {formatDateHeading(match.kickoff, tz)}
+              </div>
+            </div>
+
+            <Side name={match.team2} flag={match.team2Flag} slug={match.team2Slug} align="right" />
+          </div>
+        </div>
+
+        {/* footer */}
+        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-1 border-t border-white/5 bg-black/20 px-4 py-3 text-xs text-slate-400 sm:text-sm">
+          {match.venue && <span>🏟️ {match.venue}</span>}
+          <span>🗓️ {formatKickoff(match.kickoff, tz, { withDate: true })}</span>
+        </div>
+      </section>
+
+      {/* lag note (under the banner) */}
+      <LagNote status={status} live={live} ageSeconds={liveResp?.meta.ageSeconds ?? null} refresh={liveResp?.meta.refreshIntervalSeconds ?? null} />
+    </>
   );
+}
+
+function LagNote({
+  status,
+  live,
+  ageSeconds,
+  refresh,
+}: {
+  status: string;
+  live: LiveMatch | null;
+  ageSeconds: number | null;
+  refresh: number | null;
+}) {
+  let text: string;
+  if (status === 'live' && live) {
+    const age = ageSeconds != null ? `${ageSeconds}s ago` : 'moments ago';
+    const cadence = refresh ? ` · refreshes ~every ${refresh}s` : '';
+    text = `🔴 Live score via API-Football — updated ${age}${cadence}.`;
+  } else if (status === 'live') {
+    text = '⏱️ Live scoring unavailable for this match — scores update with the periodic data refresh and may lag by up to ~1 hour.';
+  } else if (status === 'finished') {
+    text = 'Final score from the data feed.';
+  } else {
+    text = '⏱️ Scores update via the periodic data refresh and may lag the live match by up to ~1 hour.';
+  }
+  return <p className="mb-8 mt-2 text-center text-xs text-slate-500">{text}</p>;
 }

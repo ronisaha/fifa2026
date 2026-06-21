@@ -62,6 +62,20 @@ so the custom domain persists across Pages deployments). To change or set up a d
 deploy to a project subpath instead (`<user>.github.io/fifa2026`), change `base`
 to `'/fifa2026/'`.
 
+## Live scores (optional)
+
+The schedule page's featured banner can show **real-time in-match scores** via a
+small [Cloudflare Worker](worker/README.md) that proxies API-Football's free tier.
+The Worker holds the API key (kept off the client), throttles upstream calls, and
+caps them so the free ~100/day quota can never be exhausted. See
+[`worker/README.md`](worker/README.md) to deploy it.
+
+To enable it on the site, set the build-time env var `VITE_LIVE_API_URL` to the
+Worker URL (locally via `.env`, or as a GitHub repo **Variable** named
+`LIVE_API_URL` for the Actions build). If unset, the banner falls back to the
+periodic data and shows a note about the expected lag. The banner displays how
+fresh the live score is and refreshes while a match is in progress.
+
 ## Notes
 
 - Routing uses `HashRouter` so deep links work on static hosting without 404 fallbacks.

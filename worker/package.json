@@ -1,0 +1,13 @@
+{
+  "name": "wc2026-live-scores-worker",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Cloudflare Worker proxy that serves throttled, cached World Cup 2026 live scores from API-Football.",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.86.0"
+  }
+}

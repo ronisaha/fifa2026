@@ -1,0 +1,22 @@
+name = "wc2026-live-scores"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+
+# Central cache shared by all visitors (one record). Create with:
+#   npx wrangler kv namespace create LIVE_KV
+# then paste the returned id below.
+kv_namespaces = [
+  { binding = "LIVE_KV", id = "289f16d8fdbf429d996addb4cdd4377a" }
+]
+
+[vars]
+# Lock CORS to your site (use "*" only for local testing).
+ALLOW_ORIGIN = "https://fifa2026.xiidea.net"
+# Tunables (safe defaults keep upstream calls <= 90/day, under the 100 free cap).
+REFRESH_INTERVAL_S = "90"
+DAILY_BUDGET = "90"
+EDGE_CACHE_S = "30"
+WC_LEAGUE_ID = "1"
+
+# APIFOOTBALL_KEY is a SECRET, not set here. Add it with:
+#   npx wrangler secret put APIFOOTBALL_KEY

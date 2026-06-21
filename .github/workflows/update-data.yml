@@ -67,6 +67,9 @@ jobs:
       - name: Build site
         if: steps.commit.outputs.changed == 'true'
         run: npm run build
+        env:
+          # Optional: set repo Variable LIVE_API_URL to enable live scores.
+          VITE_LIVE_API_URL: ${{ vars.LIVE_API_URL }}
 
       - uses: actions/configure-pages@v5
         if: steps.commit.outputs.changed == 'true'

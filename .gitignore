@@ -3,6 +3,10 @@ dist
 dist-ssr
 *.tsbuildinfo
 *.local
+.env
+.env.*
+!.env.example
+.wrangler
 .DS_Store
 .vite
 npm-debug.log*
