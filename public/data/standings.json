@@ -291,17 +291,17 @@
   ],
   "Group H": [
     {
-      "team": "Saudi Arabia",
-      "slug": "saudi-arabia",
-      "flag": "🇸🇦",
-      "played": 1,
-      "won": 0,
+      "team": "Spain",
+      "slug": "spain",
+      "flag": "🇪🇸",
+      "played": 2,
+      "won": 1,
       "draw": 1,
       "lost": 0,
-      "gf": 1,
-      "ga": 1,
-      "gd": 0,
-      "points": 1,
+      "gf": 4,
+      "ga": 0,
+      "gd": 4,
+      "points": 4,
       "rank": 1
     },
     {
@@ -333,16 +333,16 @@
       "rank": 3
     },
     {
-      "team": "Spain",
-      "slug": "spain",
-      "flag": "🇪🇸",
-      "played": 1,
+      "team": "Saudi Arabia",
+      "slug": "saudi-arabia",
+      "flag": "🇸🇦",
+      "played": 2,
       "won": 0,
       "draw": 1,
-      "lost": 0,
-      "gf": 0,
-      "ga": 0,
-      "gd": 0,
+      "lost": 1,
+      "gf": 1,
+      "ga": 5,
+      "gd": -4,
       "points": 1,
       "rank": 4
     }

@@ -1597,9 +1597,35 @@
     "team2Slug": "saudi-arabia",
     "team1Flag": "🇪🇸",
     "team2Flag": "🇸🇦",
-    "finished": false,
-    "score": null,
-    "goals1": [],
+    "finished": true,
+    "score": {
+      "ft": [
+        4,
+        0
+      ],
+      "ht": [
+        3,
+        0
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Lamine Yamal",
+        "minute": "10"
+      },
+      {
+        "name": "Mikel Oyarzabal",
+        "minute": "21"
+      },
+      {
+        "name": "Mikel Oyarzabal",
+        "minute": "24"
+      },
+      {
+        "name": "Hassan Al-Tambakti",
+        "minute": "49"
+      }
+    ],
     "goals2": []
   },
   {
