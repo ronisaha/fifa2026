@@ -1,14 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
-
 // Optional live-score feed served by the Cloudflare Worker (see /worker).
 // When VITE_LIVE_API_URL is unset, live polling is disabled and the UI falls
 // back to the periodic data — the feature is fully optional.
 const LIVE_API_URL = import.meta.env.VITE_LIVE_API_URL as string | undefined;
 
-// How often the browser polls the Worker. The Worker itself throttles upstream
-// API-Football calls (default ~90s) and edge-caches (~30s), so a snappy browser
-// interval does NOT increase API-Football usage.
-const POLL_MS = 60_000;
+export const liveScoresEnabled = Boolean(LIVE_API_URL);
 
 export interface LiveMatch {
   id: number;
@@ -26,14 +21,13 @@ export interface LiveMeta {
   refreshIntervalSeconds: number;
   budgetRemaining: number;
   status: string;
+  upstream?: { results: number; errors: unknown } | null;
 }
 
 export interface LiveResponse {
   matches: LiveMatch[];
   meta: LiveMeta;
 }
-
-export const liveScoresEnabled = Boolean(LIVE_API_URL);
 
 // Team-name aliases between our data source and API-Football.
 const ALIASES: Record<string, string> = {
@@ -81,44 +75,22 @@ export function findLiveFor(
   );
 }
 
-/**
- * Poll the live-score Worker while `active` (i.e. a match is in progress).
- * Pauses polling when the tab is hidden to conserve the request budget.
- */
-export function useLiveScores(active: boolean): LiveResponse | null {
-  const [data, setData] = useState<LiveResponse | null>(null);
-  const timer = useRef<ReturnType<typeof setInterval> | null>(null);
+/** Live goals oriented to `team1`/team2 order (the feed may be home/away swapped). */
+export function liveGoals(team1: string, live: LiveMatch): [number, number] | null {
+  if (live.goalsHome == null || live.goalsAway == null) return null;
+  return sameTeam(live.home, team1)
+    ? [live.goalsHome, live.goalsAway]
+    : [live.goalsAway, live.goalsHome];
+}
 
-  useEffect(() => {
-    if (!active || !LIVE_API_URL) {
-      setData(null);
-      return;
-    }
-
-    let stopped = false;
-    const poll = async () => {
-      if (typeof document !== 'undefined' && document.hidden) return;
-      try {
-        const res = await fetch(LIVE_API_URL, { headers: { accept: 'application/json' } });
-        if (res.ok && !stopped) setData((await res.json()) as LiveResponse);
-      } catch {
-        /* keep last value on transient errors */
-      }
-    };
-
-    poll();
-    timer.current = setInterval(poll, POLL_MS);
-    const onVisible = () => {
-      if (!document.hidden) poll();
-    };
-    document.addEventListener('visibilitychange', onVisible);
-
-    return () => {
-      stopped = true;
-      if (timer.current) clearInterval(timer.current);
-      document.removeEventListener('visibilitychange', onVisible);
-    };
-  }, [active]);
-
-  return data;
+/** One-shot fetch of the live feed. Returns null when disabled or on error. */
+export async function fetchLive(): Promise<LiveResponse | null> {
+  if (!LIVE_API_URL) return null;
+  try {
+    const res = await fetch(LIVE_API_URL, { headers: { accept: 'application/json' } });
+    if (!res.ok) return null;
+    return (await res.json()) as LiveResponse;
+  } catch {
+    return null;
+  }
 }

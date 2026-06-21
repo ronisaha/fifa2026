@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import type { Match } from '../types';
 import { matchStatus } from '../lib/featured';
-import { findLiveFor, liveScoresEnabled, sameTeam, useLiveScores, type LiveMatch } from '../lib/live';
+import { findLiveFor, liveGoals, liveScoresEnabled, type LiveMatch } from '../lib/live';
+import { useLive } from '../lib/live-context';
 import { useTz } from '../lib/tz-context';
 import { formatDateHeading, formatKickoff } from '../lib/time';
 import FlagImg from './FlagImg';
@@ -60,23 +61,16 @@ function Side({
   );
 }
 
-/** Live goals oriented to our team1/team2 order (the feed may be home/away swapped). */
-function liveGoalsFor(match: Match, live: LiveMatch): [number, number] | null {
-  if (live.goalsHome == null || live.goalsAway == null) return null;
-  const team1IsHome = sameTeam(live.home, match.team1);
-  return team1IsHome ? [live.goalsHome, live.goalsAway] : [live.goalsAway, live.goalsHome];
-}
-
 export default function FeaturedMatch({ match }: { match: Match }) {
   const { tz } = useTz();
   const status = matchStatus(match);
 
-  const liveResp = useLiveScores(status === 'live');
+  const liveResp = useLive();
   const live = status === 'live' ? findLiveFor(liveResp?.matches, match.team1, match.team2) : null;
-  const liveGoals = live ? liveGoalsFor(match, live) : null;
+  const liveFt = live ? liveGoals(match.team1, live) : null;
 
   const staticFt = match.score?.ft ?? null;
-  const goals = liveGoals ?? staticFt;
+  const goals = liveFt ?? staticFt;
   const showScore = goals != null;
 
   return (
@@ -104,7 +98,7 @@ export default function FeaturedMatch({ match }: { match: Match }) {
               {showScore ? (
                 <div
                   className={`text-4xl font-extrabold tabular-nums tracking-tight sm:text-5xl ${
-                    liveGoals ? 'text-red-400' : 'text-white'
+                    liveFt ? 'text-red-400' : 'text-white'
                   }`}
                 >
                   {goals[0]} <span className="text-slate-500">–</span> {goals[1]}
