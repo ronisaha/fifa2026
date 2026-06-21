@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import type { Match } from '../types';
 import { matchStatus } from '../lib/featured';
-import { findLiveFor, sameTeam, useLiveScores, type LiveMatch } from '../lib/live';
+import { findLiveFor, liveScoresEnabled, sameTeam, useLiveScores, type LiveMatch } from '../lib/live';
 import { useTz } from '../lib/tz-context';
 import { formatDateHeading, formatKickoff } from '../lib/time';
 import FlagImg from './FlagImg';
@@ -147,17 +147,26 @@ function LagNote({
   ageSeconds: number | null;
   refresh: number | null;
 }) {
+  // ~30 min reflects the data pipeline cadence (see update-data.yml).
+  const periodic = '⏱️ Scores update with the periodic refresh (about every 30 minutes).';
+
   let text: string;
   if (status === 'live' && live) {
     const age = ageSeconds != null ? `${ageSeconds}s ago` : 'moments ago';
     const cadence = refresh ? ` · refreshes ~every ${refresh}s` : '';
     text = `🔴 Live score via API-Football — updated ${age}${cadence}.`;
   } else if (status === 'live') {
-    text = '⏱️ Live scoring unavailable for this match — scores update with the periodic data refresh and may lag by up to ~1 hour.';
+    text = liveScoresEnabled
+      ? '⏱️ Waiting for the live feed for this match — the score updates automatically during play.'
+      : periodic;
   } else if (status === 'finished') {
-    text = 'Final score from the data feed.';
+    text = liveScoresEnabled
+      ? 'Final score — authoritative result via API-Football.'
+      : 'Final score from the data feed.';
   } else {
-    text = '⏱️ Scores update via the periodic data refresh and may lag the live match by up to ~1 hour.';
+    text = liveScoresEnabled
+      ? 'Live scores update here automatically once this match kicks off.'
+      : periodic;
   }
   return <p className="mb-8 mt-2 text-center text-xs text-slate-500">{text}</p>;
 }
