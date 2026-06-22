@@ -2057,9 +2057,27 @@
     "team2Slug": "austria",
     "team1Flag": "🇦🇷",
     "team2Flag": "🇦🇹",
-    "finished": false,
-    "score": null,
-    "goals1": [],
+    "finished": true,
+    "score": {
+      "ft": [
+        2,
+        0
+      ],
+      "ht": [
+        1,
+        0
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Lionel Messi",
+        "minute": "38"
+      },
+      {
+        "name": "Lionel Messi",
+        "minute": "90"
+      }
+    ],
     "goals2": []
   },
   {

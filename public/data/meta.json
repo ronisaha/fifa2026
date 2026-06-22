@@ -1,13 +1,13 @@
 {
-  "lastFetchAt": "2026-06-22T18:56:03.522Z",
-  "lastUpdated": "2026-06-22T03:59:54.814Z",
+  "lastFetchAt": "2026-06-22T21:31:31.514Z",
+  "lastUpdated": "2026-06-22T21:31:31.514Z",
   "source": "https://raw.githubusercontent.com/upbound-web/worldcup-live.json/master/2026/worldcup.json",
   "sourceName": "upbound-web/worldcup-live.json",
   "counts": {
     "matches": 104,
     "teams": 48,
     "groups": 12,
-    "finished": 40,
+    "finished": 41,
     "overlaid": 0
   }
 }
