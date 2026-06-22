@@ -13,16 +13,11 @@ kv_namespaces = [
 # Lock CORS to your site (use "*" only for local testing).
 ALLOW_ORIGIN = "https://fifa2026.xiidea.net"
 
-# World Cup season in BALLDONTLIE (2018 | 2022 | 2026).
-SEASON = "2026"
-
-# One shared upstream fetch serves both /live and /fixtures. REFRESH_S=90s keeps
-# us to ~0.7 req/min (plus pagination) — well under the free tier's 5 req/min.
+# Upstream is the community API at worldcup26.ir — free, no API key required.
+# One shared fetch serves both /live and /fixtures, refreshed every REFRESH_S to
+# be gentle on the upstream (~0.7 req/min).
 REFRESH_S = "90"
 EDGE_S = "30"
-DAILY_CAP = "2000"   # backstop only; REFRESH_S vs 5/min is the real limiter
-MAX_PAGES = "4"      # 104 matches > 100/page, so up to 2 pages are fetched
+DAILY_CAP = "2000"   # backstop only; REFRESH_S is the real limiter
 
-# BALLDONTLIE_KEY is a SECRET, not set here. Get a free key at
-# https://balldontlie.io and add it with:
-#   npx wrangler secret put BALLDONTLIE_KEY
+# No secret needed — worldcup26.ir/get/games requires no auth.

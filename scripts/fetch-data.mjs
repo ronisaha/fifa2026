@@ -110,14 +110,14 @@ function normalizeGoals(goals) {
 }
 
 // ---------------------------------------------------------------------------
-// Authoritative score overlay (BALLDONTLIE, via the Worker /fixtures endpoint).
+// Authoritative score overlay (the live feed, via the Worker /fixtures endpoint).
 // We keep upbound as the structural base (schedule, venues, knockout
-// placeholders) and overlay only FINISHED match scores from BALLDONTLIE so
+// placeholders) and overlay only FINISHED match scores from the live feed so
 // results are authoritative. In-match freshness is handled client-side by the
 // Worker /live banner, so we deliberately do NOT overlay in-play scores here.
 // ---------------------------------------------------------------------------
-// 'finished' = normalized status from the Worker (BALLDONTLIE); FT/AET/PEN kept
-// for forward-compatibility with BALLDONTLIE-style feeds.
+// 'finished' = normalized status from the Worker (the live feed); FT/AET/PEN kept
+// for forward-compatibility with the live feed-style feeds.
 const FINISHED_STATUSES = new Set(['finished', 'FT', 'AET', 'PEN']);
 
 const NAME_ALIASES = {
@@ -149,7 +149,7 @@ function sameTeamName(a, b) {
   return na === nb || NAME_ALIASES[na] === nb || NAME_ALIASES[nb] === na;
 }
 
-// Mutates `rawMatches`, replacing scores for matches BALLDONTLIE reports as
+// Mutates `rawMatches`, replacing scores for matches the live feed reports as
 // finished. Returns the number of matches overlaid.
 function applyScoreOverlay(rawMatches, apiMatches) {
   let applied = 0;
@@ -380,7 +380,7 @@ async function main() {
   if (!raw || !Array.isArray(raw.matches)) throw new Error('Invalid upstream: missing matches[]');
   if (raw.matches.length < 64) throw new Error(`Suspicious match count: ${raw.matches.length}`);
 
-  // Overlay authoritative finished-match scores from BALLDONTLIE (via Worker).
+  // Overlay authoritative finished-match scores from the live feed (via Worker).
   // Best-effort: any failure leaves the resilient upbound base untouched.
   const fixturesUrl = process.env.LIVE_FIXTURES_URL;
   let overlaid = 0;
@@ -392,7 +392,7 @@ async function main() {
         const apiMatches = Array.isArray(fj.matches) ? fj.matches : [];
         overlaid = applyScoreOverlay(raw.matches, apiMatches);
         console.log(
-          `• BALLDONTLIE overlay: ${overlaid} finished score(s) from ${apiMatches.length} fixtures (status: ${fj.meta?.status ?? 'n/a'}).`,
+          `• Live-feed overlay: ${overlaid} finished score(s) from ${apiMatches.length} fixtures (status: ${fj.meta?.status ?? 'n/a'}).`,
         );
       } else {
         console.warn(`• Overlay skipped: fixtures endpoint HTTP ${fr.status}.`);
@@ -419,7 +419,7 @@ async function main() {
     lastUpdated: changed ? nowIso : prevMeta?.lastUpdated ?? nowIso,
     source: SRC_URL,
     sourceName: fixturesUrl
-      ? 'upbound-web (base) + BALLDONTLIE (results)'
+      ? 'upbound-web (base) + worldcup26.ir (results)'
       : 'upbound-web/worldcup-live.json',
     counts: {
       matches: matches.length,

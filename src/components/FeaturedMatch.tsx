@@ -148,15 +148,13 @@ function LagNote({
   if (status === 'live' && live) {
     const age = ageSeconds != null ? `${ageSeconds}s ago` : 'moments ago';
     const cadence = refresh ? ` · refreshes ~every ${refresh}s` : '';
-    text = `🔴 Live score via BALLDONTLIE — updated ${age}${cadence}.`;
+    text = `🔴 Live score — updated ${age}${cadence}.`;
   } else if (status === 'live') {
     text = liveScoresEnabled
       ? '⏱️ Waiting for the live feed for this match — the score updates automatically during play.'
       : periodic;
   } else if (status === 'finished') {
-    text = liveScoresEnabled
-      ? 'Final score — authoritative result via BALLDONTLIE.'
-      : 'Final score from the data feed.';
+    text = 'Final score from the data feed.';
   } else {
     text = liveScoresEnabled
       ? 'Live scores update here automatically once this match kicks off.'

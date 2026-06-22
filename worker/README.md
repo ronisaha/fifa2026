@@ -1,51 +1,50 @@
-# BALLDONTLIE FIFA gateway Worker (Cloudflare)
+# worldcup26.ir gateway Worker (Cloudflare)
 
-A tiny Cloudflare Worker that proxies the [BALLDONTLIE FIFA World Cup API](https://fifa.balldontlie.io/)
-for the World Cup 2026 site. It exists because the upstream needs a secret key
-and isn't CORS-enabled, so the static browser app can't call it directly.
+A tiny Cloudflare Worker that proxies the community API at
+[worldcup26.ir](https://worldcup26.ir) (`GET /get/games`) for the World Cup 2026
+site. The upstream is **free and needs no API key**, but we still front it with a
+Worker for central caching (so a hobby server isn't hit by every visitor), the
+`/fixtures` shape, and diagnostics.
 
-> We use BALLDONTLIE because its **free tier covers the 2026 season** with
-> real-time live scores. (API-Football's free tier is restricted to 2022–2024.)
+> Why this upstream: no reputable *free* API offers WC 2026 real-time scores
+> (API-Football free is blocked from 2026; BALLDONTLIE's free tier excludes
+> matches). worldcup26.ir is free and no-key. **Caveat:** whether it streams true
+> in-match data (score + minute while a game is in play) is unverified — if it
+> only flips `notstarted → finished`, `/live` stays empty and the site falls back
+> to periodic results.
 
 Two endpoints, served from **one shared cache**:
 
 | Endpoint | Used by | Returns |
 |---|---|---|
-| `GET /live` (also `/`) | browser banner + match cards (~60s while live) | in-progress matches only |
-| `GET /fixtures` | GitHub Action (per non-skipped run) | all season matches → finished-score overlay |
+| `GET /live` (also `/`) | browser banner + match cards | in-progress matches only |
+| `GET /fixtures` | GitHub Action | all matches → finished-score overlay |
 
-## How it stays within the free 5 requests/MINUTE limit
+## Budget
 
-- A single `GET /matches?seasons[]=2026` call returns the whole tournament, so we
-  fetch it **once** and serve both endpoints from one KV record.
-- It refreshes **at most once per `REFRESH_S`** (default 90s ≈ 0.7 req/min). With
-  pagination (104 matches > 100/page) that's ~1.4 req/min — comfortably under 5.
-- A short **edge cache** (`EDGE_S`, default 30s) absorbs bursts.
-- `DAILY_CAP` is a backstop only; the real limiter is the refresh interval.
+`GET /get/games` returns all 104 matches in one call. The Worker refreshes it at
+most once per `REFRESH_S` (default 90s ≈ 0.7 req/min), shared across all visitors
+and both endpoints, with a short edge cache on top — gentle on the upstream.
 
 ## Response shape (both endpoints)
 
 ```json
 {
   "matches": [
-    { "id": 1, "short": "live", "rawStatus": "in_progress", "elapsed": 47,
-      "clock": "47:15", "dateUtc": "2026-06-28T15:00:00.000Z",
-      "home": "Mexico", "away": "South Africa", "goalsHome": 1, "goalsAway": 0 }
+    { "id": "1", "short": "finished", "rawStatus": "finished", "elapsed": null,
+      "clock": "finished", "dateUtc": "2026-06-11T13:00:00Z",
+      "home": "Mexico", "away": "South Africa", "goalsHome": 2, "goalsAway": 0 }
   ],
   "meta": {
-    "fetchedAt": "2026-06-28T15:30:00.000Z",
-    "ageSeconds": 24,
-    "refreshIntervalSeconds": 90,
-    "budgetRemaining": 1990,
-    "status": "fresh",
-    "upstream": { "results": 104, "errors": null }
+    "fetchedAt": "2026-06-22T04:00:00.000Z", "ageSeconds": 24,
+    "refreshIntervalSeconds": 90, "budgetRemaining": 1999,
+    "status": "fresh", "upstream": { "results": 104, "errors": null }
   }
 }
 ```
 
-`short` is normalized: `finished` | `live` | `scheduled` | `postponed` | `cancelled`.
-`meta.status`: `fresh` | `cache` | `edge` | `budget_capped` | `no_key` | `upstream_*`.
-`meta.upstream.errors` surfaces upstream problems (e.g. bad key) instead of a silent `[]`.
+`short` is normalized: `finished` | `live` | `scheduled`.
+`meta.status`: `fresh` | `cache` | `edge` | `budget_capped` | `upstream_*`.
 
 ## Deploy
 
@@ -53,15 +52,12 @@ Two endpoints, served from **one shared cache**:
 cd worker
 npm install
 
-# 1) Create the KV namespace and paste its id into wrangler.toml
+# 1) Create the KV namespace and paste its id into wrangler.toml (first time only)
 npx wrangler kv namespace create LIVE_KV
 
-# 2) Add your BALLDONTLIE key (free: https://balldontlie.io)
-npx wrangler secret put BALLDONTLIE_KEY
+# 2) (optional) set ALLOW_ORIGIN / REFRESH_S in wrangler.toml
 
-# 3) (optional) set ALLOW_ORIGIN / SEASON / REFRESH_S in wrangler.toml
-
-# 4) Deploy
+# 3) Deploy — no API key/secret required for this upstream
 npx wrangler deploy
 ```
 
@@ -78,5 +74,4 @@ Set the Worker base URL as a build-time env var for the site:
   and variables → Actions → Variables). The workflows pass it into the build and,
   for the data pipeline, append `/fixtures` automatically for the score overlay.
 
-If unset, the site falls back entirely to the periodic upbound data — both the
-live banner and the score overlay are optional.
+If unset, the site falls back entirely to the periodic upbound data.
