@@ -41,9 +41,9 @@ jobs:
       - name: Fetch & normalize data
         env:
           FORCE: ${{ inputs.force && '1' || '' }}
-          # Authoritative finished-score overlay via the Worker (optional).
-          # Empty when the LIVE_API_URL repo Variable is unset -> upbound only.
-          LIVE_FIXTURES_URL: ${{ vars.LIVE_API_URL != '' && format('{0}/fixtures', vars.LIVE_API_URL) || '' }}
+          # Results overlay is OFF: API-Football's free tier blocks the
+          # season-scoped /fixtures endpoint, so results come from upbound alone.
+          # (Live in-match scores still work client-side via the Worker /live.)
         run: node scripts/fetch-data.mjs
 
       - name: Commit updated data

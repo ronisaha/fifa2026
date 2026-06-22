@@ -1,24 +1,34 @@
-// Cloudflare Worker: worldcup26.ir gateway for the WC 2026 site.
+// Cloudflare Worker: API-Football gateway for the World Cup 2026 site.
 //
-// Two endpoints served from ONE shared cache:
-//   GET /live      -> in-progress matches (polled by the browser banner/cards).
-//   GET /fixtures  -> all matches with scores (polled by the GitHub Action to
-//                     overlay finished results).
+// Two endpoints, one shared key, one budget gatekeeper:
+//   GET /live      -> currently-live World Cup matches (polled by the browser
+//                     banner ~every 60s while a match is in progress).
+//   GET /fixtures  -> the full season's fixtures with scores (polled by the
+//                     GitHub Action to overlay authoritative finished results).
 //
-// Upstream: the community API at worldcup26.ir (free, no API key, CORS-enabled).
-// We still front it with a Worker for central caching (so we don't hammer a
-// hobby server from every visitor), the /fixtures shape, and diagnostics.
+// Why a Worker: API-Football's free tier (~100 req/day) needs a secret key and
+// isn't CORS-enabled, so the static browser app can't call it directly.
 //
-// NOTE: whether this upstream streams true in-match live data (score + minute
-// while a game is in play) is unverified; if it only flips notstarted->finished,
-// /live simply stays empty and the site falls back to periodic results.
+// Budget safety (cannot exhaust the free 100/day quota):
+//   * Each endpoint refreshes upstream at most once per its REFRESH interval,
+//     shared across all callers via a single KV record (central cache).
+//   * Each endpoint has its OWN daily cap; the caps sum to < 100 so live polling
+//     can never starve the fixtures refresh (or vice-versa). Defaults: 70 + 25.
+//   * A short edge cache absorbs bursts without touching KV or upstream.
+//   * `fixtures?live=all` / `fixtures?league=&season=` each return everything in
+//     ONE request, so matches/visitors never increase upstream cost.
 
-const API_BASE = 'https://worldcup26.ir';
+const API_BASE = 'https://v3.football.api-sports.io';
 
 const DEFAULTS = {
-  REFRESH_S: 90, // one upstream fetch per 90s, shared across visitors/endpoints
-  EDGE_S: 30,
-  DAILY_CAP: 2000, // backstop only
+  LEAGUE: 1, // API-Football league id for the FIFA World Cup
+  SEASON: 2026,
+  LIVE_REFRESH_S: 90,
+  LIVE_DAILY_CAP: 70,
+  LIVE_EDGE_S: 30,
+  FIXTURES_REFRESH_S: 300,
+  FIXTURES_DAILY_CAP: 25,
+  FIXTURES_EDGE_S: 120,
 };
 
 const num = (v, fallback) => (Number.isFinite(Number(v)) ? Number(v) : fallback);
@@ -35,102 +45,116 @@ const json = (body, { status = 200, headers = {} } = {}) =>
     headers: { 'content-type': 'application/json; charset=utf-8', ...headers },
   });
 
-const parseScore = (v) => {
-  const n = parseInt(v, 10);
-  return Number.isFinite(n) ? n : null;
-};
-
-// Normalize the upstream status into: finished | live | scheduled.
-function normStatus(g) {
-  const finished = String(g.finished).toUpperCase() === 'TRUE';
-  const te = String(g.time_elapsed ?? '').toLowerCase();
-  if (finished || te === 'finished') return 'finished';
-  if (te && te !== 'notstarted') return 'live';
-  return 'scheduled';
-}
-
-// "06/11/2026 13:00" (MM/DD/YYYY) -> ISO-ish (tz unknown; used only as a tiebreak
-// in team-name matching, so the date part is what matters).
-function toIso(local) {
-  if (!local) return null;
-  const m = String(local).match(/^(\d{2})\/(\d{2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
-  if (!m) return null;
-  const [, mm, dd, yyyy, hh = '00', mi = '00'] = m;
-  return `${yyyy}-${mm}-${dd}T${hh.padStart(2, '0')}:${mi}:00Z`;
-}
-
-function slim(g) {
-  const short = normStatus(g);
-  const started = short !== 'scheduled';
-  const elapsed = /^\d+$/.test(String(g.time_elapsed)) ? parseInt(g.time_elapsed, 10) : null;
-  return {
-    id: g.id,
-    short, // finished | live | scheduled
-    rawStatus: g.time_elapsed ?? null,
-    elapsed,
-    clock: g.time_elapsed ?? null,
-    dateUtc: toIso(g.local_date),
-    home: g.home_team_name_en ?? null,
-    away: g.away_team_name_en ?? null,
-    goalsHome: started ? parseScore(g.home_score) : null,
-    goalsAway: started ? parseScore(g.away_score) : null,
-  };
-}
-
-async function fetchAllMatches(env) {
-  const res = await fetch(`${API_BASE}/get/games`, {
-    headers: { accept: 'application/json' },
+async function apiGet(env, path) {
+  return fetch(`${API_BASE}${path}`, {
+    headers: { 'x-apisports-key': env.APIFOOTBALL_KEY },
     cf: { cacheTtl: 0 },
   });
-  if (!res.ok) {
-    let detail = null;
-    try { detail = await res.text(); } catch { /* ignore */ }
-    return { ok: false, status: res.status, errors: detail?.slice(0, 200) || `HTTP ${res.status}` };
-  }
-  const data = await res.json();
-  const rows = Array.isArray(data?.games) ? data.games : Array.isArray(data) ? data : [];
-  return { ok: true, matches: rows };
 }
 
-async function getSharedState(env, ctx, cfg) {
+// Map API-Football fixtures to a slim shape used by both endpoints.
+function slimFixtures(data, leagueId) {
+  return (data.response || [])
+    .filter((f) => !leagueId || f.league?.id === leagueId)
+    .map((f) => ({
+      id: f.fixture?.id,
+      dateUtc: f.fixture?.date ?? null,
+      short: f.fixture?.status?.short ?? null, // NS, 1H, HT, 2H, ET, P, FT, AET, PEN...
+      elapsed: f.fixture?.status?.elapsed ?? null,
+      home: f.teams?.home?.name,
+      away: f.teams?.away?.name,
+      goalsHome: f.goals?.home ?? null,
+      goalsAway: f.goals?.away ?? null,
+    }));
+}
+
+/**
+ * Generic throttled/cached/budgeted endpoint handler.
+ * `fetchUpstream(env)` resolves to the slim array to cache and serve.
+ */
+async function serve(request, env, ctx, opts) {
+  const cors = corsHeaders(env);
+  const cache = caches.default;
+  const cacheKey = new Request(new URL(request.url).origin + opts.cachePath, { method: 'GET' });
+
+  const cached = await cache.match(cacheKey);
+  if (cached) {
+    const r = new Response(cached.body, cached);
+    for (const [k, v] of Object.entries(cors)) r.headers.set(k, v);
+    r.headers.set('x-cache', 'edge');
+    return r;
+  }
+
   const now = Date.now();
   const today = new Date(now).toISOString().slice(0, 10);
 
   let state = null;
   if (env.LIVE_KV) {
-    const raw = await env.LIVE_KV.get('wc:state');
-    if (raw) {
-      try { state = JSON.parse(raw); } catch { state = null; }
+    const rawState = await env.LIVE_KV.get(opts.kvKey);
+    if (rawState) {
+      try { state = JSON.parse(rawState); } catch { state = null; }
     }
   }
-  if (!state) state = { matches: [], fetchedAt: 0, date: today, count: 0, upstream: null };
-  if (state.date !== today) { state.date = today; state.count = 0; }
+  if (!state) state = { matches: [], fetchedAt: 0, date: today, count: 0 };
+  if (state.date !== today) { state.date = today; state.count = 0; } // reset at UTC midnight
 
   const ageS = (now - state.fetchedAt) / 1000;
-  state.status = 'cache';
+  let status = 'cache';
 
-  if (ageS >= cfg.refreshS) {
-    if (state.count >= cfg.dailyCap) {
-      state.status = 'budget_capped';
+  if (ageS >= opts.refreshS) {
+    if (state.count >= opts.dailyCap) {
+      status = 'budget_capped';
+    } else if (!env.APIFOOTBALL_KEY) {
+      status = 'no_key';
     } else {
-      const result = await fetchAllMatches(env);
-      if (result.ok) {
-        state = {
-          matches: result.matches.map(slim),
-          fetchedAt: now,
-          date: today,
-          count: state.count + 1,
-          upstream: { results: result.matches.length, errors: null },
-          status: 'fresh',
-        };
-        if (env.LIVE_KV) ctx.waitUntil(env.LIVE_KV.put('wc:state', JSON.stringify(state)));
-      } else {
-        state.status = `upstream_${result.status}`;
-        state.upstream = { results: 0, errors: result.errors };
+      try {
+        const upstream = await opts.fetchUpstream(env);
+        if (upstream.ok) {
+          const data = await upstream.json();
+          // API-Football returns HTTP 200 even on problems (key/param/plan),
+          // signalling them in `errors`. Surface that for diagnosis.
+          const hasErrors = Array.isArray(data.errors)
+            ? data.errors.length > 0
+            : data.errors && Object.keys(data.errors).length > 0;
+          state = {
+            matches: slimFixtures(data, opts.leagueId),
+            fetchedAt: now,
+            date: today,
+            count: state.count + 1,
+            upstream: {
+              results: data.results ?? (Array.isArray(data.response) ? data.response.length : 0),
+              errors: hasErrors ? data.errors : null,
+            },
+          };
+          if (env.LIVE_KV) ctx.waitUntil(env.LIVE_KV.put(opts.kvKey, JSON.stringify(state)));
+          status = hasErrors ? 'upstream_errors' : 'fresh';
+        } else {
+          status = `upstream_${upstream.status}`;
+        }
+      } catch {
+        status = 'upstream_error';
       }
     }
   }
-  return state;
+
+  const body = {
+    matches: state.matches,
+    meta: {
+      fetchedAt: state.fetchedAt ? new Date(state.fetchedAt).toISOString() : null,
+      ageSeconds: state.fetchedAt ? Math.round((Date.now() - state.fetchedAt) / 1000) : null,
+      refreshIntervalSeconds: opts.refreshS,
+      budgetRemaining: Math.max(0, opts.dailyCap - state.count),
+      status,
+      upstream: state.upstream ?? null,
+    },
+  };
+
+  const resp = json(body, {
+    headers: { 'Cache-Control': `public, max-age=${opts.edgeS}`, 'x-cache': 'miss' },
+  });
+  ctx.waitUntil(cache.put(cacheKey, resp.clone()));
+  for (const [k, v] of Object.entries(cors)) resp.headers.set(k, v);
+  return resp;
 }
 
 export default {
@@ -140,45 +164,34 @@ export default {
     if (request.method !== 'GET')
       return json({ error: 'method not allowed' }, { status: 405, headers: cors });
 
-    const cfg = {
-      refreshS: num(env.REFRESH_S, DEFAULTS.REFRESH_S),
-      edgeS: num(env.EDGE_S, DEFAULTS.EDGE_S),
-      dailyCap: num(env.DAILY_CAP, DEFAULTS.DAILY_CAP),
-    };
+    const league = num(env.WC_LEAGUE_ID, DEFAULTS.LEAGUE);
+    const season = num(env.SEASON, DEFAULTS.SEASON);
+    const path = new URL(request.url).pathname;
 
-    const isFixtures = new URL(request.url).pathname.endsWith('/fixtures');
-    const cachePath = isFixtures ? '/fixtures' : '/live';
-
-    const cache = caches.default;
-    const cacheKey = new Request(new URL(request.url).origin + cachePath, { method: 'GET' });
-    const cached = await cache.match(cacheKey);
-    if (cached) {
-      const r = new Response(cached.body, cached);
-      for (const [k, v] of Object.entries(cors)) r.headers.set(k, v);
-      r.headers.set('x-cache', 'edge');
-      return r;
+    if (path.endsWith('/fixtures')) {
+      return serve(request, env, ctx, {
+        cachePath: '/fixtures',
+        kvKey: 'fixtures:state',
+        refreshS: num(env.FIXTURES_REFRESH_S, DEFAULTS.FIXTURES_REFRESH_S),
+        dailyCap: num(env.FIXTURES_DAILY_CAP, DEFAULTS.FIXTURES_DAILY_CAP),
+        edgeS: num(env.FIXTURES_EDGE_S, DEFAULTS.FIXTURES_EDGE_S),
+        leagueId: 1, // already filtered by the league+season query
+        fetchUpstream: (e) => apiGet(e, `/fixtures?league=${league}&season=${season}`),
+      });
     }
 
-    const state = await getSharedState(env, ctx, cfg);
-    const matches = isFixtures ? state.matches : state.matches.filter((m) => m.short === 'live');
-
-    const body = {
-      matches,
-      meta: {
-        fetchedAt: state.fetchedAt ? new Date(state.fetchedAt).toISOString() : null,
-        ageSeconds: state.fetchedAt ? Math.round((Date.now() - state.fetchedAt) / 1000) : null,
-        refreshIntervalSeconds: cfg.refreshS,
-        budgetRemaining: Math.max(0, cfg.dailyCap - state.count),
-        status: state.status,
-        upstream: state.upstream ?? null,
-      },
-    };
-
-    const resp = json(body, {
-      headers: { 'Cache-Control': `public, max-age=${cfg.edgeS}`, 'x-cache': 'miss' },
+    // Default + /live: all currently-live matches. We do NOT filter by league
+    // id here — the WC 2026 live league id can differ from our guess, and the
+    // site pins the right match by team name (both teams must match). This makes
+    // the banner robust regardless of how API-Football labels the competition.
+    return serve(request, env, ctx, {
+      cachePath: '/live',
+      kvKey: 'live:state',
+      refreshS: num(env.REFRESH_INTERVAL_S, DEFAULTS.LIVE_REFRESH_S),
+      dailyCap: num(env.LIVE_DAILY_CAP, DEFAULTS.LIVE_DAILY_CAP),
+      edgeS: num(env.EDGE_CACHE_S, DEFAULTS.LIVE_EDGE_S),
+      leagueId: 0, // no filter; frontend matches by team name
+      fetchUpstream: (e) => apiGet(e, `/fixtures?live=all`),
     });
-    ctx.waitUntil(cache.put(cacheKey, resp.clone()));
-    for (const [k, v] of Object.entries(cors)) resp.headers.set(k, v);
-    return resp;
   },
 };

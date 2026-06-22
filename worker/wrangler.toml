@@ -13,11 +13,23 @@ kv_namespaces = [
 # Lock CORS to your site (use "*" only for local testing).
 ALLOW_ORIGIN = "https://fifa2026.xiidea.net"
 
-# Upstream is the community API at worldcup26.ir — free, no API key required.
-# One shared fetch serves both /live and /fixtures, refreshed every REFRESH_S to
-# be gentle on the upstream (~0.7 req/min).
-REFRESH_S = "90"
-EDGE_S = "30"
-DAILY_CAP = "2000"   # backstop only; REFRESH_S is the real limiter
+# World Cup league + season in API-Football.
+WC_LEAGUE_ID = "1"
+SEASON = "2026"
 
-# No secret needed — worldcup26.ir/get/games requires no auth.
+# /live tunables (browser banner + cards). fixtures?live=all works on the free
+# plan; only the season-scoped /fixtures is plan-blocked. At 120s refresh, the
+# 90/day cap covers ~3h of live football/day — comfortably under the 100/day quota.
+REFRESH_INTERVAL_S = "120"
+LIVE_DAILY_CAP = "90"
+EDGE_CACHE_S = "30"
+
+# /fixtures is plan-blocked on the free tier (season not accessible), so the
+# results overlay is OFF (LIVE_FIXTURES_URL is not set in the Action). These
+# caps just bound the endpoint if it's ever called.
+FIXTURES_REFRESH_S = "600"
+FIXTURES_DAILY_CAP = "5"
+FIXTURES_EDGE_S = "300"
+
+# APIFOOTBALL_KEY is a SECRET, not set here. Add it with:
+#   npx wrangler secret put APIFOOTBALL_KEY

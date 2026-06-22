@@ -1,50 +1,50 @@
-# worldcup26.ir gateway Worker (Cloudflare)
+# API-Football live-scores Worker (Cloudflare)
 
-A tiny Cloudflare Worker that proxies the community API at
-[worldcup26.ir](https://worldcup26.ir) (`GET /get/games`) for the World Cup 2026
-site. The upstream is **free and needs no API key**, but we still front it with a
-Worker for central caching (so a hobby server isn't hit by every visitor), the
-`/fixtures` shape, and diagnostics.
+A tiny Cloudflare Worker that proxies [API-Football](https://www.api-football.com/)
+for the World Cup 2026 site. It exists because API-Football needs a secret key and
+isn't CORS-enabled, so the static browser app can't call it directly.
 
-> Why this upstream: no reputable *free* API offers WC 2026 real-time scores
-> (API-Football free is blocked from 2026; BALLDONTLIE's free tier excludes
-> matches). worldcup26.ir is free and no-key. **Caveat:** whether it streams true
-> in-match data (score + minute while a game is in play) is unverified — if it
-> only flips `notstarted → finished`, `/live` stays empty and the site falls back
-> to periodic results.
+| Endpoint | Upstream | Free plan? | Used for |
+|---|---|---|---|
+| `GET /live` (also `/`) | `fixtures?live=all` | ✅ **yes** | real-time in-match scores (banner + cards) |
+| `GET /fixtures` | `fixtures?league=&season=2026` | ❌ plan-blocked | (unused — see below) |
 
-Two endpoints, served from **one shared cache**:
+> **Free-plan reality:** `fixtures?live=all` is **not** season-scoped, so it works on
+> the free tier and returns all currently in-play matches (the site filters to the
+> WC match by team name). The season-scoped `/fixtures` query **is** blocked on free
+> ("try from 2022 to 2024"), so the finished-results overlay is **disabled** — match
+> results come from the free upbound feed instead.
 
-| Endpoint | Used by | Returns |
-|---|---|---|
-| `GET /live` (also `/`) | browser banner + match cards | in-progress matches only |
-| `GET /fixtures` | GitHub Action | all matches → finished-score overlay |
+## Budget (free tier: 100 requests/day + a per-minute limit)
 
-## Budget
+- `fixtures?live=all` returns **all** live matches in **one** request.
+- The Worker refreshes upstream at most once per `REFRESH_INTERVAL_S` (default
+  **120s** ≈ 0.5 req/min — safely under the per-minute limit), shared across all
+  visitors via KV, with a short edge cache on top.
+- `LIVE_DAILY_CAP` (default **90**) bounds daily calls under the 100/day quota;
+  at 120s that covers ~3h of live football/day before serving stale.
+- The frontend only polls `/live` while a WC match is in its live window, so the
+  budget is spent only during matches.
 
-`GET /get/games` returns all 104 matches in one call. The Worker refreshes it at
-most once per `REFRESH_S` (default 90s ≈ 0.7 req/min), shared across all visitors
-and both endpoints, with a short edge cache on top — gentle on the upstream.
-
-## Response shape (both endpoints)
+## Response shape
 
 ```json
 {
   "matches": [
-    { "id": "1", "short": "finished", "rawStatus": "finished", "elapsed": null,
-      "clock": "finished", "dateUtc": "2026-06-11T13:00:00Z",
-      "home": "Mexico", "away": "South Africa", "goalsHome": 2, "goalsAway": 0 }
+    { "id": 1489399, "dateUtc": "2026-06-22T17:00:00+00:00", "short": "2H",
+      "elapsed": 47, "home": "Argentina", "away": "Austria",
+      "goalsHome": 1, "goalsAway": 0 }
   ],
   "meta": {
-    "fetchedAt": "2026-06-22T04:00:00.000Z", "ageSeconds": 24,
-    "refreshIntervalSeconds": 90, "budgetRemaining": 1999,
-    "status": "fresh", "upstream": { "results": 104, "errors": null }
+    "fetchedAt": "...", "ageSeconds": 24, "refreshIntervalSeconds": 120,
+    "budgetRemaining": 89, "status": "fresh",
+    "upstream": { "results": 22, "errors": null }
   }
 }
 ```
 
-`short` is normalized: `finished` | `live` | `scheduled`.
-`meta.status`: `fresh` | `cache` | `edge` | `budget_capped` | `upstream_*`.
+`meta.status`: `fresh` | `cache` | `edge` | `budget_capped` | `no_key` | `upstream_errors` | `upstream_*`.
+`meta.upstream.errors` surfaces API-Football problems (e.g. `rateLimit`, `plan`).
 
 ## Deploy
 
@@ -55,23 +55,19 @@ npm install
 # 1) Create the KV namespace and paste its id into wrangler.toml (first time only)
 npx wrangler kv namespace create LIVE_KV
 
-# 2) (optional) set ALLOW_ORIGIN / REFRESH_S in wrangler.toml
+# 2) Add your API-Football key (free: https://dashboard.api-football.com/)
+npx wrangler secret put APIFOOTBALL_KEY
 
-# 3) Deploy — no API key/secret required for this upstream
+# 3) Deploy
 npx wrangler deploy
 ```
-
-Deployment prints a URL like `https://wc2026-live-scores.xiidea.workers.dev`.
 
 > Re-run `npx wrangler deploy` after any change to `src/index.js` or `wrangler.toml`.
 
 ## Connect the site
 
-Set the Worker base URL as a build-time env var for the site:
+- Local: copy `.env.example` to `.env` and set `VITE_LIVE_API_URL` to the Worker URL.
+- GitHub Pages: add a repo **Variable** `LIVE_API_URL` (Settings → Secrets and
+  variables → Actions → Variables) — the build bakes it into the live banner/cards.
 
-- Local: copy `.env.example` to `.env` and set `VITE_LIVE_API_URL`.
-- GitHub Pages: add a repo **Variable** named `LIVE_API_URL` (Settings → Secrets
-  and variables → Actions → Variables). The workflows pass it into the build and,
-  for the data pipeline, append `/fixtures` automatically for the score overlay.
-
-If unset, the site falls back entirely to the periodic upbound data.
+If unset, the site falls back to periodic upbound results with no live banner.
