@@ -117,6 +117,20 @@
   ],
   "Group G": [
     {
+      "team": "Egypt",
+      "slug": "egypt",
+      "flag": "🇪🇬",
+      "played": 2,
+      "won": 1,
+      "draw": 1,
+      "lost": 0,
+      "gf": 4,
+      "ga": 2,
+      "gd": 2,
+      "points": 4,
+      "rank": 1
+    },
+    {
       "team": "Iran",
       "slug": "iran",
       "flag": "🇮🇷",
@@ -128,7 +142,7 @@
       "ga": 2,
       "gd": 0,
       "points": 2,
-      "rank": 1
+      "rank": 2
     },
     {
       "team": "Belgium",
@@ -142,33 +156,19 @@
       "ga": 1,
       "gd": 0,
       "points": 2,
-      "rank": 2
+      "rank": 3
     },
     {
       "team": "New Zealand",
       "slug": "new-zealand",
       "flag": "🇳🇿",
-      "played": 1,
+      "played": 2,
       "won": 0,
       "draw": 1,
-      "lost": 0,
-      "gf": 2,
-      "ga": 2,
-      "gd": 0,
-      "points": 1,
-      "rank": 3
-    },
-    {
-      "team": "Egypt",
-      "slug": "egypt",
-      "flag": "🇪🇬",
-      "played": 1,
-      "won": 0,
-      "draw": 1,
-      "lost": 0,
-      "gf": 1,
-      "ga": 1,
-      "gd": 0,
+      "lost": 1,
+      "gf": 3,
+      "ga": 5,
+      "gd": -2,
       "points": 1,
       "rank": 4
     }
@@ -308,28 +308,28 @@
       "team": "Uruguay",
       "slug": "uruguay",
       "flag": "🇺🇾",
-      "played": 1,
+      "played": 2,
       "won": 0,
-      "draw": 1,
+      "draw": 2,
       "lost": 0,
-      "gf": 1,
-      "ga": 1,
+      "gf": 3,
+      "ga": 3,
       "gd": 0,
-      "points": 1,
+      "points": 2,
       "rank": 2
     },
     {
       "team": "Cape Verde",
       "slug": "cape-verde",
       "flag": "🇨🇻",
-      "played": 1,
+      "played": 2,
       "won": 0,
-      "draw": 1,
+      "draw": 2,
       "lost": 0,
-      "gf": 0,
-      "ga": 0,
+      "gf": 2,
+      "ga": 2,
       "gd": 0,
-      "points": 1,
+      "points": 2,
       "rank": 3
     },
     {

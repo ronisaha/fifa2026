@@ -1468,10 +1468,37 @@
     "team2Slug": "egypt",
     "team1Flag": "🇳🇿",
     "team2Flag": "🇪🇬",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        1,
+        3
+      ],
+      "ht": [
+        1,
+        0
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Finn Surman",
+        "minute": "15"
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Mostafa Zico",
+        "minute": "58"
+      },
+      {
+        "name": "Mohamed Salah",
+        "minute": "67"
+      },
+      {
+        "name": "Trézéguet",
+        "minute": "82"
+      }
+    ]
   },
   {
     "id": 41,
@@ -1654,10 +1681,37 @@
     "team2Slug": "cape-verde",
     "team1Flag": "🇺🇾",
     "team2Flag": "🇨🇻",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        2,
+        2
+      ],
+      "ht": [
+        2,
+        1
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Maxi Araújo",
+        "minute": "44"
+      },
+      {
+        "name": "Agustín Cano",
+        "minute": "45"
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Kevin Pina",
+        "minute": "21"
+      },
+      {
+        "name": "Hélio Varela",
+        "minute": "61"
+      }
+    ]
   },
   {
     "id": 47,
