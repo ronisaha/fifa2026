@@ -29,7 +29,7 @@ export interface LiveResponse {
   meta: LiveMeta;
 }
 
-// Team-name aliases between our data source and API-Football.
+// Team-name aliases between our data source and BALLDONTLIE.
 const ALIASES: Record<string, string> = {
   usa: 'united states',
   'united states': 'usa',

@@ -7,7 +7,7 @@ const BASE = import.meta.env.BASE_URL;
 // Static data cache + auto-refresh.
 //
 // The JSON files are served from GitHub Pages (our own origin), NOT from
-// API-Football — so re-fetching them costs nothing against the API budget. We
+// the live API — so re-fetching them costs nothing against the API budget. We
 // poll the tiny meta.json and, only when its `lastUpdated` changes, invalidate
 // the cache and reload, cache-busted by the new version so the CDN/browser
 // serve fresh content. This lets open tabs update without a manual reload.
@@ -88,7 +88,7 @@ export function useData<T>(loader: () => Promise<T>): AsyncState<T> {
 
 // How often to check meta.json for a new deploy. Data changes at most every
 // ~30 min (the pipeline cadence), so a few minutes is plenty. This hits our own
-// static CDN only — no API-Football cost.
+// static CDN only — no the live API cost.
 const META_POLL_MS = 180_000;
 
 /**

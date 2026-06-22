@@ -1,49 +1,51 @@
-# API-Football gateway Worker (Cloudflare)
+# BALLDONTLIE FIFA gateway Worker (Cloudflare)
 
-A tiny Cloudflare Worker that proxies **API-Football** for the World Cup 2026 site.
-It exists because API-Football's free tier (~100 requests/day) needs a secret key
+A tiny Cloudflare Worker that proxies the [BALLDONTLIE FIFA World Cup API](https://fifa.balldontlie.io/)
+for the World Cup 2026 site. It exists because the upstream needs a secret key
 and isn't CORS-enabled, so the static browser app can't call it directly.
 
-Two endpoints, one shared key, one budget gatekeeper:
+> We use BALLDONTLIE because its **free tier covers the 2026 season** with
+> real-time live scores. (API-Football's free tier is restricted to 2022–2024.)
 
-| Endpoint | Used by | Purpose |
+Two endpoints, served from **one shared cache**:
+
+| Endpoint | Used by | Returns |
 |---|---|---|
-| `GET /live` (also `/`) | browser banner (~60s while a match is live) | currently-live World Cup matches |
-| `GET /fixtures` | GitHub Action (per non-skipped run) | full season fixtures → authoritative finished-score overlay |
+| `GET /live` (also `/`) | browser banner + match cards (~60s while live) | in-progress matches only |
+| `GET /fixtures` | GitHub Action (per non-skipped run) | all season matches → finished-score overlay |
 
-## How it stays within the free 100/day quota
+## How it stays within the free 5 requests/MINUTE limit
 
-- Each endpoint refreshes upstream **at most once per its refresh interval**,
-  shared across all callers via a single KV record (central cache).
-- Each endpoint has its **own daily cap**, and the caps sum to **< 100**, so live
-  polling can never starve the fixtures refresh (or vice-versa).
-  Defaults: `LIVE_DAILY_CAP=70` + `FIXTURES_DAILY_CAP=25` = 95.
-- A short **edge cache** absorbs bursts without touching KV or upstream.
-- `fixtures?live=all` and `fixtures?league=&season=` each return everything in
-  **one** request, so the number of matches/visitors never increases cost.
-
-Once a cap is hit, that endpoint serves the last-known data (flagged
-`budget_capped`) until the UTC-midnight reset.
+- A single `GET /matches?seasons[]=2026` call returns the whole tournament, so we
+  fetch it **once** and serve both endpoints from one KV record.
+- It refreshes **at most once per `REFRESH_S`** (default 90s ≈ 0.7 req/min). With
+  pagination (104 matches > 100/page) that's ~1.4 req/min — comfortably under 5.
+- A short **edge cache** (`EDGE_S`, default 30s) absorbs bursts.
+- `DAILY_CAP` is a backstop only; the real limiter is the refresh interval.
 
 ## Response shape (both endpoints)
 
 ```json
 {
   "matches": [
-    { "id": 123, "dateUtc": "2026-06-21T04:00:00+00:00", "short": "FT",
-      "elapsed": 90, "home": "Tunisia", "away": "Japan", "goalsHome": 0, "goalsAway": 1 }
+    { "id": 1, "short": "live", "rawStatus": "in_progress", "elapsed": 47,
+      "clock": "47:15", "dateUtc": "2026-06-28T15:00:00.000Z",
+      "home": "Mexico", "away": "South Africa", "goalsHome": 1, "goalsAway": 0 }
   ],
   "meta": {
-    "fetchedAt": "2026-06-21T05:30:00.000Z",
+    "fetchedAt": "2026-06-28T15:30:00.000Z",
     "ageSeconds": 24,
     "refreshIntervalSeconds": 90,
-    "budgetRemaining": 71,
-    "status": "fresh"
+    "budgetRemaining": 1990,
+    "status": "fresh",
+    "upstream": { "results": 104, "errors": null }
   }
 }
 ```
 
+`short` is normalized: `finished` | `live` | `scheduled` | `postponed` | `cancelled`.
 `meta.status`: `fresh` | `cache` | `edge` | `budget_capped` | `no_key` | `upstream_*`.
+`meta.upstream.errors` surfaces upstream problems (e.g. bad key) instead of a silent `[]`.
 
 ## Deploy
 
@@ -54,10 +56,10 @@ npm install
 # 1) Create the KV namespace and paste its id into wrangler.toml
 npx wrangler kv namespace create LIVE_KV
 
-# 2) Add your API-Football key (free: https://dashboard.api-football.com/)
-npx wrangler secret put APIFOOTBALL_KEY
+# 2) Add your BALLDONTLIE key (free: https://balldontlie.io)
+npx wrangler secret put BALLDONTLIE_KEY
 
-# 3) (optional) set ALLOW_ORIGIN / caps in wrangler.toml
+# 3) (optional) set ALLOW_ORIGIN / SEASON / REFRESH_S in wrangler.toml
 
 # 4) Deploy
 npx wrangler deploy
