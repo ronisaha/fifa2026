@@ -24,6 +24,10 @@ const SRC_URL =
 // stoppage + a buffer). Used both for the skip-check and result expectations.
 const MATCH_DURATION_MIN = 130;
 
+// Keep re-checking a finished-but-unrecorded match for this long, so we catch
+// scores the upstream backfills after full-time (it can lag the final whistle).
+const PENDING_RESULT_WINDOW_H = 48;
+
 const KNOCKOUT_ROUNDS = [
   'Round of 32',
   'Round of 16',
@@ -314,6 +318,7 @@ function shouldFetch(prevMatches, lastFetchAt) {
 
   const now = Date.now();
   const last = new Date(lastFetchAt).getTime();
+  const pendingWindow = PENDING_RESULT_WINDOW_H * 3600_000;
   for (const m of prevMatches) {
     if (!m.kickoff) continue;
     const kickoff = new Date(m.kickoff).getTime();
@@ -324,8 +329,14 @@ function shouldFetch(prevMatches, lastFetchAt) {
     if (ended <= now && ended > last) {
       return { run: true, reason: `match ${m.num} (${m.team1} v ${m.team2}) finished since last sync` };
     }
+    // Backfill catch-up: a match that should be over but whose result we haven't
+    // recorded yet. Upstream can publish the score after full-time, so keep
+    // re-checking (each run re-fetches all matches) until it lands.
+    if (ended <= now && now - ended < pendingWindow && !m.finished) {
+      return { run: true, reason: `match ${m.num} (${m.team1} v ${m.team2}) ended; result not yet recorded` };
+    }
   }
-  return { run: false, reason: 'no match has started or ended since last sync' };
+  return { run: false, reason: 'no match started/ended and no results pending' };
 }
 
 async function readJson(path) {
