@@ -349,6 +349,20 @@
   ],
   "Group K": [
     {
+      "team": "Portugal",
+      "slug": "portugal",
+      "flag": "🇵🇹",
+      "played": 2,
+      "won": 1,
+      "draw": 1,
+      "lost": 0,
+      "gf": 6,
+      "ga": 1,
+      "gd": 5,
+      "points": 4,
+      "rank": 1
+    },
+    {
       "team": "Colombia",
       "slug": "colombia",
       "flag": "🇨🇴",
@@ -360,26 +374,12 @@
       "ga": 1,
       "gd": 2,
       "points": 3,
-      "rank": 1
+      "rank": 2
     },
     {
       "team": "DR Congo",
       "slug": "dr-congo",
       "flag": "🇨🇩",
-      "played": 1,
-      "won": 0,
-      "draw": 1,
-      "lost": 0,
-      "gf": 1,
-      "ga": 1,
-      "gd": 0,
-      "points": 1,
-      "rank": 2
-    },
-    {
-      "team": "Portugal",
-      "slug": "portugal",
-      "flag": "🇵🇹",
       "played": 1,
       "won": 0,
       "draw": 1,
@@ -394,13 +394,13 @@
       "team": "Uzbekistan",
       "slug": "uzbekistan",
       "flag": "🇺🇿",
-      "played": 1,
+      "played": 2,
       "won": 0,
       "draw": 0,
-      "lost": 1,
+      "lost": 2,
       "gf": 1,
-      "ga": 3,
-      "gd": -2,
+      "ga": 8,
+      "gd": -7,
       "points": 0,
       "rank": 4
     }

@@ -2329,9 +2329,39 @@
     "team2Slug": "uzbekistan",
     "team1Flag": "🇵🇹",
     "team2Flag": "🇺🇿",
-    "finished": false,
-    "score": null,
-    "goals1": [],
+    "finished": true,
+    "score": {
+      "ft": [
+        5,
+        0
+      ],
+      "ht": [
+        3,
+        0
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Cristiano Ronaldo",
+        "minute": "6"
+      },
+      {
+        "name": "Nuno Mendes",
+        "minute": "17"
+      },
+      {
+        "name": "Cristiano Ronaldo",
+        "minute": "39"
+      },
+      {
+        "name": "Abduvohid Nematov",
+        "minute": "60"
+      },
+      {
+        "name": "Rafael Leão",
+        "minute": "87"
+      }
+    ],
     "goals2": []
   },
   {
