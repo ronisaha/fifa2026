@@ -1920,10 +1920,41 @@
     "team2Slug": "senegal",
     "team1Flag": "🇳🇴",
     "team2Flag": "🇸🇳",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        3,
+        2
+      ],
+      "ht": [
+        1,
+        0
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Marcus Holmgren Pedersen",
+        "minute": "43"
+      },
+      {
+        "name": "Erling Haaland",
+        "minute": "48"
+      },
+      {
+        "name": "Erling Haaland",
+        "minute": "58"
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Ismaïla Sarr",
+        "minute": "53"
+      },
+      {
+        "name": "Ismaïla Sarr",
+        "minute": "90"
+      }
+    ]
   },
   {
     "id": 53,
@@ -2119,10 +2150,33 @@
     "team2Slug": "algeria",
     "team1Flag": "🇯🇴",
     "team2Flag": "🇩🇿",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        1,
+        2
+      ],
+      "ht": [
+        1,
+        0
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Nizar Al-Rashdan",
+        "minute": "36"
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Nadhir Benbouali",
+        "minute": "69"
+      },
+      {
+        "name": "Amine Gouiri",
+        "minute": "82"
+      }
+    ]
   },
   {
     "id": 59,
