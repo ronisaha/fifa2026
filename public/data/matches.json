@@ -1876,9 +1876,31 @@
     "team2Slug": "iraq",
     "team1Flag": "🇫🇷",
     "team2Flag": "🇮🇶",
-    "finished": false,
-    "score": null,
-    "goals1": [],
+    "finished": true,
+    "score": {
+      "ft": [
+        3,
+        0
+      ],
+      "ht": [
+        1,
+        0
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Kylian Mbappé",
+        "minute": "14"
+      },
+      {
+        "name": "Kylian Mbappé",
+        "minute": "54"
+      },
+      {
+        "name": "Ousmane Dembélé",
+        "minute": "66"
+      }
+    ],
     "goals2": []
   },
   {
