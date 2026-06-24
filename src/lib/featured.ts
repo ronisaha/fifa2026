@@ -17,24 +17,39 @@ export function matchStatus(match: Match, now = Date.now()): MatchStatus {
 }
 
 /**
- * Pick the match to feature: a currently-live match, otherwise the next
- * upcoming one, otherwise the most recently finished (tournament over).
+ * Pick the group of matches to feature, handling overlapping kickoffs:
+ *   - every match currently live (they all overlap "now"), else
+ *   - every upcoming match sharing the next kickoff slot, else
+ *   - every match sharing the most-recent kickoff slot (tournament over).
+ * Returns [] when there are no dated matches. Sorted by kickoff.
  */
-export function pickFeaturedMatch(matches: Match[], now = Date.now()): Match | null {
+export function pickFeaturedMatches(matches: Match[], now = Date.now()): Match[] {
   const dated = matches.filter((m) => m.kickoff);
 
   const live = dated
     .filter((m) => matchStatus(m, now) === 'live')
     .sort((a, b) => ms(a.kickoff)! - ms(b.kickoff)!);
-  if (live.length) return live[0];
+  if (live.length) return live;
 
   const upcoming = dated
     .filter((m) => !m.finished && ms(m.kickoff)! > now)
     .sort((a, b) => ms(a.kickoff)! - ms(b.kickoff)!);
-  if (upcoming.length) return upcoming[0];
+  if (upcoming.length) {
+    const first = ms(upcoming[0].kickoff)!;
+    return upcoming.filter((m) => ms(m.kickoff)! === first);
+  }
 
   const finished = dated
     .filter((m) => m.finished)
     .sort((a, b) => ms(b.kickoff)! - ms(a.kickoff)!);
-  return finished[0] ?? null;
+  if (finished.length) {
+    const last = ms(finished[0].kickoff)!;
+    return finished.filter((m) => ms(m.kickoff)! === last);
+  }
+  return [];
+}
+
+/** Single-match convenience wrapper around {@link pickFeaturedMatches}. */
+export function pickFeaturedMatch(matches: Match[], now = Date.now()): Match | null {
+  return pickFeaturedMatches(matches, now)[0] ?? null;
 }

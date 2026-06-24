@@ -5,7 +5,7 @@ import { dayKey, formatDateHeading } from '../lib/time';
 import type { Match } from '../types';
 import MatchCard from '../components/MatchCard';
 import FeaturedMatch from '../components/FeaturedMatch';
-import { pickFeaturedMatch } from '../lib/featured';
+import { pickFeaturedMatches } from '../lib/featured';
 import { EmptyState, ErrorState, PageHeader, Spinner } from '../components/ui';
 
 const STAGE_FILTERS = [
@@ -27,7 +27,7 @@ export default function Schedule() {
     return [...new Set(matches.map((m) => m.group).filter(Boolean))].sort() as string[];
   }, [matches]);
 
-  const featured = useMemo(() => (matches ? pickFeaturedMatch(matches) : null), [matches]);
+  const featured = useMemo(() => (matches ? pickFeaturedMatches(matches) : []), [matches]);
 
   const filtered = useMemo(() => {
     if (!matches) return [];
@@ -66,7 +66,7 @@ export default function Schedule() {
         subtitle="FIFA World Cup 2026 · Canada · Mexico · USA"
       />
 
-      {featured && <FeaturedMatch match={featured} />}
+      {featured.length > 0 && <FeaturedMatch matches={featured} />}
 
       <div className="mb-6 flex flex-wrap items-center gap-2">
         <input
