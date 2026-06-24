@@ -2571,10 +2571,24 @@
     "team2Slug": "croatia",
     "team1Flag": "🇵🇦",
     "team2Flag": "🇭🇷",
-    "finished": false,
-    "score": null,
+    "finished": true,
+    "score": {
+      "ft": [
+        0,
+        1
+      ],
+      "ht": [
+        0,
+        0
+      ]
+    },
     "goals1": [],
-    "goals2": []
+    "goals2": [
+      {
+        "name": "Ante Budimir",
+        "minute": "54"
+      }
+    ]
   },
   {
     "id": 71,
