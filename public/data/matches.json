@@ -413,10 +413,33 @@
     "team2Slug": "canada",
     "team1Flag": "🇨🇭",
     "team2Flag": "🇨🇦",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        2,
+        1
+      ],
+      "ht": [
+        0,
+        0
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Rubén Vargas",
+        "minute": "46"
+      },
+      {
+        "name": "Johan Manzambi",
+        "minute": "57"
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Promise David",
+        "minute": "76"
+      }
+    ]
   },
   {
     "id": 12,
@@ -435,10 +458,37 @@
     "team2Slug": "qatar",
     "team1Flag": "🇧🇦",
     "team2Flag": "🇶🇦",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        3,
+        1
+      ],
+      "ht": [
+        2,
+        1
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Kerim Alajbegovic",
+        "minute": "29"
+      },
+      {
+        "name": "Mahmoud Abunada",
+        "minute": "34"
+      },
+      {
+        "name": "Ermin Mahmic",
+        "minute": "80"
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Hassan Al-Haydos",
+        "minute": "42"
+      }
+    ]
   },
   {
     "id": 13,
