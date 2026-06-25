@@ -1191,10 +1191,28 @@
     "team2Slug": "ivory-coast",
     "team1Flag": "🇨🇼",
     "team2Flag": "🇨🇮",
-    "finished": false,
-    "score": null,
+    "finished": true,
+    "score": {
+      "ft": [
+        0,
+        2
+      ],
+      "ht": [
+        0,
+        1
+      ]
+    },
     "goals1": [],
-    "goals2": []
+    "goals2": [
+      {
+        "name": "Nicolas Pépé",
+        "minute": "7"
+      },
+      {
+        "name": "Nicolas Pépé",
+        "minute": "64"
+      }
+    ]
   },
   {
     "id": 30,
@@ -1213,10 +1231,33 @@
     "team2Slug": "germany",
     "team1Flag": "🇪🇨",
     "team2Flag": "🇩🇪",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        2,
+        1
+      ],
+      "ht": [
+        1,
+        1
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Nilson Angulo",
+        "minute": "9"
+      },
+      {
+        "name": "Gonzalo Plata",
+        "minute": "77"
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Leroy Sané",
+        "minute": "2"
+      }
+    ]
   },
   {
     "id": 31,
@@ -2824,11 +2865,11 @@
     "localTime": "16:30 UTC-4",
     "offsetLabel": "UTC-4",
     "venue": "Boston (Foxborough)",
-    "team1": "1E",
+    "team1": "Germany",
     "team2": "3A/B/C/D/F",
-    "team1Slug": null,
+    "team1Slug": "germany",
     "team2Slug": null,
-    "team1Flag": "",
+    "team1Flag": "🇩🇪",
     "team2Flag": "",
     "finished": false,
     "score": null,
@@ -2912,11 +2953,11 @@
     "localTime": "12:00 UTC-5",
     "offsetLabel": "UTC-5",
     "venue": "Dallas (Arlington)",
-    "team1": "2E",
+    "team1": "Ivory Coast",
     "team2": "2I",
-    "team1Slug": null,
+    "team1Slug": "ivory-coast",
     "team2Slug": null,
-    "team1Flag": "",
+    "team1Flag": "🇨🇮",
     "team2Flag": "",
     "finished": false,
     "score": null,
