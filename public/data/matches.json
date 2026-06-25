@@ -178,10 +178,32 @@
     "team2Slug": "mexico",
     "team1Flag": "🇨🇿",
     "team2Flag": "🇲🇽",
-    "finished": false,
-    "score": null,
+    "finished": true,
+    "score": {
+      "ft": [
+        0,
+        3
+      ],
+      "ht": [
+        0,
+        0
+      ]
+    },
     "goals1": [],
-    "goals2": []
+    "goals2": [
+      {
+        "name": "Mateo Chávez",
+        "minute": "55"
+      },
+      {
+        "name": "Julián Quiñones",
+        "minute": "61"
+      },
+      {
+        "name": "Álvaro Fidalgo",
+        "minute": "90"
+      }
+    ]
   },
   {
     "id": 6,
@@ -200,9 +222,23 @@
     "team2Slug": "south-korea",
     "team1Flag": "🇿🇦",
     "team2Flag": "🇰🇷",
-    "finished": false,
-    "score": null,
-    "goals1": [],
+    "finished": true,
+    "score": {
+      "ft": [
+        1,
+        0
+      ],
+      "ht": [
+        0,
+        0
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Thapelo Maseko",
+        "minute": "63"
+      }
+    ],
     "goals2": []
   },
   {
@@ -664,10 +700,32 @@
     "team2Slug": "brazil",
     "team1Flag": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
     "team2Flag": "🇧🇷",
-    "finished": false,
-    "score": null,
+    "finished": true,
+    "score": {
+      "ft": [
+        0,
+        3
+      ],
+      "ht": [
+        0,
+        2
+      ]
+    },
     "goals1": [],
-    "goals2": []
+    "goals2": [
+      {
+        "name": "Vinícius Júnior",
+        "minute": "7"
+      },
+      {
+        "name": "Vinícius Júnior",
+        "minute": "45"
+      },
+      {
+        "name": "Matheus Cunha",
+        "minute": "60"
+      }
+    ]
   },
   {
     "id": 18,
@@ -686,10 +744,45 @@
     "team2Slug": "haiti",
     "team1Flag": "🇲🇦",
     "team2Flag": "🇭🇹",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        4,
+        2
+      ],
+      "ht": [
+        2,
+        2
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Achraf Hakimi",
+        "minute": "39"
+      },
+      {
+        "name": "Ismael Saibari",
+        "minute": "45"
+      },
+      {
+        "name": "Soufiane Rahimi",
+        "minute": "78"
+      },
+      {
+        "name": "Gessime Yassine",
+        "minute": "89"
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Yassine Bounou",
+        "minute": "10"
+      },
+      {
+        "name": "Wilson Isidor",
+        "minute": "43"
+      }
+    ]
   },
   {
     "id": 19,
