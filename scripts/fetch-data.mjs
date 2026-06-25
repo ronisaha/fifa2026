@@ -244,9 +244,64 @@ function normalize(raw) {
   for (const g of Object.keys(groups)) groups[g].sort();
 
   const standings = computeStandings(matches, groups);
+  resolveKnockoutSlots(matches, standings);
   const bracket = computeBracket(matches);
 
   return { matches, teams, groups, standings, bracket };
+}
+
+// Resolve knockout placeholder codes into real teams as results come in:
+//   - "1A"/"2B"/"3C": group position, only once that group has finished all
+//     its games (standings are final);
+//   - "W73"/"L73": winner/loser of a knockout tie, only when that tie has a
+//     decisive result (a draw means it went to penalties, which we can't read
+//     from the score alone — left as a placeholder).
+// Third-place combo codes like "3A/B/C/D/F" need FIFA's third-place ranking
+// table across ALL groups, so they're intentionally left unresolved here.
+function resolveKnockoutSlots(matches, standings) {
+  // Final group positions, keyed "1A".."4L", for completed groups only.
+  const posTeam = {};
+  for (const [gname, rows] of Object.entries(standings)) {
+    const letter = gname.replace(/^Group\s+/i, '');
+    if (!rows.length || !rows.every((r) => r.played === 3)) continue; // not final yet
+    for (const r of rows) posTeam[`${r.rank}${letter}`] = r.team;
+  }
+
+  const byNum = new Map(matches.map((m) => [m.num, m]));
+  const resolveSlot = (slot) => {
+    if (!slot) return null;
+    if (/^[1-3][A-L]$/.test(slot)) return posTeam[slot] ?? null;
+    const wl = /^([WL])(\d+)$/.exec(slot);
+    if (wl) {
+      const src = byNum.get(Number(wl[2]));
+      if (!src?.finished || !src.score?.ft) return null;
+      const [g1, g2] = src.score.ft;
+      if (g1 === g2) return null; // penalty shoot-out — winner unknown from score
+      const winner = g1 > g2 ? src.team1 : src.team2;
+      const loser = g1 > g2 ? src.team2 : src.team1;
+      const pick = wl[1] === 'W' ? winner : loser;
+      return isPlaceholder(pick) ? null : pick; // don't chain through placeholders
+    }
+    return null;
+  };
+
+  // A few passes so later-round W/L codes fill in once their source resolves.
+  for (let pass = 0; pass < KNOCKOUT_ROUNDS.length; pass++) {
+    let changed = false;
+    for (const m of matches) {
+      if (m.stage !== 'knockout') continue;
+      for (const side of ['team1', 'team2']) {
+        if (!isPlaceholder(m[side])) continue;
+        const name = resolveSlot(m[side]);
+        if (!name) continue;
+        m[side] = name;
+        m[`${side}Slug`] = slugify(name);
+        m[`${side}Flag`] = flagFor(name);
+        changed = true;
+      }
+    }
+    if (!changed) break;
+  }
 }
 
 function computeStandings(matches, groups) {
