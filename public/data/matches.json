@@ -1487,10 +1487,29 @@
     "team2Slug": "sweden",
     "team1Flag": "🇯🇵",
     "team2Flag": "🇸🇪",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        1,
+        1
+      ],
+      "ht": [
+        0,
+        0
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Daizen Maeda",
+        "minute": "56"
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Anthony Elanga",
+        "minute": "62"
+      }
+    ]
   },
   {
     "id": 36,
@@ -1509,10 +1528,37 @@
     "team2Slug": "netherlands",
     "team1Flag": "🇹🇳",
     "team2Flag": "🇳🇱",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        1,
+        3
+      ],
+      "ht": [
+        0,
+        2
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Hazem Mastouri",
+        "minute": "54"
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Ellyes Skhiri",
+        "minute": "3"
+      },
+      {
+        "name": "Brian Brobbey",
+        "minute": "7"
+      },
+      {
+        "name": "Jan Paul van Hecke",
+        "minute": "62"
+      }
+    ]
   },
   {
     "id": 37,
@@ -2887,11 +2933,11 @@
     "localTime": "19:00 UTC-6",
     "offsetLabel": "UTC-6",
     "venue": "Monterrey (Guadalupe)",
-    "team1": "1F",
+    "team1": "Netherlands",
     "team2": "Morocco",
-    "team1Slug": null,
+    "team1Slug": "netherlands",
     "team2Slug": "morocco",
-    "team1Flag": "",
+    "team1Flag": "🇳🇱",
     "team2Flag": "🇲🇦",
     "finished": false,
     "score": null,
@@ -2910,11 +2956,11 @@
     "offsetLabel": "UTC-5",
     "venue": "Houston",
     "team1": "Brazil",
-    "team2": "2F",
+    "team2": "Japan",
     "team1Slug": "brazil",
-    "team2Slug": null,
+    "team2Slug": "japan",
     "team1Flag": "🇧🇷",
-    "team2Flag": "",
+    "team2Flag": "🇯🇵",
     "finished": false,
     "score": null,
     "goals1": [],
