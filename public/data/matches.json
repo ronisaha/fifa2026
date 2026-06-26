@@ -970,10 +970,41 @@
     "team2Slug": "usa",
     "team1Flag": "🇹🇷",
     "team2Flag": "🇺🇸",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        3,
+        2
+      ],
+      "ht": [
+        2,
+        1
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Arda Güler",
+        "minute": "10"
+      },
+      {
+        "name": "Baris Alper Yilmaz",
+        "minute": "31"
+      },
+      {
+        "name": "Kaan Ayhan",
+        "minute": "90"
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Auston Trusty",
+        "minute": "3"
+      },
+      {
+        "name": "Sebastian Berhalter",
+        "minute": "49"
+      }
+    ]
   },
   {
     "id": 24,
@@ -992,8 +1023,17 @@
     "team2Slug": "australia",
     "team1Flag": "🇵🇾",
     "team2Flag": "🇦🇺",
-    "finished": false,
-    "score": null,
+    "finished": true,
+    "score": {
+      "ft": [
+        0,
+        0
+      ],
+      "ht": [
+        0,
+        0
+      ]
+    },
     "goals1": [],
     "goals2": []
   },
@@ -3065,11 +3105,11 @@
     "localTime": "17:00 UTC-7",
     "offsetLabel": "UTC-7",
     "venue": "San Francisco Bay Area (Santa Clara)",
-    "team1": "1D",
+    "team1": "USA",
     "team2": "3B/E/F/I/J",
-    "team1Slug": null,
+    "team1Slug": "usa",
     "team2Slug": null,
-    "team1Flag": "",
+    "team1Flag": "🇺🇸",
     "team2Flag": "",
     "finished": false,
     "score": null,
@@ -3219,11 +3259,11 @@
     "localTime": "13:00 UTC-5",
     "offsetLabel": "UTC-5",
     "venue": "Dallas (Arlington)",
-    "team1": "2D",
+    "team1": "Australia",
     "team2": "2G",
-    "team1Slug": null,
+    "team1Slug": "australia",
     "team2Slug": null,
-    "team1Flag": "",
+    "team1Flag": "🇦🇺",
     "team2Flag": "",
     "finished": false,
     "score": null,
