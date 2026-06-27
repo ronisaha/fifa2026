@@ -1787,10 +1787,29 @@
     "team2Slug": "iran",
     "team1Flag": "🇪🇬",
     "team2Flag": "🇮🇷",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        1,
+        1
+      ],
+      "ht": [
+        1,
+        1
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Mahmoud Saber",
+        "minute": "5"
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Ramin Rezaeian",
+        "minute": "14"
+      }
+    ]
   },
   {
     "id": 42,
@@ -1809,10 +1828,45 @@
     "team2Slug": "belgium",
     "team1Flag": "🇳🇿",
     "team2Flag": "🇧🇪",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        1,
+        5
+      ],
+      "ht": [
+        0,
+        1
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Elijah Just",
+        "minute": "84"
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Leandro Trossard",
+        "minute": "28"
+      },
+      {
+        "name": "Leandro Trossard",
+        "minute": "50"
+      },
+      {
+        "name": "Kevin De Bruyne",
+        "minute": "66"
+      },
+      {
+        "name": "Romelu Lukaku",
+        "minute": "86"
+      },
+      {
+        "name": "Alexis Saelemaekers",
+        "minute": "90"
+      }
+    ]
   },
   {
     "id": 43,
@@ -3211,11 +3265,11 @@
     "localTime": "13:00 UTC-7",
     "offsetLabel": "UTC-7",
     "venue": "Seattle",
-    "team1": "1G",
+    "team1": "Belgium",
     "team2": "3A/E/H/I/J",
-    "team1Slug": null,
+    "team1Slug": "belgium",
     "team2Slug": null,
-    "team1Flag": "",
+    "team1Flag": "🇧🇪",
     "team2Flag": "",
     "finished": false,
     "score": null,
@@ -3344,11 +3398,11 @@
     "offsetLabel": "UTC-5",
     "venue": "Dallas (Arlington)",
     "team1": "Australia",
-    "team2": "2G",
+    "team2": "Egypt",
     "team1Slug": "australia",
-    "team2Slug": null,
+    "team2Slug": "egypt",
     "team1Flag": "🇦🇺",
-    "team2Flag": "",
+    "team2Flag": "🇪🇬",
     "finished": false,
     "score": null,
     "goals1": [],
