@@ -2000,8 +2000,17 @@
     "team2Slug": "saudi-arabia",
     "team1Flag": "🇨🇻",
     "team2Flag": "🇸🇦",
-    "finished": false,
-    "score": null,
+    "finished": true,
+    "score": {
+      "ft": [
+        0,
+        0
+      ],
+      "ht": [
+        0,
+        0
+      ]
+    },
     "goals1": [],
     "goals2": []
   },
@@ -2022,10 +2031,24 @@
     "team2Slug": "spain",
     "team1Flag": "🇺🇾",
     "team2Flag": "🇪🇸",
-    "finished": false,
-    "score": null,
+    "finished": true,
+    "score": {
+      "ft": [
+        0,
+        1
+      ],
+      "ht": [
+        0,
+        1
+      ]
+    },
     "goals1": [],
-    "goals2": []
+    "goals2": [
+      {
+        "name": "Álex Baena",
+        "minute": "42"
+      }
+    ]
   },
   {
     "id": 49,
@@ -3232,11 +3255,11 @@
     "localTime": "12:00 UTC-7",
     "offsetLabel": "UTC-7",
     "venue": "Los Angeles (Inglewood)",
-    "team1": "1H",
+    "team1": "Spain",
     "team2": "2J",
-    "team1Slug": null,
+    "team1Slug": "spain",
     "team2Slug": null,
-    "team1Flag": "",
+    "team1Flag": "🇪🇸",
     "team2Flag": "",
     "finished": false,
     "score": null,
@@ -3277,11 +3300,11 @@
     "offsetLabel": "UTC-4",
     "venue": "Miami (Miami Gardens)",
     "team1": "1J",
-    "team2": "2H",
+    "team2": "Cape Verde",
     "team1Slug": null,
-    "team2Slug": null,
+    "team2Slug": "cape-verde",
     "team1Flag": "",
-    "team2Flag": "",
+    "team2Flag": "🇨🇻",
     "finished": false,
     "score": null,
     "goals1": [],
