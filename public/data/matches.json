@@ -3029,10 +3029,28 @@
     "team2Slug": "england",
     "team1Flag": "🇵🇦",
     "team2Flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
-    "finished": false,
-    "score": null,
+    "finished": true,
+    "score": {
+      "ft": [
+        0,
+        2
+      ],
+      "ht": [
+        0,
+        0
+      ]
+    },
     "goals1": [],
-    "goals2": []
+    "goals2": [
+      {
+        "name": "Jude Bellingham",
+        "minute": "62"
+      },
+      {
+        "name": "Harry Kane",
+        "minute": "67"
+      }
+    ]
   },
   {
     "id": 72,
@@ -3051,10 +3069,33 @@
     "team2Slug": "ghana",
     "team1Flag": "🇭🇷",
     "team2Flag": "🇬🇭",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        2,
+        1
+      ],
+      "ht": [
+        1,
+        0
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Petar Sucic",
+        "minute": "31"
+      },
+      {
+        "name": "Nikola Vlasic",
+        "minute": "83"
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Derrick Luckassen",
+        "minute": "73"
+      }
+    ]
   },
   {
     "id": 73,
@@ -3221,11 +3262,11 @@
     "localTime": "12:00 UTC-4",
     "offsetLabel": "UTC-4",
     "venue": "Atlanta",
-    "team1": "1L",
+    "team1": "England",
     "team2": "3E/H/I/J/K",
-    "team1Slug": null,
+    "team1Slug": "england",
     "team2Slug": null,
-    "team1Flag": "",
+    "team1Flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
     "team2Flag": "",
     "finished": false,
     "score": null,
@@ -3288,11 +3329,11 @@
     "offsetLabel": "UTC-4",
     "venue": "Toronto",
     "team1": "2K",
-    "team2": "2L",
+    "team2": "Croatia",
     "team1Slug": null,
-    "team2Slug": null,
+    "team2Slug": "croatia",
     "team1Flag": "",
-    "team2Flag": "",
+    "team2Flag": "🇭🇷",
     "finished": false,
     "score": null,
     "goals1": [],
