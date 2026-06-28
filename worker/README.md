@@ -38,6 +38,25 @@ isn't CORS-enabled, so the static browser app can't call it directly.
 - The frontend also only polls `/live` while a WC match is in its live window,
   so this gate is a server-side backstop for the same intent.
 
+## Cron: driving the data-refresh Action
+
+GitHub throttles `schedule:` crons heavily — a `*/10` cron in
+`update-data.yml` actually fires only ~once an hour. So the Worker also runs a
+**Cloudflare cron** (`*/10 * * * *`, honoured precisely) that POSTs
+`workflow_dispatch` to the Action on each tick. The Action's fetch script
+self-skips when no match has started/ended, so frequent dispatches are cheap
+no-ops; the GitHub `schedule:` block stays as a fallback if the Worker is down.
+
+Needs one secret — a GitHub PAT with **Actions: read and write** on the repo:
+
+```bash
+npx wrangler secret put GH_DISPATCH_TOKEN
+```
+
+Tunables live in `[vars]`: `GH_REPO`, `GH_WORKFLOW` (default `update-data.yml`),
+`GH_REF` (default `main`). A successful dispatch logs `cron: dispatched …` in
+`npx wrangler tail`; if the token/repo is unset the tick is a logged no-op.
+
 ## Response shape
 
 ```json
@@ -72,7 +91,10 @@ npx wrangler kv namespace create LIVE_KV
 # 2) Add your API-Football key (free: https://dashboard.api-football.com/)
 npx wrangler secret put APIFOOTBALL_KEY
 
-# 3) Deploy
+# 3) Add a GitHub PAT (Actions: read+write) so the cron can dispatch the Action
+npx wrangler secret put GH_DISPATCH_TOKEN
+
+# 4) Deploy
 npx wrangler deploy
 ```
 

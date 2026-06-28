@@ -9,7 +9,20 @@ kv_namespaces = [
   { binding = "LIVE_KV", id = "289f16d8fdbf429d996addb4cdd4377a" }
 ]
 
+# Cron trigger: reliably drive the data-refresh Action. GitHub throttles its own
+# schedule: cron (a */10 fires ~hourly), so the Worker fires workflow_dispatch on
+# Cloudflare's precise cron instead. See dispatchDataRefresh() in src/index.js.
+[triggers]
+crons = ["*/10 * * * *"]
+
 [vars]
+# GitHub repo + workflow to dispatch on each cron tick. GH_DISPATCH_TOKEN is a
+# SECRET (a PAT with Actions: read+write), set with:
+#   npx wrangler secret put GH_DISPATCH_TOKEN
+GH_REPO = "ronisaha/fifa2026"
+GH_WORKFLOW = "update-data.yml"
+GH_REF = "main"
+
 # Lock CORS to your site (use "*" only for local testing).
 ALLOW_ORIGIN = "https://fifa2026.xiidea.net"
 

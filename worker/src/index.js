@@ -238,7 +238,53 @@ async function serve(request, env, ctx, opts) {
   return resp;
 }
 
+// ---------------------------------------------------------------------------
+// Cron trigger: reliably drive the data-refresh GitHub Action.
+//
+// GitHub throttles `schedule:` crons heavily (a */10 cron really fires ~hourly),
+// so we POST workflow_dispatch on Cloudflare's own cron instead — Cloudflare
+// honours the interval precisely. The Action's fetch script self-skips when no
+// match has started/ended, so frequent dispatches are cheap no-ops.
+// Requires GH_DISPATCH_TOKEN (a PAT with Actions: read+write on the repo).
+// ---------------------------------------------------------------------------
+async function dispatchDataRefresh(env) {
+  const repo = env.GH_REPO;
+  const token = env.GH_DISPATCH_TOKEN;
+  if (!repo || !token) {
+    console.log('cron: skipped (GH_REPO or GH_DISPATCH_TOKEN not set)');
+    return;
+  }
+  const workflow = env.GH_WORKFLOW || 'update-data.yml';
+  const ref = env.GH_REF || 'main';
+  const url = `https://api.github.com/repos/${repo}/actions/workflows/${workflow}/dispatches`;
+  try {
+    const r = await fetch(url, {
+      method: 'POST',
+      headers: {
+        authorization: `Bearer ${token}`,
+        accept: 'application/vnd.github+json',
+        'x-github-api-version': '2022-11-28',
+        'user-agent': 'wc2026-live-scores-cron',
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({ ref }),
+    });
+    // GitHub returns 204 No Content on success.
+    if (r.status === 204) {
+      console.log(`cron: dispatched ${workflow}@${ref}`);
+    } else {
+      console.log(`cron: dispatch failed ${r.status} ${await r.text()}`);
+    }
+  } catch (err) {
+    console.log(`cron: dispatch error ${err}`);
+  }
+}
+
 export default {
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(dispatchDataRefresh(env));
+  },
+
   async fetch(request, env, ctx) {
     const cors = corsHeaders(env);
     if (request.method === 'OPTIONS') return new Response(null, { headers: cors });
