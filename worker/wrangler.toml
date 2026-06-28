@@ -24,6 +24,16 @@ REFRESH_INTERVAL_S = "120"
 LIVE_DAILY_CAP = "90"
 EDGE_CACHE_S = "30"
 
+# Schedule gate: /live only spends a budget call when a WC fixture is actually in
+# its live window. The schedule is the site's own published matches.json (free,
+# on GitHub Pages), cached in KV and re-pulled at most every SCHEDULE_TTL_S.
+# A fixture counts as "live" from LIVE_PRE_MIN before kickoff to LIVE_WINDOW_MIN
+# after (covers extra time + stoppage). Between matches, upstream is never hit.
+SCHEDULE_URL = "https://fifa2026.xiidea.net/data/matches.json"
+SCHEDULE_TTL_S = "1800"
+LIVE_PRE_MIN = "5"
+LIVE_WINDOW_MIN = "150"
+
 # /fixtures is plan-blocked on the free tier (season not accessible), so the
 # results overlay is OFF (LIVE_FIXTURES_URL is not set in the Action). These
 # caps just bound the endpoint if it's ever called.

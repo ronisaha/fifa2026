@@ -17,14 +17,26 @@ isn't CORS-enabled, so the static browser app can't call it directly.
 
 ## Budget (free tier: 100 requests/day + a per-minute limit)
 
+- **Schedule gate (server-side):** before spending a budget call, `/live` checks
+  whether any WC fixture is actually in its live window *now*. The schedule is
+  the site's own published `matches.json` (free, on GitHub Pages), cached in KV
+  and re-pulled at most every `SCHEDULE_TTL_S` (default **1800s**). A fixture
+  counts as live from `LIVE_PRE_MIN` (default **5**) before kickoff to
+  `LIVE_WINDOW_MIN` (default **150**) after. **Between matches the budgeted
+  upstream is never touched** — even if something polls `/live` directly. (Fails
+  open only if a schedule has never loaded, so a Pages hiccup can't kill live.)
 - `fixtures?live=all` returns **all** live matches in **one** request.
 - The Worker refreshes upstream at most once per `REFRESH_INTERVAL_S` (default
   **120s** ≈ 0.5 req/min — safely under the per-minute limit), shared across all
   visitors via KV, with a short edge cache on top.
 - `LIVE_DAILY_CAP` (default **90**) bounds daily calls under the 100/day quota;
   at 120s that covers ~3h of live football/day before serving stale.
-- The frontend only polls `/live` while a WC match is in its live window, so the
-  budget is spent only during matches.
+- **Errors are never cached.** A rate-limit / plan / non-200 upstream response
+  does **not** overwrite the last-good scores and is served with `no-store`; it
+  only throttles the next retry by one refresh interval. So a transient
+  rate-limit can't poison the cache or wipe the live banner.
+- The frontend also only polls `/live` while a WC match is in its live window,
+  so this gate is a server-side backstop for the same intent.
 
 ## Response shape
 
@@ -43,8 +55,10 @@ isn't CORS-enabled, so the static browser app can't call it directly.
 }
 ```
 
-`meta.status`: `fresh` | `cache` | `edge` | `budget_capped` | `no_key` | `upstream_errors` | `upstream_*`.
-`meta.upstream.errors` surfaces API-Football problems (e.g. `rateLimit`, `plan`).
+`meta.status`: `fresh` | `cache` | `edge` | `idle_no_fixture` | `budget_capped` | `no_key` | `upstream_errors` | `upstream_*`.
+`idle_no_fixture` means the schedule gate skipped the upstream call (no WC match
+live now). `meta.upstream.errors` surfaces API-Football problems (e.g.
+`rateLimit`, `plan`) — those responses are throttled, not cached.
 
 ## Deploy
 
