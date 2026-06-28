@@ -3212,10 +3212,24 @@
     "team2Slug": "canada",
     "team1Flag": "🇿🇦",
     "team2Flag": "🇨🇦",
-    "finished": false,
-    "score": null,
+    "finished": true,
+    "score": {
+      "ft": [
+        0,
+        1
+      ],
+      "ht": [
+        0,
+        0
+      ]
+    },
     "goals1": [],
-    "goals2": []
+    "goals2": [
+      {
+        "name": "Stephen Eustáquio",
+        "minute": "90"
+      }
+    ]
   },
   {
     "id": 74,
@@ -3580,11 +3594,11 @@
     "localTime": "12:00 UTC-5",
     "offsetLabel": "UTC-5",
     "venue": "Houston",
-    "team1": "W73",
+    "team1": "Canada",
     "team2": "W75",
-    "team1Slug": null,
+    "team1Slug": "canada",
     "team2Slug": null,
-    "team1Flag": "",
+    "team1Flag": "🇨🇦",
     "team2Flag": "",
     "finished": false,
     "score": null,

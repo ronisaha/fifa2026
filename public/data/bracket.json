@@ -12,8 +12,17 @@
       "team2Flag": "🇨🇦",
       "team1Slug": "south-africa",
       "team2Slug": "canada",
-      "finished": false,
-      "score": null
+      "finished": true,
+      "score": {
+        "ft": [
+          0,
+          1
+        ],
+        "ht": [
+          0,
+          0
+        ]
+      }
     },
     {
       "num": 74,
@@ -263,11 +272,11 @@
       "kickoff": "2026-07-04T17:00:00.000Z",
       "localTime": "12:00 UTC-5",
       "venue": "Houston",
-      "team1": "W73",
+      "team1": "Canada",
       "team2": "W75",
-      "team1Flag": "",
+      "team1Flag": "🇨🇦",
       "team2Flag": "",
-      "team1Slug": null,
+      "team1Slug": "canada",
       "team2Slug": null,
       "finished": false,
       "score": null
