@@ -4,13 +4,9 @@ on:
   # Cadence is driven by the Cloudflare Worker cron, which fires
   # workflow_dispatch every 10 min (GitHub throttles schedule: crons to ~hourly,
   # so it's intentionally not used here — see worker/src/index.js). The fetch
-  # script self-skips unless a match has started/ended, so ticks are cheap.
+  # script always re-pulls the free upstream feed and only commits when the
+  # normalized data actually changed, so ticks are cheap.
   workflow_dispatch:
-    inputs:
-      force:
-        description: 'Force a refresh even if no match has ended'
-        type: boolean
-        default: false
 
 # contents: push the regenerated JSON back to the repo.
 # pages / id-token: publish the rebuilt site (a GITHUB_TOKEN push does NOT
@@ -38,11 +34,9 @@ jobs:
           cache: npm
 
       - name: Fetch & normalize data
-        env:
-          FORCE: ${{ inputs.force && '1' || '' }}
-          # Results overlay is OFF: API-Football's free tier blocks the
-          # season-scoped /fixtures endpoint, so results come from upbound alone.
-          # (Live in-match scores still work client-side via the Worker /live.)
+        # Results overlay is OFF: API-Football's free tier blocks the
+        # season-scoped /fixtures endpoint, so results come from upbound alone.
+        # (Live in-match scores still work client-side via the Worker /live.)
         run: node scripts/fetch-data.mjs
 
       - name: Commit updated data

@@ -1,14 +1,13 @@
 #!/usr/bin/env node
-// Fetch FIFA World Cup 2026 data from openfootball (public domain, no API key),
+// Fetch FIFA World Cup 2026 data from the upbound feed (public, no API key),
 // normalize it into the app's own schema, compute standings + bracket, and write
-// static JSON into public/data — but only when something actually changed.
+// static JSON into public/data — but only the files that actually changed.
 //
-// Optimization (per requirement): runs hourly via GitHub Actions, yet skips the
-// network call entirely unless a match is expected to have ended since the last
-// fetch (tracked in public/data/meta.json -> lastFetchAt). Use FORCE=1 to override.
+// The upstream feed is free, so every run re-fetches it unconditionally and lets
+// writeIfChanged() (and the Action's `git status` check) decide whether there's
+// anything to commit. No time-based skip: change detection is the gate.
 
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
-import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -19,14 +18,6 @@ const DATA_DIR = join(ROOT, 'public', 'data');
 const SRC_URL =
   process.env.SRC_URL ||
   'https://raw.githubusercontent.com/upbound-web/worldcup-live.json/master/2026/worldcup.json';
-
-// A match is treated as "finished" this long after kickoff (90' + half-time +
-// stoppage + a buffer). Used both for the skip-check and result expectations.
-const MATCH_DURATION_MIN = 130;
-
-// Keep re-checking a finished-but-unrecorded match for this long, so we catch
-// scores the upstream backfills after full-time (it can lag the final whistle).
-const PENDING_RESULT_WINDOW_H = 48;
 
 const KNOCKOUT_ROUNDS = [
   'Round of 32',
@@ -365,45 +356,6 @@ function computeBracket(matches) {
   return bracket;
 }
 
-// Should we bother hitting the network? Yes if forced, data missing, no prior
-// fetch, or a match has kicked off OR is expected to have ended since the last
-// sync (so a 30-min cadence only does work when the schedule has progressed).
-function shouldFetch(prevMatches, lastFetchAt) {
-  if (process.env.FORCE === '1') return { run: true, reason: 'FORCE=1' };
-  if (!prevMatches || !prevMatches.length) return { run: true, reason: 'no existing data' };
-  if (!lastFetchAt) return { run: true, reason: 'no lastFetchAt recorded' };
-
-  const now = Date.now();
-  const last = new Date(lastFetchAt).getTime();
-  const pendingWindow = PENDING_RESULT_WINDOW_H * 3600_000;
-  for (const m of prevMatches) {
-    if (!m.kickoff) continue;
-    const kickoff = new Date(m.kickoff).getTime();
-    const ended = kickoff + MATCH_DURATION_MIN * 60_000;
-    if (kickoff <= now && kickoff > last) {
-      return { run: true, reason: `match ${m.num} (${m.team1} v ${m.team2}) kicked off since last sync` };
-    }
-    if (ended <= now && ended > last) {
-      return { run: true, reason: `match ${m.num} (${m.team1} v ${m.team2}) finished since last sync` };
-    }
-    // Backfill catch-up: a match that should be over but whose result we haven't
-    // recorded yet. Upstream can publish the score after full-time, so keep
-    // re-checking (each run re-fetches all matches) until it lands.
-    if (ended <= now && now - ended < pendingWindow && !m.finished) {
-      return { run: true, reason: `match ${m.num} (${m.team1} v ${m.team2}) ended; result not yet recorded` };
-    }
-  }
-  return { run: false, reason: 'no match started/ended and no results pending' };
-}
-
-async function readJson(path) {
-  try {
-    return JSON.parse(await readFile(path, 'utf8'));
-  } catch {
-    return null;
-  }
-}
-
 async function writeIfChanged(name, value) {
   const path = join(DATA_DIR, name);
   const next = JSON.stringify(value, null, 2) + '\n';
@@ -417,16 +369,7 @@ async function writeIfChanged(name, value) {
 async function main() {
   await mkdir(DATA_DIR, { recursive: true });
 
-  const prevMeta = await readJson(join(DATA_DIR, 'meta.json'));
-  const prevMatches = await readJson(join(DATA_DIR, 'matches.json'));
-  const { run, reason } = shouldFetch(prevMatches, prevMeta?.lastFetchAt);
-
-  if (!run) {
-    console.log(`⏭  Skipping fetch: ${reason}.`);
-    return;
-  }
-  console.log(`⤓  Fetching: ${reason}.`);
-
+  console.log(`⤓  Fetching ${SRC_URL}`);
   const res = await fetch(SRC_URL);
   if (!res.ok) throw new Error(`Upstream fetch failed: ${res.status} ${res.statusText}`);
   const raw = await res.json();
@@ -460,7 +403,6 @@ async function main() {
   const { matches, teams, groups, standings, bracket } = normalize(raw);
   if (Object.keys(groups).length < 8) throw new Error(`Suspicious group count: ${Object.keys(groups).length}`);
 
-  const nowIso = new Date().toISOString();
   let changed = false;
   changed = (await writeIfChanged('matches.json', matches)) || changed;
   changed = (await writeIfChanged('teams.json', teams)) || changed;
@@ -469,23 +411,30 @@ async function main() {
   changed = (await writeIfChanged('bracket.json', bracket)) || changed;
 
   const finishedCount = matches.filter((m) => m.finished).length;
-  const meta = {
-    lastFetchAt: nowIso,
-    lastUpdated: changed ? nowIso : prevMeta?.lastUpdated ?? nowIso,
-    source: SRC_URL,
-    sourceName: fixturesUrl
-      ? 'upbound-web (base) + worldcup26.ir (results)'
-      : 'upbound-web/worldcup-live.json',
-    counts: {
-      matches: matches.length,
-      teams: teams.length,
-      groups: Object.keys(groups).length,
-      finished: finishedCount,
-      overlaid,
-    },
-  };
-  // meta always reflects lastFetchAt, so write it directly.
-  await writeFile(join(DATA_DIR, 'meta.json'), JSON.stringify(meta, null, 2) + '\n', 'utf8');
+
+  // meta.json is data too: only rewrite it when the dataset actually changed,
+  // so an unchanged run leaves public/data pristine and the Action commits
+  // nothing. `lastUpdated` doubles as the client's cache-bust token. Counts
+  // derive from the data files, so `changed` fully captures meta changes.
+  if (changed) {
+    const nowIso = new Date().toISOString();
+    const meta = {
+      lastFetchAt: nowIso,
+      lastUpdated: nowIso,
+      source: SRC_URL,
+      sourceName: fixturesUrl
+        ? 'upbound-web (base) + worldcup26.ir (results)'
+        : 'upbound-web/worldcup-live.json',
+      counts: {
+        matches: matches.length,
+        teams: teams.length,
+        groups: Object.keys(groups).length,
+        finished: finishedCount,
+        overlaid,
+      },
+    };
+    await writeFile(join(DATA_DIR, 'meta.json'), JSON.stringify(meta, null, 2) + '\n', 'utf8');
+  }
 
   console.log(
     `✓ Done. ${matches.length} matches, ${teams.length} teams, ${finishedCount} finished. ` +
