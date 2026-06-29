@@ -51,6 +51,11 @@ started match is still unsynced (not yet marked `finished` in our published
 data). **Between matches — everything synced, next kickoff still far off — the
 Action is not triggered at all** (logged as `cron: skipped dispatch …`).
 
+A **heartbeat safety net** still fires one dispatch every `HEARTBEAT_MIN`
+(default **60**) even while idle, so schedule-only changes outside any match
+window (a rescheduled venue/kickoff) are eventually picked up. Any active
+dispatch resets the heartbeat clock (tracked in KV as `cron:lastDispatch`).
+
 Needs one secret — a GitHub PAT with **Actions: read and write** on the repo:
 
 ```bash

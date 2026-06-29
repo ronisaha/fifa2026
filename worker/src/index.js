@@ -42,6 +42,7 @@ const DEFAULTS = {
   DISPATCH_PRE_MIN: 10, // begin dispatching this long before kickoff
   DISPATCH_POST_MIN: 150, // ...through this long after (final result lands here)
   DISPATCH_PENDING_MIN: 360, // keep retrying an unsynced result up to this long after KO
+  HEARTBEAT_MIN: 60, // safety net: dispatch at least this often even when idle
 };
 
 const num = (v, fallback) => (Number.isFinite(Number(v)) ? Number(v) : fallback);
@@ -274,15 +275,17 @@ async function serve(request, env, ctx, opts) {
 // so we POST workflow_dispatch on Cloudflare's own cron instead — Cloudflare
 // honours the interval precisely. A schedule gate (shouldDispatch) skips ticks
 // when nothing could have changed — i.e. between matches, once all results are
-// synced — so the Action only runs around fixtures.
+// synced — so the Action only runs around fixtures. A low-frequency heartbeat
+// (HEARTBEAT_MIN) still dispatches at least once per interval even when idle, so
+// schedule-only changes outside any match window are eventually picked up.
 // Requires GH_DISPATCH_TOKEN (a PAT with Actions: read+write on the repo).
 // ---------------------------------------------------------------------------
-async function dispatchDataRefresh(env) {
+async function dispatchDataRefresh(env, reason) {
   const repo = env.GH_REPO;
   const token = env.GH_DISPATCH_TOKEN;
   if (!repo || !token) {
     console.log('cron: skipped (GH_REPO or GH_DISPATCH_TOKEN not set)');
-    return;
+    return false;
   }
   const workflow = env.GH_WORKFLOW || 'update-data.yml';
   const ref = env.GH_REF || 'main';
@@ -301,24 +304,46 @@ async function dispatchDataRefresh(env) {
     });
     // GitHub returns 204 No Content on success.
     if (r.status === 204) {
-      console.log(`cron: dispatched ${workflow}@${ref}`);
-    } else {
-      console.log(`cron: dispatch failed ${r.status} ${await r.text()}`);
+      console.log(`cron: dispatched ${workflow}@${ref} (${reason})`);
+      return true;
     }
+    console.log(`cron: dispatch failed ${r.status} ${await r.text()}`);
   } catch (err) {
     console.log(`cron: dispatch error ${err}`);
   }
+  return false;
 }
 
 export default {
   async scheduled(event, env, ctx) {
     ctx.waitUntil(
       (async () => {
-        if (!(await shouldDispatch(env, ctx, Date.now()))) {
+        const now = Date.now();
+
+        // Decide whether to fire: an active fixture window, otherwise a
+        // heartbeat if we haven't dispatched in HEARTBEAT_MIN.
+        let reason = (await shouldDispatch(env, ctx, now)) ? 'fixture active' : null;
+        if (!reason) {
+          const heartbeatMs = num(env.HEARTBEAT_MIN, DEFAULTS.HEARTBEAT_MIN) * 60_000;
+          let last = 0;
+          if (env.LIVE_KV) {
+            const raw = await env.LIVE_KV.get('cron:lastDispatch');
+            const t = Number(raw);
+            if (Number.isFinite(t)) last = t;
+          }
+          if (now - last >= heartbeatMs) reason = 'heartbeat';
+        }
+
+        if (!reason) {
           console.log('cron: skipped dispatch (no active fixture; data already synced)');
           return;
         }
-        await dispatchDataRefresh(env);
+
+        // Reset the heartbeat clock on any successful dispatch (active or
+        // heartbeat) so the next heartbeat is HEARTBEAT_MIN after this one.
+        if ((await dispatchDataRefresh(env, reason)) && env.LIVE_KV) {
+          ctx.waitUntil(env.LIVE_KV.put('cron:lastDispatch', String(now)));
+        }
       })(),
     );
   },
