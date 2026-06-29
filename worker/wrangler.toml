@@ -47,6 +47,16 @@ SCHEDULE_TTL_S = "1800"
 LIVE_PRE_MIN = "5"
 LIVE_WINDOW_MIN = "150"
 
+# Data-refresh cron gate (shouldDispatch): the cron only fires the update-data
+# Action when a fixture could have changed something — from DISPATCH_PRE_MIN
+# before kickoff to DISPATCH_POST_MIN after, plus a catch-up up to
+# DISPATCH_PENDING_MIN after KO while a started match is still not marked
+# finished in our published data (i.e. its result hasn't synced yet). Between
+# matches, when everything is synced, the Action is not triggered at all.
+DISPATCH_PRE_MIN = "10"
+DISPATCH_POST_MIN = "150"
+DISPATCH_PENDING_MIN = "360"
+
 # /fixtures is plan-blocked on the free tier (season not accessible), so the
 # results overlay is OFF (LIVE_FIXTURES_URL is not set in the Action). These
 # caps just bound the endpoint if it's ever called.

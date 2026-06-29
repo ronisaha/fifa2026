@@ -38,6 +38,10 @@ const DEFAULTS = {
   SCHEDULE_TTL_S: 1800, // re-pull the schedule at most this often
   LIVE_PRE_MIN: 5, // start allowing live calls this long before kickoff
   LIVE_WINDOW_MIN: 150, // ...until this long after kickoff (covers ET + stoppage)
+  // Data-refresh cron gate (when to fire the update-data Action).
+  DISPATCH_PRE_MIN: 10, // begin dispatching this long before kickoff
+  DISPATCH_POST_MIN: 150, // ...through this long after (final result lands here)
+  DISPATCH_PENDING_MIN: 360, // keep retrying an unsynced result up to this long after KO
 };
 
 const num = (v, fallback) => (Number.isFinite(Number(v)) ? Number(v) : fallback);
@@ -78,13 +82,14 @@ function slimFixtures(data, leagueId) {
 }
 
 // ---------------------------------------------------------------------------
-// Schedule gate: is any WC fixture in its live window right now? Uses the
-// site's own published matches.json (free, GitHub Pages), cached in KV so we
-// don't re-fetch/parse it on every request. Fails OPEN only when we have never
-// managed to load a schedule (so a transient Pages hiccup can't kill live
-// scores); a stale cached schedule is good enough — kickoff times don't move.
+// Schedule gate: read the site's own published matches.json (free, GitHub
+// Pages) and cache it in KV so we don't re-fetch/parse on every request. Each
+// fixture is reduced to { k: kickoffMs, finished }. Fails OPEN only when we
+// have never managed to load a schedule (so a transient Pages hiccup can't kill
+// live scores or freeze the data cron); a stale cached schedule is fine —
+// kickoff times don't move, and `finished` self-heals on the next re-pull.
 // ---------------------------------------------------------------------------
-async function getScheduleKickoffs(env, ctx, now) {
+async function getScheduleFixtures(env, ctx, now) {
   const ttlMs = num(env.SCHEDULE_TTL_S, DEFAULTS.SCHEDULE_TTL_S) * 1000;
 
   let sched = null;
@@ -94,7 +99,10 @@ async function getScheduleKickoffs(env, ctx, now) {
       try { sched = JSON.parse(raw); } catch { sched = null; }
     }
   }
-  if (sched && now - sched.fetchedAt < ttlMs) return sched.kickoffs;
+  // Reuse cache only if it's fresh AND in the current { fixtures } shape.
+  if (sched && Array.isArray(sched.fixtures) && now - sched.fetchedAt < ttlMs) {
+    return sched.fixtures;
+  }
 
   const url = env.SCHEDULE_URL || DEFAULTS.SCHEDULE_URL;
   try {
@@ -104,25 +112,46 @@ async function getScheduleKickoffs(env, ctx, now) {
     });
     if (r.ok) {
       const arr = await r.json();
-      const kickoffs = (Array.isArray(arr) ? arr : [])
-        .map((m) => (m && m.kickoff ? Date.parse(m.kickoff) : NaN))
-        .filter((t) => Number.isFinite(t));
-      const next = { fetchedAt: now, kickoffs };
+      const fixtures = (Array.isArray(arr) ? arr : [])
+        .map((m) => ({ k: m && m.kickoff ? Date.parse(m.kickoff) : NaN, finished: !!(m && m.finished) }))
+        .filter((f) => Number.isFinite(f.k));
+      const next = { fetchedAt: now, fixtures };
       if (env.LIVE_KV) ctx.waitUntil(env.LIVE_KV.put('schedule:state', JSON.stringify(next)));
-      return kickoffs;
+      return fixtures;
     }
   } catch {
     /* fall through to stale */
   }
-  return sched ? sched.kickoffs : null; // null => unknown => caller fails open
+  return sched && Array.isArray(sched.fixtures) ? sched.fixtures : null; // null => unknown => fail open
 }
 
 async function anyFixtureLive(env, ctx, now) {
-  const kickoffs = await getScheduleKickoffs(env, ctx, now);
-  if (!kickoffs) return true; // unknown schedule: allow the call (fail open)
+  const fixtures = await getScheduleFixtures(env, ctx, now);
+  if (!fixtures) return true; // unknown schedule: allow the call (fail open)
   const pre = num(env.LIVE_PRE_MIN, DEFAULTS.LIVE_PRE_MIN) * 60_000;
   const win = num(env.LIVE_WINDOW_MIN, DEFAULTS.LIVE_WINDOW_MIN) * 60_000;
-  return kickoffs.some((k) => now >= k - pre && now < k + win);
+  return fixtures.some(({ k }) => now >= k - pre && now < k + win);
+}
+
+// Should the data-refresh cron dispatch now? Only when something could have
+// changed since the last sync, i.e. some fixture is:
+//   * in its active window  [kickoff - pre, kickoff + post]  (kickoff status +
+//     final result land here), or
+//   * started but still NOT marked finished in our published data — keep
+//     dispatching until the result syncs from upstream, bounded by a catch-up
+//     window so a never-settling fixture can't loop forever.
+// Between matches (everything synced, next kickoff still far off) this is false,
+// so the Action isn't triggered at all. Fails OPEN if the schedule is unknown.
+async function shouldDispatch(env, ctx, now) {
+  const fixtures = await getScheduleFixtures(env, ctx, now);
+  if (!fixtures) return true; // unknown schedule: dispatch (fail open)
+  const pre = num(env.DISPATCH_PRE_MIN, DEFAULTS.DISPATCH_PRE_MIN) * 60_000;
+  const post = num(env.DISPATCH_POST_MIN, DEFAULTS.DISPATCH_POST_MIN) * 60_000;
+  const pending = num(env.DISPATCH_PENDING_MIN, DEFAULTS.DISPATCH_PENDING_MIN) * 60_000;
+  return fixtures.some(({ k, finished }) => {
+    if (now >= k - pre && now < k + post) return true; // active window
+    return now >= k && !finished && now < k + pending; // result overdue, not yet synced
+  });
 }
 
 /**
@@ -243,8 +272,9 @@ async function serve(request, env, ctx, opts) {
 //
 // GitHub throttles `schedule:` crons heavily (a */10 cron really fires ~hourly),
 // so we POST workflow_dispatch on Cloudflare's own cron instead — Cloudflare
-// honours the interval precisely. The Action's fetch script self-skips when no
-// match has started/ended, so frequent dispatches are cheap no-ops.
+// honours the interval precisely. A schedule gate (shouldDispatch) skips ticks
+// when nothing could have changed — i.e. between matches, once all results are
+// synced — so the Action only runs around fixtures.
 // Requires GH_DISPATCH_TOKEN (a PAT with Actions: read+write on the repo).
 // ---------------------------------------------------------------------------
 async function dispatchDataRefresh(env) {
@@ -282,7 +312,15 @@ async function dispatchDataRefresh(env) {
 
 export default {
   async scheduled(event, env, ctx) {
-    ctx.waitUntil(dispatchDataRefresh(env));
+    ctx.waitUntil(
+      (async () => {
+        if (!(await shouldDispatch(env, ctx, Date.now()))) {
+          console.log('cron: skipped dispatch (no active fixture; data already synced)');
+          return;
+        }
+        await dispatchDataRefresh(env);
+      })(),
+    );
   },
 
   async fetch(request, env, ctx) {

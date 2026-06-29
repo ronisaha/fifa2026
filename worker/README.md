@@ -41,11 +41,15 @@ isn't CORS-enabled, so the static browser app can't call it directly.
 ## Cron: driving the data-refresh Action
 
 GitHub throttles `schedule:` crons heavily — a `*/10` cron in
-`update-data.yml` actually fires only ~once an hour. So the Worker also runs a
+`update-data.yml` actually fires only ~once an hour. So the Worker runs a
 **Cloudflare cron** (`*/10 * * * *`, honoured precisely) that POSTs
-`workflow_dispatch` to the Action on each tick. The Action's fetch script
-self-skips when no match has started/ended, so frequent dispatches are cheap
-no-ops; the GitHub `schedule:` block stays as a fallback if the Worker is down.
+`workflow_dispatch` to the Action — but only when data could actually have
+changed. A schedule gate (`shouldDispatch`, sharing the cached `matches.json`)
+fires the Action from `DISPATCH_PRE_MIN` before a kickoff to `DISPATCH_POST_MIN`
+after, and keeps retrying up to `DISPATCH_PENDING_MIN` after kickoff while a
+started match is still unsynced (not yet marked `finished` in our published
+data). **Between matches — everything synced, next kickoff still far off — the
+Action is not triggered at all** (logged as `cron: skipped dispatch …`).
 
 Needs one secret — a GitHub PAT with **Actions: read and write** on the repo:
 
