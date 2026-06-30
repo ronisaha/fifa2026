@@ -124,8 +124,17 @@
       "team2Flag": "🇸🇪",
       "team1Slug": "france",
       "team2Slug": "sweden",
-      "finished": false,
-      "score": null
+      "finished": true,
+      "score": {
+        "ft": [
+          3,
+          0
+        ],
+        "ht": [
+          1,
+          0
+        ]
+      }
     },
     {
       "num": 78,
@@ -310,11 +319,11 @@
       "localTime": "17:00 UTC-4",
       "venue": "Philadelphia",
       "team1": "Paraguay",
-      "team2": "W77",
+      "team2": "France",
       "team1Flag": "🇵🇾",
-      "team2Flag": "",
+      "team2Flag": "🇫🇷",
       "team1Slug": "paraguay",
-      "team2Slug": null,
+      "team2Slug": "france",
       "finished": false,
       "score": null
     },
