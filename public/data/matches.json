@@ -3413,10 +3413,33 @@
     "team2Slug": "norway",
     "team1Flag": "🇨🇮",
     "team2Flag": "🇳🇴",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        1,
+        2
+      ],
+      "ht": [
+        0,
+        1
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Amad Diallo",
+        "minute": "74"
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Antonio Nusa",
+        "minute": "39"
+      },
+      {
+        "name": "Erling Haaland",
+        "minute": "86"
+      }
+    ]
   },
   {
     "id": 79,
@@ -3694,11 +3717,11 @@
     "offsetLabel": "UTC-4",
     "venue": "New York/New Jersey (East Rutherford)",
     "team1": "Brazil",
-    "team2": "W78",
+    "team2": "Norway",
     "team1Slug": "brazil",
-    "team2Slug": null,
+    "team2Slug": "norway",
     "team1Flag": "🇧🇷",
-    "team2Flag": "",
+    "team2Flag": "🇳🇴",
     "finished": false,
     "score": null,
     "goals1": [],

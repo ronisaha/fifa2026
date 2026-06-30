@@ -139,8 +139,17 @@
       "team2Flag": "🇳🇴",
       "team1Slug": "ivory-coast",
       "team2Slug": "norway",
-      "finished": false,
-      "score": null
+      "finished": true,
+      "score": {
+        "ft": [
+          1,
+          2
+        ],
+        "ht": [
+          0,
+          1
+        ]
+      }
     },
     {
       "num": 79,
@@ -331,11 +340,11 @@
       "localTime": "16:00 UTC-4",
       "venue": "New York/New Jersey (East Rutherford)",
       "team1": "Brazil",
-      "team2": "W78",
+      "team2": "Norway",
       "team1Flag": "🇧🇷",
-      "team2Flag": "",
+      "team2Flag": "🇳🇴",
       "team1Slug": "brazil",
-      "team2Slug": null,
+      "team2Slug": "norway",
       "finished": false,
       "score": null
     },
