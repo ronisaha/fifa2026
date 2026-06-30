@@ -6,6 +6,8 @@ export interface Goal {
 export interface Score {
   ft: [number, number];
   ht?: [number, number];
+  et?: [number, number]; // extra-time aggregate, knockout ties only
+  p?: [number, number]; // penalty shoot-out, when a tie went to spot-kicks
 }
 
 export type Stage = 'group' | 'knockout';

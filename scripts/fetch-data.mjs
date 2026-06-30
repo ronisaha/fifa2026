@@ -170,7 +170,7 @@ function applyScoreOverlay(rawMatches, apiMatches) {
     const g1 = homeIsTeam1 ? a.goalsHome : a.goalsAway;
     const g2 = homeIsTeam1 ? a.goalsAway : a.goalsHome;
 
-    m.score = { ft: [g1, g2], ht: m.score?.ht };
+    m.score = { ...m.score, ft: [g1, g2] };
     applied++;
   }
   return applied;
@@ -181,6 +181,10 @@ function normalize(raw) {
     const { kickoff, offsetLabel } = toUtcIso(m.date, m.time);
     const ft = m.score?.ft ?? null;
     const ht = m.score?.ht ?? null;
+    // Extra-time aggregate and penalty shoot-out, when a knockout tie needs them.
+    // Kept so a 1-1 FT draw can still resolve a W##/L## slot (and display "pens").
+    const et = m.score?.et ?? null;
+    const pens = m.score?.p ?? null;
     const finished = Array.isArray(ft) && ft.length === 2;
     return {
       id: m.num ?? i + 1,
@@ -200,7 +204,9 @@ function normalize(raw) {
       team1Flag: flagFor(m.team1),
       team2Flag: flagFor(m.team2),
       finished,
-      score: finished ? { ft, ht } : null,
+      score: finished
+        ? { ft, ht, ...(et ? { et } : {}), ...(pens ? { p: pens } : {}) }
+        : null,
       goals1: normalizeGoals(m.goals1),
       goals2: normalizeGoals(m.goals2),
     };
@@ -266,8 +272,16 @@ function resolveKnockoutSlots(matches, standings) {
     if (wl) {
       const src = byNum.get(Number(wl[2]));
       if (!src?.finished || !src.score?.ft) return null;
-      const [g1, g2] = src.score.ft;
-      if (g1 === g2) return null; // penalty shoot-out — winner unknown from score
+      // Decide on the last stage actually played: penalties, else extra time,
+      // else 90'. A draw at the deepest available stage means we have no
+      // shoot-out data yet — leave the slot a placeholder.
+      const sc = src.score;
+      const decisive =
+        Array.isArray(sc.p) && sc.p.length === 2 ? sc.p
+        : Array.isArray(sc.et) && sc.et.length === 2 ? sc.et
+        : sc.ft;
+      const [g1, g2] = decisive;
+      if (g1 === g2) return null;
       const winner = g1 > g2 ? src.team1 : src.team2;
       const loser = g1 > g2 ? src.team2 : src.team1;
       const pick = wl[1] === 'W' ? winner : loser;

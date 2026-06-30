@@ -45,6 +45,14 @@
         "ht": [
           0,
           1
+        ],
+        "et": [
+          1,
+          1
+        ],
+        "p": [
+          3,
+          4
         ]
       }
     },
@@ -69,6 +77,14 @@
         "ht": [
           0,
           0
+        ],
+        "et": [
+          1,
+          1
+        ],
+        "p": [
+          2,
+          3
         ]
       }
     },
@@ -284,11 +300,11 @@
       "kickoff": "2026-07-04T21:00:00.000Z",
       "localTime": "17:00 UTC-4",
       "venue": "Philadelphia",
-      "team1": "W74",
+      "team1": "Paraguay",
       "team2": "W77",
-      "team1Flag": "",
+      "team1Flag": "🇵🇾",
       "team2Flag": "",
-      "team1Slug": null,
+      "team1Slug": "paraguay",
       "team2Slug": null,
       "finished": false,
       "score": null
@@ -300,11 +316,11 @@
       "localTime": "12:00 UTC-5",
       "venue": "Houston",
       "team1": "Canada",
-      "team2": "W75",
+      "team2": "Morocco",
       "team1Flag": "🇨🇦",
-      "team2Flag": "",
+      "team2Flag": "🇲🇦",
       "team1Slug": "canada",
-      "team2Slug": null,
+      "team2Slug": "morocco",
       "finished": false,
       "score": null
     },

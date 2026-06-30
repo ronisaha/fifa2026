@@ -3257,6 +3257,14 @@
       "ht": [
         0,
         1
+      ],
+      "et": [
+        1,
+        1
+      ],
+      "p": [
+        3,
+        4
       ]
     },
     "goals1": [
@@ -3298,6 +3306,14 @@
       "ht": [
         0,
         0
+      ],
+      "et": [
+        1,
+        1
+      ],
+      "p": [
+        2,
+        3
       ]
     },
     "goals1": [
@@ -3633,11 +3649,11 @@
     "localTime": "17:00 UTC-4",
     "offsetLabel": "UTC-4",
     "venue": "Philadelphia",
-    "team1": "W74",
+    "team1": "Paraguay",
     "team2": "W77",
-    "team1Slug": null,
+    "team1Slug": "paraguay",
     "team2Slug": null,
-    "team1Flag": "",
+    "team1Flag": "🇵🇾",
     "team2Flag": "",
     "finished": false,
     "score": null,
@@ -3656,11 +3672,11 @@
     "offsetLabel": "UTC-5",
     "venue": "Houston",
     "team1": "Canada",
-    "team2": "W75",
+    "team2": "Morocco",
     "team1Slug": "canada",
-    "team2Slug": null,
+    "team2Slug": "morocco",
     "team1Flag": "🇨🇦",
-    "team2Flag": "",
+    "team2Flag": "🇲🇦",
     "finished": false,
     "score": null,
     "goals1": [],
