@@ -36,8 +36,17 @@
       "team2Flag": "🇵🇾",
       "team1Slug": "germany",
       "team2Slug": "paraguay",
-      "finished": false,
-      "score": null
+      "finished": true,
+      "score": {
+        "ft": [
+          1,
+          1
+        ],
+        "ht": [
+          0,
+          1
+        ]
+      }
     },
     {
       "num": 75,
@@ -51,8 +60,17 @@
       "team2Flag": "🇲🇦",
       "team1Slug": "netherlands",
       "team2Slug": "morocco",
-      "finished": false,
-      "score": null
+      "finished": true,
+      "score": {
+        "ft": [
+          1,
+          1
+        ],
+        "ht": [
+          0,
+          0
+        ]
+      }
     },
     {
       "num": 76,

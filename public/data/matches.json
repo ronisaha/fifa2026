@@ -3248,10 +3248,29 @@
     "team2Slug": "paraguay",
     "team1Flag": "🇩🇪",
     "team2Flag": "🇵🇾",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        1,
+        1
+      ],
+      "ht": [
+        0,
+        1
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Kai Havertz",
+        "minute": "54"
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Julio Enciso",
+        "minute": "42"
+      }
+    ]
   },
   {
     "id": 75,
@@ -3270,10 +3289,29 @@
     "team2Slug": "morocco",
     "team1Flag": "🇳🇱",
     "team2Flag": "🇲🇦",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        1,
+        1
+      ],
+      "ht": [
+        0,
+        0
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Cody Gakpo",
+        "minute": "72"
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Issa Diop",
+        "minute": "90"
+      }
+    ]
   },
   {
     "id": 76,
