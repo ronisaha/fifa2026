@@ -16,12 +16,14 @@ function TieTeam({
   flag,
   slug,
   goals,
+  pens,
   winner,
 }: {
   name: string;
   flag: string;
   slug: string | null;
   goals: number | null;
+  pens: number | null;
   winner: boolean;
 }) {
   const inner = (
@@ -42,8 +44,9 @@ function TieTeam({
         inner
       )}
       {goals !== null && (
-        <span className={`tabular-nums ${winner ? 'font-bold text-white' : 'text-slate-400'}`}>
-          {goals}
+        <span className="flex items-baseline gap-1 tabular-nums">
+          {pens !== null && <span className="text-[10px] text-slate-500">({pens})</span>}
+          <span className={winner ? 'font-bold text-white' : 'text-slate-400'}>{goals}</span>
         </span>
       )}
     </div>
@@ -52,18 +55,26 @@ function TieTeam({
 
 function Tie({ tie }: { tie: BracketTie }) {
   const { tz } = useTz();
-  const ft = tie.score?.ft ?? null;
+  const sc = tie.score;
+  const ft = sc?.ft ?? null;
   const g1 = ft ? ft[0] : null;
   const g2 = ft ? ft[1] : null;
+  // Decide the winner on the deepest stage played: penalties, else extra time,
+  // else 90'. (A knockout draw at 90' was settled by ET/pens.)
+  const decided = sc ? (sc.p ?? sc.et ?? sc.ft) : null;
+  const win1 = decided != null && decided[0] > decided[1];
+  const win2 = decided != null && decided[1] > decided[0];
+  const pens = sc?.p ?? null;
+  const status = pens ? 'pens' : sc?.et ? 'AET' : 'FT';
   return (
     <div className="card w-52 overflow-hidden">
       <div className="flex items-center justify-between border-b border-slate-800 bg-slate-900/80 px-2 py-1 text-[10px] text-slate-500">
         <span>Match {tie.num}</span>
-        <span>{tie.finished ? 'FT' : formatKickoff(tie.kickoff, tz, { withDate: true })}</span>
+        <span>{tie.finished ? status : formatKickoff(tie.kickoff, tz, { withDate: true })}</span>
       </div>
       <div className="divide-y divide-slate-800/60">
-        <TieTeam name={tie.team1} flag={tie.team1Flag} slug={tie.team1Slug} goals={g1} winner={ft != null && g1! > g2!} />
-        <TieTeam name={tie.team2} flag={tie.team2Flag} slug={tie.team2Slug} goals={g2} winner={ft != null && g2! > g1!} />
+        <TieTeam name={tie.team1} flag={tie.team1Flag} slug={tie.team1Slug} goals={g1} pens={pens ? pens[0] : null} winner={win1} />
+        <TieTeam name={tie.team2} flag={tie.team2Flag} slug={tie.team2Slug} goals={g2} pens={pens ? pens[1] : null} winner={win2} />
       </div>
     </div>
   );
