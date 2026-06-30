@@ -10,12 +10,14 @@ function TeamRow({
   flag,
   slug,
   goals,
+  pens,
   winner,
 }: {
   name: string;
   flag: string;
   slug: string | null;
   goals: number | null;
+  pens: number | null;
   winner: boolean;
 }) {
   const label = (
@@ -34,8 +36,9 @@ function TeamRow({
         <span className="truncate text-slate-400">{label}</span>
       )}
       {goals !== null && (
-        <span className={`tabular-nums ${winner ? 'font-bold text-white' : 'text-slate-300'}`}>
-          {goals}
+        <span className="flex items-baseline gap-1.5 tabular-nums">
+          {pens !== null && <span className="text-xs text-slate-500">({pens})</span>}
+          <span className={winner ? 'font-bold text-white' : 'text-slate-300'}>{goals}</span>
         </span>
       )}
     </div>
@@ -56,6 +59,11 @@ export default function MatchCard({ match }: { match: Match }) {
   const g2 = score ? score[1] : null;
   // Only highlight a leader for a decided/final result, not mid-match.
   const decided = match.finished && !isLive;
+  // A shoot-out / extra-time decider only exists on a finished static result.
+  const sc = decided ? match.score : null;
+  const pens = sc?.p ?? null;
+  // Settle the winner on the deepest stage played: pens > ET > 90'.
+  const decider = sc ? (sc.p ?? sc.et ?? sc.ft) : null;
 
   return (
     <div className={`card p-4 ${isLive ? 'ring-1 ring-red-500/40' : ''}`}>
@@ -68,7 +76,9 @@ export default function MatchCard({ match }: { match: Match }) {
               {liveMatch!.elapsed != null ? `${liveMatch!.elapsed}'` : 'LIVE'}
             </span>
           ) : match.finished ? (
-            <span className="rounded bg-slate-800 px-1.5 py-0.5 font-medium text-pitch-400">FT</span>
+            <span className="rounded bg-slate-800 px-1.5 py-0.5 font-medium text-pitch-400">
+              {pens ? 'pens' : match.score?.et ? 'AET' : 'FT'}
+            </span>
           ) : (
             <span>{formatKickoff(match.kickoff, tz, { withDate: true })}</span>
           )}
@@ -81,14 +91,16 @@ export default function MatchCard({ match }: { match: Match }) {
           flag={match.team1Flag}
           slug={match.team1Slug}
           goals={g1}
-          winner={decided && g1! > g2!}
+          pens={pens ? pens[0] : null}
+          winner={decider != null ? decider[0] > decider[1] : decided && g1! > g2!}
         />
         <TeamRow
           name={match.team2}
           flag={match.team2Flag}
           slug={match.team2Slug}
           goals={g2}
-          winner={decided && g2! > g1!}
+          pens={pens ? pens[1] : null}
+          winner={decider != null ? decider[1] > decider[0] : decided && g2! > g1!}
         />
       </div>
 
