@@ -3480,9 +3480,27 @@
     "team2Slug": "ecuador",
     "team1Flag": "🇲🇽",
     "team2Flag": "🇪🇨",
-    "finished": false,
-    "score": null,
-    "goals1": [],
+    "finished": true,
+    "score": {
+      "ft": [
+        2,
+        0
+      ],
+      "ht": [
+        2,
+        0
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Julián Quiñones",
+        "minute": "22"
+      },
+      {
+        "name": "Raúl Jiménez",
+        "minute": "31"
+      }
+    ],
     "goals2": []
   },
   {
@@ -3760,11 +3778,11 @@
     "localTime": "18:00 UTC-6",
     "offsetLabel": "UTC-6",
     "venue": "Mexico City",
-    "team1": "W79",
+    "team1": "Mexico",
     "team2": "W80",
-    "team1Slug": null,
+    "team1Slug": "mexico",
     "team2Slug": null,
-    "team1Flag": "",
+    "team1Flag": "🇲🇽",
     "team2Flag": "",
     "finished": false,
     "score": null,

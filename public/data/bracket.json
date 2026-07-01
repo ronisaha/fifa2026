@@ -172,8 +172,17 @@
       "team2Flag": "🇪🇨",
       "team1Slug": "mexico",
       "team2Slug": "ecuador",
-      "finished": false,
-      "score": null
+      "finished": true,
+      "score": {
+        "ft": [
+          2,
+          0
+        ],
+        "ht": [
+          2,
+          0
+        ]
+      }
     },
     {
       "num": 80,
@@ -363,11 +372,11 @@
       "kickoff": "2026-07-06T00:00:00.000Z",
       "localTime": "18:00 UTC-6",
       "venue": "Mexico City",
-      "team1": "W79",
+      "team1": "Mexico",
       "team2": "W80",
-      "team1Flag": "",
+      "team1Flag": "🇲🇽",
       "team2Flag": "",
-      "team1Slug": null,
+      "team1Slug": "mexico",
       "team2Slug": null,
       "finished": false,
       "score": null
