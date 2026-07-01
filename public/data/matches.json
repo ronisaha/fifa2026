@@ -3587,10 +3587,45 @@
     "team2Slug": "senegal",
     "team1Flag": "🇧🇪",
     "team2Flag": "🇸🇳",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        2,
+        2
+      ],
+      "ht": [
+        0,
+        1
+      ],
+      "et": [
+        3,
+        2
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Romelu Lukaku",
+        "minute": "86"
+      },
+      {
+        "name": "Youri Tielemans",
+        "minute": "89"
+      },
+      {
+        "name": "Youri Tielemans",
+        "minute": "120"
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Habib Diarra",
+        "minute": "25"
+      },
+      {
+        "name": "Ismaïla Sarr",
+        "minute": "51"
+      }
+    ]
   },
   {
     "id": 83,
@@ -3846,11 +3881,11 @@
     "offsetLabel": "UTC-7",
     "venue": "Seattle",
     "team1": "W81",
-    "team2": "W82",
+    "team2": "Belgium",
     "team1Slug": null,
-    "team2Slug": null,
+    "team2Slug": "belgium",
     "team1Flag": "",
-    "team2Flag": "",
+    "team2Flag": "🇧🇪",
     "finished": false,
     "score": null,
     "goals1": [],
