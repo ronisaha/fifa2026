@@ -3520,10 +3520,33 @@
     "team2Slug": "dr-congo",
     "team1Flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
     "team2Flag": "🇨🇩",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        2,
+        1
+      ],
+      "ht": [
+        0,
+        1
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Harry Kane",
+        "minute": "75"
+      },
+      {
+        "name": "Harry Kane",
+        "minute": "86"
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Brian Cipenga",
+        "minute": "7"
+      }
+    ]
   },
   {
     "id": 81,
@@ -3779,11 +3802,11 @@
     "offsetLabel": "UTC-6",
     "venue": "Mexico City",
     "team1": "Mexico",
-    "team2": "W80",
+    "team2": "England",
     "team1Slug": "mexico",
-    "team2Slug": null,
+    "team2Slug": "england",
     "team1Flag": "🇲🇽",
-    "team2Flag": "",
+    "team2Flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
     "finished": false,
     "score": null,
     "goals1": [],
