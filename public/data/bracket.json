@@ -220,8 +220,17 @@
       "team2Flag": "🇧🇦",
       "team1Slug": "usa",
       "team2Slug": "bosnia-and-herzegovina",
-      "finished": false,
-      "score": null
+      "finished": true,
+      "score": {
+        "ft": [
+          2,
+          0
+        ],
+        "ht": [
+          1,
+          0
+        ]
+      }
     },
     {
       "num": 82,
@@ -424,11 +433,11 @@
       "kickoff": "2026-07-07T00:00:00.000Z",
       "localTime": "17:00 UTC-7",
       "venue": "Seattle",
-      "team1": "W81",
+      "team1": "USA",
       "team2": "Belgium",
-      "team1Flag": "",
+      "team1Flag": "🇺🇸",
       "team2Flag": "🇧🇪",
-      "team1Slug": null,
+      "team1Slug": "usa",
       "team2Slug": "belgium",
       "finished": false,
       "score": null

@@ -3565,9 +3565,27 @@
     "team2Slug": "bosnia-and-herzegovina",
     "team1Flag": "🇺🇸",
     "team2Flag": "🇧🇦",
-    "finished": false,
-    "score": null,
-    "goals1": [],
+    "finished": true,
+    "score": {
+      "ft": [
+        2,
+        0
+      ],
+      "ht": [
+        1,
+        0
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Folarin Balogun",
+        "minute": "45"
+      },
+      {
+        "name": "Malik Tillman",
+        "minute": "82"
+      }
+    ],
     "goals2": []
   },
   {
@@ -3880,11 +3898,11 @@
     "localTime": "17:00 UTC-7",
     "offsetLabel": "UTC-7",
     "venue": "Seattle",
-    "team1": "W81",
+    "team1": "USA",
     "team2": "Belgium",
-    "team1Slug": null,
+    "team1Slug": "usa",
     "team2Slug": "belgium",
-    "team1Flag": "",
+    "team1Flag": "🇺🇸",
     "team2Flag": "🇧🇪",
     "finished": false,
     "score": null,
