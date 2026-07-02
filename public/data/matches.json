@@ -3684,9 +3684,31 @@
     "team2Slug": "austria",
     "team1Flag": "🇪🇸",
     "team2Flag": "🇦🇹",
-    "finished": false,
-    "score": null,
-    "goals1": [],
+    "finished": true,
+    "score": {
+      "ft": [
+        3,
+        0
+      ],
+      "ht": [
+        1,
+        0
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Mikel Oyarzabal",
+        "minute": "36"
+      },
+      {
+        "name": "Pedro Porro",
+        "minute": "66"
+      },
+      {
+        "name": "Mikel Oyarzabal",
+        "minute": "89"
+      }
+    ],
     "goals2": []
   },
   {
@@ -3877,11 +3899,11 @@
     "offsetLabel": "UTC-5",
     "venue": "Dallas (Arlington)",
     "team1": "W83",
-    "team2": "W84",
+    "team2": "Spain",
     "team1Slug": null,
-    "team2Slug": null,
+    "team2Slug": "spain",
     "team1Flag": "",
-    "team2Flag": "",
+    "team2Flag": "🇪🇸",
     "finished": false,
     "score": null,
     "goals1": [],
