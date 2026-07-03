@@ -3751,9 +3751,27 @@
     "team2Slug": "algeria",
     "team1Flag": "🇨🇭",
     "team2Flag": "🇩🇿",
-    "finished": false,
-    "score": null,
-    "goals1": [],
+    "finished": true,
+    "score": {
+      "ft": [
+        2,
+        0
+      ],
+      "ht": [
+        1,
+        0
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Breel Embolo",
+        "minute": "10"
+      },
+      {
+        "name": "Dan Ndoye",
+        "minute": "46"
+      }
+    ],
     "goals2": []
   },
   {
@@ -3987,11 +4005,11 @@
     "localTime": "13:00 UTC-7",
     "offsetLabel": "UTC-7",
     "venue": "Vancouver",
-    "team1": "W85",
+    "team1": "Switzerland",
     "team2": "W87",
-    "team1Slug": null,
+    "team1Slug": "switzerland",
     "team2Slug": null,
-    "team1Flag": "",
+    "team1Flag": "🇨🇭",
     "team2Flag": "",
     "finished": false,
     "score": null,

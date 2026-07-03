@@ -320,8 +320,17 @@
       "team2Flag": "🇩🇿",
       "team1Slug": "switzerland",
       "team2Slug": "algeria",
-      "finished": false,
-      "score": null
+      "finished": true,
+      "score": {
+        "ft": [
+          2,
+          0
+        ],
+        "ht": [
+          1,
+          0
+        ]
+      }
     },
     {
       "num": 86,
@@ -481,11 +490,11 @@
       "kickoff": "2026-07-07T20:00:00.000Z",
       "localTime": "13:00 UTC-7",
       "venue": "Vancouver",
-      "team1": "W85",
+      "team1": "Switzerland",
       "team2": "W87",
-      "team1Flag": "",
+      "team1Flag": "🇨🇭",
       "team2Flag": "",
-      "team1Slug": null,
+      "team1Slug": "switzerland",
       "team2Slug": null,
       "finished": false,
       "score": null
