@@ -3835,10 +3835,37 @@
     "team2Slug": "egypt",
     "team1Flag": "🇦🇺",
     "team2Flag": "🇪🇬",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        1,
+        1
+      ],
+      "ht": [
+        0,
+        1
+      ],
+      "et": [
+        1,
+        1
+      ],
+      "p": [
+        2,
+        4
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Mohamed Hany",
+        "minute": "55"
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Emam Ashour",
+        "minute": "13"
+      }
+    ]
   },
   {
     "id": 89,
@@ -3984,11 +4011,11 @@
     "offsetLabel": "UTC-4",
     "venue": "Atlanta",
     "team1": "W86",
-    "team2": "W88",
+    "team2": "Egypt",
     "team1Slug": null,
-    "team2Slug": null,
+    "team2Slug": "egypt",
     "team1Flag": "",
-    "team2Flag": "",
+    "team2Flag": "🇪🇬",
     "finished": false,
     "score": null,
     "goals1": [],
