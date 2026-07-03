@@ -3662,10 +3662,33 @@
     "team2Slug": "croatia",
     "team1Flag": "🇵🇹",
     "team2Flag": "🇭🇷",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        2,
+        1
+      ],
+      "ht": [
+        0,
+        0
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Cristiano Ronaldo",
+        "minute": "68"
+      },
+      {
+        "name": "Gonçalo Ramos",
+        "minute": "90"
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Ivan Perisic",
+        "minute": "53"
+      }
+    ]
   },
   {
     "id": 84,
@@ -3898,11 +3921,11 @@
     "localTime": "14:00 UTC-5",
     "offsetLabel": "UTC-5",
     "venue": "Dallas (Arlington)",
-    "team1": "W83",
+    "team1": "Portugal",
     "team2": "Spain",
-    "team1Slug": null,
+    "team1Slug": "portugal",
     "team2Slug": "spain",
-    "team1Flag": "",
+    "team1Flag": "🇵🇹",
     "team2Flag": "🇪🇸",
     "finished": false,
     "score": null,
