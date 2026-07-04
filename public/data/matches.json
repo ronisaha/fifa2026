@@ -3791,10 +3791,45 @@
     "team2Slug": "cape-verde",
     "team1Flag": "🇦🇷",
     "team2Flag": "🇨🇻",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        1,
+        1
+      ],
+      "ht": [
+        1,
+        0
+      ],
+      "et": [
+        3,
+        2
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Lionel Messi",
+        "minute": "29"
+      },
+      {
+        "name": "Lisandro Martínez",
+        "minute": "92"
+      },
+      {
+        "name": "Diney Borges",
+        "minute": "111"
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Deroy Duarte",
+        "minute": "59"
+      },
+      {
+        "name": "Sidny Lopes Cabral",
+        "minute": "103"
+      }
+    ]
   },
   {
     "id": 87,
@@ -4010,11 +4045,11 @@
     "localTime": "12:00 UTC-4",
     "offsetLabel": "UTC-4",
     "venue": "Atlanta",
-    "team1": "W86",
+    "team1": "Argentina",
     "team2": "Egypt",
-    "team1Slug": null,
+    "team1Slug": "argentina",
     "team2Slug": "egypt",
-    "team1Flag": "",
+    "team1Flag": "🇦🇷",
     "team2Flag": "🇪🇬",
     "finished": false,
     "score": null,

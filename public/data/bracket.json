@@ -344,8 +344,21 @@
       "team2Flag": "🇨🇻",
       "team1Slug": "argentina",
       "team2Slug": "cape-verde",
-      "finished": false,
-      "score": null
+      "finished": true,
+      "score": {
+        "ft": [
+          1,
+          1
+        ],
+        "ht": [
+          1,
+          0
+        ],
+        "et": [
+          3,
+          2
+        ]
+      }
     },
     {
       "num": 87,
@@ -492,11 +505,11 @@
       "kickoff": "2026-07-07T16:00:00.000Z",
       "localTime": "12:00 UTC-4",
       "venue": "Atlanta",
-      "team1": "W86",
+      "team1": "Argentina",
       "team2": "Egypt",
-      "team1Flag": "",
+      "team1Flag": "🇦🇷",
       "team2Flag": "🇪🇬",
-      "team1Slug": null,
+      "team1Slug": "argentina",
       "team2Slug": "egypt",
       "finished": false,
       "score": null
