@@ -121,7 +121,8 @@
     "goals2": [
       {
         "name": "Teboho Mokoena",
-        "minute": "83"
+        "minute": "83",
+        "penalty": true
       }
     ]
   },
@@ -319,7 +320,8 @@
     "goals2": [
       {
         "name": "Breel Embolo",
-        "minute": "17"
+        "minute": "17",
+        "penalty": true
       }
     ]
   },
@@ -362,7 +364,8 @@
       },
       {
         "name": "Granit Xhaka",
-        "minute": "90"
+        "minute": "90",
+        "penalty": true
       },
       {
         "name": "Johan Manzambi",
@@ -423,7 +426,8 @@
       },
       {
         "name": "Mohamed Manai",
-        "minute": "75"
+        "minute": "75",
+        "owngoal": true
       },
       {
         "name": "Jonathan David",
@@ -512,7 +516,8 @@
       },
       {
         "name": "Mahmoud Abunada",
-        "minute": "34"
+        "minute": "34",
+        "owngoal": true
       },
       {
         "name": "Ermin Mahmic",
@@ -776,7 +781,8 @@
     "goals2": [
       {
         "name": "Yassine Bounou",
-        "minute": "10"
+        "minute": "10",
+        "owngoal": true
       },
       {
         "name": "Wilson Isidor",
@@ -815,7 +821,8 @@
     "goals1": [
       {
         "name": "Damián Bobadilla",
-        "minute": "7"
+        "minute": "7",
+        "owngoal": true
       },
       {
         "name": "Folarin Balogun",
@@ -908,7 +915,8 @@
     "goals1": [
       {
         "name": "Cameron Burgess",
-        "minute": "11"
+        "minute": "11",
+        "owngoal": true
       },
       {
         "name": "Alex Freeman",
@@ -1076,7 +1084,8 @@
       },
       {
         "name": "Kai Havertz",
-        "minute": "45"
+        "minute": "45",
+        "penalty": true
       },
       {
         "name": "Jamal Musiala",
@@ -1588,7 +1597,8 @@
     "goals2": [
       {
         "name": "Ellyes Skhiri",
-        "minute": "3"
+        "minute": "3",
+        "owngoal": true
       },
       {
         "name": "Brian Brobbey",
@@ -1631,7 +1641,8 @@
     "goals1": [
       {
         "name": "Mohamed Hany",
-        "minute": "66"
+        "minute": "66",
+        "owngoal": true
       }
     ],
     "goals2": [
@@ -1983,7 +1994,8 @@
       },
       {
         "name": "Hassan Al-Tambakti",
-        "minute": "49"
+        "minute": "49",
+        "owngoal": true
       }
     ],
     "goals2": []
@@ -2202,7 +2214,8 @@
       },
       {
         "name": "Aymen Hussein",
-        "minute": "90"
+        "minute": "90",
+        "owngoal": true
       }
     ]
   },
@@ -2487,11 +2500,13 @@
       },
       {
         "name": "Yazan Al-Arab",
-        "minute": "76"
+        "minute": "76",
+        "owngoal": true
       },
       {
         "name": "Marko Arnautovic",
-        "minute": "90"
+        "minute": "90",
+        "penalty": true
       }
     ],
     "goals2": [
@@ -2684,7 +2699,8 @@
       },
       {
         "name": "Lautaro Martínez",
-        "minute": "31"
+        "minute": "31",
+        "penalty": true
       },
       {
         "name": "Lionel Messi",
@@ -2825,7 +2841,8 @@
       },
       {
         "name": "Abduvohid Nematov",
-        "minute": "60"
+        "minute": "60",
+        "owngoal": true
       },
       {
         "name": "Rafael Leão",
@@ -2932,7 +2949,8 @@
     "goals1": [
       {
         "name": "Yoane Wissa",
-        "minute": "68"
+        "minute": "68",
+        "penalty": true
       },
       {
         "name": "Fiston Mayele",
@@ -2981,7 +2999,8 @@
     "goals1": [
       {
         "name": "Harry Kane",
-        "minute": "12"
+        "minute": "12",
+        "penalty": true
       },
       {
         "name": "Harry Kane",
@@ -3631,7 +3650,8 @@
       },
       {
         "name": "Youri Tielemans",
-        "minute": "120"
+        "minute": "120",
+        "penalty": true
       }
     ],
     "goals2": [
@@ -3676,7 +3696,8 @@
     "goals1": [
       {
         "name": "Cristiano Ronaldo",
-        "minute": "68"
+        "minute": "68",
+        "penalty": true
       },
       {
         "name": "Gonçalo Ramos",
@@ -3817,7 +3838,8 @@
       },
       {
         "name": "Diney Borges",
-        "minute": "111"
+        "minute": "111",
+        "owngoal": true
       }
     ],
     "goals2": [
@@ -3906,7 +3928,8 @@
     "goals1": [
       {
         "name": "Mohamed Hany",
-        "minute": "55"
+        "minute": "55",
+        "owngoal": true
       }
     ],
     "goals2": [

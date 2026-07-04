@@ -94,10 +94,17 @@ function toUtcIso(date, time) {
 }
 
 // Goal minute may arrive as a number (upbound-web) or string (openfootball);
-// store it consistently as a string.
+// store it consistently as a string. Keep the penalty/own-goal markers (only
+// when set, to avoid noise) so the Golden Boot board can exclude own goals and
+// flag penalties.
 function normalizeGoals(goals) {
   if (!Array.isArray(goals)) return [];
-  return goals.map((g) => ({ name: g.name, minute: String(g.minute ?? '') }));
+  return goals.map((g) => ({
+    name: g.name,
+    minute: String(g.minute ?? ''),
+    ...(g.penalty ? { penalty: true } : {}),
+    ...(g.owngoal ? { owngoal: true } : {}),
+  }));
 }
 
 // ---------------------------------------------------------------------------

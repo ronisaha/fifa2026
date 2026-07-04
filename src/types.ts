@@ -1,6 +1,8 @@
 export interface Goal {
   name: string;
   minute: string;
+  penalty?: boolean; // scored from the penalty spot (in-play, not a shoot-out)
+  owngoal?: boolean; // own goal — excluded from the scorer's Golden Boot tally
 }
 
 export interface Score {

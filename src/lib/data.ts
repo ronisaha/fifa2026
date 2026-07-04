@@ -32,7 +32,10 @@ function load<T>(file: string): Promise<T> {
   return p;
 }
 
+export type Avatars = Record<string, { photo: string }>;
+
 export const getMatches = () => load<Match[]>('matches.json');
+export const getAvatars = () => load<Avatars>('avatars.json');
 export const getTeams = () => load<Team[]>('teams.json');
 export const getGroups = () => load<Groups>('groups.json');
 export const getStandings = () => load<Standings>('standings.json');

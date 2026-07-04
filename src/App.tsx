@@ -5,6 +5,7 @@ import Schedule from './routes/Schedule';
 import Results from './routes/Results';
 import Standings from './routes/Standings';
 import BracketPage from './routes/BracketPage';
+import GoldenBoot from './routes/GoldenBoot';
 import Team from './routes/Team';
 import NotFound from './routes/NotFound';
 
@@ -13,6 +14,7 @@ const NAV = [
   { to: '/results', label: 'Results', end: false },
   { to: '/standings', label: 'Standings', end: false },
   { to: '/bracket', label: 'Bracket', end: false },
+  { to: '/golden-boot', label: 'Golden Boot', end: false },
 ];
 
 function Footer() {
@@ -80,6 +82,7 @@ export default function App() {
           <Route path="/results" element={<Results />} />
           <Route path="/standings" element={<Standings />} />
           <Route path="/bracket" element={<BracketPage />} />
+          <Route path="/golden-boot" element={<GoldenBoot />} />
           <Route path="/team/:slug" element={<Team />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -39,6 +39,13 @@ jobs:
         # (Live in-match scores still work client-side via the Worker /live.)
         run: node scripts/fetch-data.mjs
 
+      - name: Refresh player avatars
+        # Best-effort: resolves new goal-scorers to freely-licensed Wikimedia
+        # Commons photos (cached in public/data/avatars.json). Reads matches.json,
+        # so it must run after the fetch above. Never fails the run — a Wikipedia
+        # hiccup just leaves the previous avatars in place.
+        run: node scripts/fetch-avatars.mjs || echo "::warning::avatar refresh skipped"
+
       - name: Commit updated data
         id: commit
         run: |
