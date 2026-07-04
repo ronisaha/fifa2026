@@ -430,8 +430,17 @@
       "team2Flag": "🇫🇷",
       "team1Slug": "paraguay",
       "team2Slug": "france",
-      "finished": false,
-      "score": null
+      "finished": true,
+      "score": {
+        "ft": [
+          0,
+          1
+        ],
+        "ht": [
+          0,
+          0
+        ]
+      }
     },
     {
       "num": 90,
@@ -555,11 +564,11 @@
       "kickoff": "2026-07-09T20:00:00.000Z",
       "localTime": "16:00 UTC-4",
       "venue": "Boston (Foxborough)",
-      "team1": "W89",
+      "team1": "France",
       "team2": "Morocco",
-      "team1Flag": "",
+      "team1Flag": "🇫🇷",
       "team2Flag": "🇲🇦",
-      "team1Slug": null,
+      "team1Slug": "france",
       "team2Slug": "morocco",
       "finished": false,
       "score": null

@@ -3956,10 +3956,25 @@
     "team2Slug": "france",
     "team1Flag": "🇵🇾",
     "team2Flag": "🇫🇷",
-    "finished": false,
-    "score": null,
+    "finished": true,
+    "score": {
+      "ft": [
+        0,
+        1
+      ],
+      "ht": [
+        0,
+        0
+      ]
+    },
     "goals1": [],
-    "goals2": []
+    "goals2": [
+      {
+        "name": "Kylian Mbappé",
+        "minute": "70",
+        "penalty": true
+      }
+    ]
   },
   {
     "id": 90,
@@ -4148,11 +4163,11 @@
     "localTime": "16:00 UTC-4",
     "offsetLabel": "UTC-4",
     "venue": "Boston (Foxborough)",
-    "team1": "W89",
+    "team1": "France",
     "team2": "Morocco",
-    "team1Slug": null,
+    "team1Slug": "france",
     "team2Slug": "morocco",
-    "team1Flag": "",
+    "team1Flag": "🇫🇷",
     "team2Flag": "🇲🇦",
     "finished": false,
     "score": null,
