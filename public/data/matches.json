@@ -3978,10 +3978,32 @@
     "team2Slug": "morocco",
     "team1Flag": "🇨🇦",
     "team2Flag": "🇲🇦",
-    "finished": false,
-    "score": null,
+    "finished": true,
+    "score": {
+      "ft": [
+        0,
+        3
+      ],
+      "ht": [
+        0,
+        0
+      ]
+    },
     "goals1": [],
-    "goals2": []
+    "goals2": [
+      {
+        "name": "Azzedine Ounahi",
+        "minute": "50"
+      },
+      {
+        "name": "Azzedine Ounahi",
+        "minute": "82"
+      },
+      {
+        "name": "Soufiane Rahimi",
+        "minute": "90"
+      }
+    ]
   },
   {
     "id": 91,
@@ -4127,11 +4149,11 @@
     "offsetLabel": "UTC-4",
     "venue": "Boston (Foxborough)",
     "team1": "W89",
-    "team2": "W90",
+    "team2": "Morocco",
     "team1Slug": null,
-    "team2Slug": null,
+    "team2Slug": "morocco",
     "team1Flag": "",
-    "team2Flag": "",
+    "team2Flag": "🇲🇦",
     "finished": false,
     "score": null,
     "goals1": [],

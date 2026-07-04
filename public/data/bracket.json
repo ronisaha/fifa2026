@@ -445,8 +445,17 @@
       "team2Flag": "🇲🇦",
       "team1Slug": "canada",
       "team2Slug": "morocco",
-      "finished": false,
-      "score": null
+      "finished": true,
+      "score": {
+        "ft": [
+          0,
+          3
+        ],
+        "ht": [
+          0,
+          0
+        ]
+      }
     },
     {
       "num": 91,
@@ -547,11 +556,11 @@
       "localTime": "16:00 UTC-4",
       "venue": "Boston (Foxborough)",
       "team1": "W89",
-      "team2": "W90",
+      "team2": "Morocco",
       "team1Flag": "",
-      "team2Flag": "",
+      "team2Flag": "🇲🇦",
       "team1Slug": null,
-      "team2Slug": null,
+      "team2Slug": "morocco",
       "finished": false,
       "score": null
     },
