@@ -478,8 +478,17 @@
       "team2Flag": "🇳🇴",
       "team1Slug": "brazil",
       "team2Slug": "norway",
-      "finished": false,
-      "score": null
+      "finished": true,
+      "score": {
+        "ft": [
+          1,
+          2
+        ],
+        "ht": [
+          0,
+          0
+        ]
+      }
     },
     {
       "num": 92,
@@ -594,11 +603,11 @@
       "kickoff": "2026-07-11T21:00:00.000Z",
       "localTime": "17:00 UTC-4",
       "venue": "Miami (Miami Gardens)",
-      "team1": "W91",
+      "team1": "Norway",
       "team2": "W92",
-      "team1Flag": "",
+      "team1Flag": "🇳🇴",
       "team2Flag": "",
-      "team1Slug": null,
+      "team1Slug": "norway",
       "team2Slug": null,
       "finished": false,
       "score": null

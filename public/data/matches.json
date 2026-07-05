@@ -4037,10 +4037,34 @@
     "team2Slug": "norway",
     "team1Flag": "🇧🇷",
     "team2Flag": "🇳🇴",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        1,
+        2
+      ],
+      "ht": [
+        0,
+        0
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Neymar",
+        "minute": "90",
+        "penalty": true
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Erling Haaland",
+        "minute": "79"
+      },
+      {
+        "name": "Erling Haaland",
+        "minute": "90"
+      }
+    ]
   },
   {
     "id": 92,
@@ -4207,11 +4231,11 @@
     "localTime": "17:00 UTC-4",
     "offsetLabel": "UTC-4",
     "venue": "Miami (Miami Gardens)",
-    "team1": "W91",
+    "team1": "Norway",
     "team2": "W92",
-    "team1Slug": null,
+    "team1Slug": "norway",
     "team2Slug": null,
-    "team1Flag": "",
+    "team1Flag": "🇳🇴",
     "team2Flag": "",
     "finished": false,
     "score": null,
