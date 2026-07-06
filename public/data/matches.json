@@ -4138,10 +4138,24 @@
     "team2Slug": "spain",
     "team1Flag": "🇵🇹",
     "team2Flag": "🇪🇸",
-    "finished": false,
-    "score": null,
+    "finished": true,
+    "score": {
+      "ft": [
+        0,
+        1
+      ],
+      "ht": [
+        0,
+        0
+      ]
+    },
     "goals1": [],
-    "goals2": []
+    "goals2": [
+      {
+        "name": "Mikel Merino",
+        "minute": "90"
+      }
+    ]
   },
   {
     "id": 94,
@@ -4242,11 +4256,11 @@
     "localTime": "12:00 UTC-7",
     "offsetLabel": "UTC-7",
     "venue": "Los Angeles (Inglewood)",
-    "team1": "W93",
+    "team1": "Spain",
     "team2": "W94",
-    "team1Slug": null,
+    "team1Slug": "spain",
     "team2Slug": null,
-    "team1Flag": "",
+    "team1Flag": "🇪🇸",
     "team2Flag": "",
     "finished": false,
     "score": null,

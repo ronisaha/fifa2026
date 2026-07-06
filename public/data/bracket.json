@@ -526,8 +526,17 @@
       "team2Flag": "🇪🇸",
       "team1Slug": "portugal",
       "team2Slug": "spain",
-      "finished": false,
-      "score": null
+      "finished": true,
+      "score": {
+        "ft": [
+          0,
+          1
+        ],
+        "ht": [
+          0,
+          0
+        ]
+      }
     },
     {
       "num": 94,
@@ -597,11 +606,11 @@
       "kickoff": "2026-07-10T19:00:00.000Z",
       "localTime": "12:00 UTC-7",
       "venue": "Los Angeles (Inglewood)",
-      "team1": "W93",
+      "team1": "Spain",
       "team2": "W94",
-      "team1Flag": "",
+      "team1Flag": "🇪🇸",
       "team2Flag": "",
-      "team1Slug": null,
+      "team1Slug": "spain",
       "team2Slug": null,
       "finished": false,
       "score": null
