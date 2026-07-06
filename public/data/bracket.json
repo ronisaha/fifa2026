@@ -502,8 +502,17 @@
       "team2Flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
       "team1Slug": "mexico",
       "team2Slug": "england",
-      "finished": false,
-      "score": null
+      "finished": true,
+      "score": {
+        "ft": [
+          2,
+          3
+        ],
+        "ht": [
+          1,
+          2
+        ]
+      }
     },
     {
       "num": 93,
@@ -604,11 +613,11 @@
       "localTime": "17:00 UTC-4",
       "venue": "Miami (Miami Gardens)",
       "team1": "Norway",
-      "team2": "W92",
+      "team2": "England",
       "team1Flag": "🇳🇴",
-      "team2Flag": "",
+      "team2Flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
       "team1Slug": "norway",
-      "team2Slug": null,
+      "team2Slug": "england",
       "finished": false,
       "score": null
     },

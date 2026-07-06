@@ -4083,10 +4083,43 @@
     "team2Slug": "england",
     "team1Flag": "🇲🇽",
     "team2Flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        2,
+        3
+      ],
+      "ht": [
+        1,
+        2
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Julián Quiñones",
+        "minute": "42"
+      },
+      {
+        "name": "Raúl Jiménez",
+        "minute": "69",
+        "penalty": true
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Jude Bellingham",
+        "minute": "36"
+      },
+      {
+        "name": "Jude Bellingham",
+        "minute": "38"
+      },
+      {
+        "name": "Harry Kane",
+        "minute": "60",
+        "penalty": true
+      }
+    ]
   },
   {
     "id": 93,
@@ -4232,11 +4265,11 @@
     "offsetLabel": "UTC-4",
     "venue": "Miami (Miami Gardens)",
     "team1": "Norway",
-    "team2": "W92",
+    "team2": "England",
     "team1Slug": "norway",
-    "team2Slug": null,
+    "team2Slug": "england",
     "team1Flag": "🇳🇴",
-    "team2Flag": "",
+    "team2Flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
     "finished": false,
     "score": null,
     "goals1": [],
