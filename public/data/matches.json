@@ -4174,10 +4174,41 @@
     "team2Slug": "belgium",
     "team1Flag": "🇺🇸",
     "team2Flag": "🇧🇪",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        1,
+        4
+      ],
+      "ht": [
+        1,
+        2
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Malik Tillman",
+        "minute": "31"
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Charles De Ketelaere",
+        "minute": "9"
+      },
+      {
+        "name": "Charles De Ketelaere",
+        "minute": "33"
+      },
+      {
+        "name": "Hans Vanaken",
+        "minute": "57"
+      },
+      {
+        "name": "Romelu Lukaku",
+        "minute": "90"
+      }
+    ]
   },
   {
     "id": 95,
@@ -4257,11 +4288,11 @@
     "offsetLabel": "UTC-7",
     "venue": "Los Angeles (Inglewood)",
     "team1": "Spain",
-    "team2": "W94",
+    "team2": "Belgium",
     "team1Slug": "spain",
-    "team2Slug": null,
+    "team2Slug": "belgium",
     "team1Flag": "🇪🇸",
-    "team2Flag": "",
+    "team2Flag": "🇧🇪",
     "finished": false,
     "score": null,
     "goals1": [],

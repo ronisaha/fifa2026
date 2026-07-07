@@ -550,8 +550,17 @@
       "team2Flag": "🇧🇪",
       "team1Slug": "usa",
       "team2Slug": "belgium",
-      "finished": false,
-      "score": null
+      "finished": true,
+      "score": {
+        "ft": [
+          1,
+          4
+        ],
+        "ht": [
+          1,
+          2
+        ]
+      }
     },
     {
       "num": 95,
@@ -607,11 +616,11 @@
       "localTime": "12:00 UTC-7",
       "venue": "Los Angeles (Inglewood)",
       "team1": "Spain",
-      "team2": "W94",
+      "team2": "Belgium",
       "team1Flag": "🇪🇸",
-      "team2Flag": "",
+      "team2Flag": "🇧🇪",
       "team1Slug": "spain",
-      "team2Slug": null,
+      "team2Slug": "belgium",
       "finished": false,
       "score": null
     },
