@@ -574,8 +574,17 @@
       "team2Flag": "🇪🇬",
       "team1Slug": "argentina",
       "team2Slug": "egypt",
-      "finished": false,
-      "score": null
+      "finished": true,
+      "score": {
+        "ft": [
+          3,
+          2
+        ],
+        "ht": [
+          0,
+          1
+        ]
+      }
     },
     {
       "num": 96,
@@ -645,11 +654,11 @@
       "kickoff": "2026-07-12T01:00:00.000Z",
       "localTime": "20:00 UTC-5",
       "venue": "Kansas City",
-      "team1": "W95",
+      "team1": "Argentina",
       "team2": "W96",
-      "team1Flag": "",
+      "team1Flag": "🇦🇷",
       "team2Flag": "",
-      "team1Slug": null,
+      "team1Slug": "argentina",
       "team2Slug": null,
       "finished": false,
       "score": null

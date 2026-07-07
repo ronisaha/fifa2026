@@ -4227,10 +4227,41 @@
     "team2Slug": "egypt",
     "team1Flag": "🇦🇷",
     "team2Flag": "🇪🇬",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        3,
+        2
+      ],
+      "ht": [
+        0,
+        1
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Cristian Romero",
+        "minute": "79"
+      },
+      {
+        "name": "Lionel Messi",
+        "minute": "83"
+      },
+      {
+        "name": "Enzo Fernández",
+        "minute": "90"
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Yasser Ibrahim",
+        "minute": "15"
+      },
+      {
+        "name": "Mostafa Zico",
+        "minute": "67"
+      }
+    ]
   },
   {
     "id": 96,
@@ -4331,11 +4362,11 @@
     "localTime": "20:00 UTC-5",
     "offsetLabel": "UTC-5",
     "venue": "Kansas City",
-    "team1": "W95",
+    "team1": "Argentina",
     "team2": "W96",
-    "team1Slug": null,
+    "team1Slug": "argentina",
     "team2Slug": null,
-    "team1Flag": "",
+    "team1Flag": "🇦🇷",
     "team2Flag": "",
     "finished": false,
     "score": null,
