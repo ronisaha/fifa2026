@@ -4280,8 +4280,25 @@
     "team2Slug": "colombia",
     "team1Flag": "🇨🇭",
     "team2Flag": "🇨🇴",
-    "finished": false,
-    "score": null,
+    "finished": true,
+    "score": {
+      "ft": [
+        0,
+        0
+      ],
+      "ht": [
+        0,
+        0
+      ],
+      "et": [
+        0,
+        0
+      ],
+      "p": [
+        4,
+        3
+      ]
+    },
     "goals1": [],
     "goals2": []
   },
@@ -4363,11 +4380,11 @@
     "offsetLabel": "UTC-5",
     "venue": "Kansas City",
     "team1": "Argentina",
-    "team2": "W96",
+    "team2": "Switzerland",
     "team1Slug": "argentina",
-    "team2Slug": null,
+    "team2Slug": "switzerland",
     "team1Flag": "🇦🇷",
-    "team2Flag": "",
+    "team2Flag": "🇨🇭",
     "finished": false,
     "score": null,
     "goals1": [],
