@@ -56,9 +56,11 @@ function TieTeam({
 function Tie({ tie }: { tie: BracketTie }) {
   const { tz } = useTz();
   const sc = tie.score;
-  const ft = sc?.ft ?? null;
-  const g1 = ft ? ft[0] : null;
-  const g2 = ft ? ft[1] : null;
+  // Score at the deepest stage played before any shoot-out: ET aggregate if
+  // extra time was played, else 90'. (Shoot-out spot-kicks show as `pens`.)
+  const main = sc?.et ?? sc?.ft ?? null;
+  const g1 = main ? main[0] : null;
+  const g2 = main ? main[1] : null;
   // Decide the winner on the deepest stage played: penalties, else extra time,
   // else 90'. (A knockout draw at 90' was settled by ET/pens.)
   const decided = sc ? (sc.p ?? sc.et ?? sc.ft) : null;

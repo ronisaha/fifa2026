@@ -54,7 +54,10 @@ export default function MatchCard({ match }: { match: Match }) {
   const isLive = liveFt != null;
 
   // Prefer the live score for an in-play match; otherwise the static result.
-  const score = liveFt ?? match.score?.ft ?? null;
+  // For a finished tie, show the score at the deepest stage played before any
+  // shoot-out — the extra-time aggregate if ET was played, else 90'. (Shoot-out
+  // spot-kicks are shown separately as `pens`.)
+  const score = liveFt ?? match.score?.et ?? match.score?.ft ?? null;
   const g1 = score ? score[0] : null;
   const g2 = score ? score[1] : null;
   // Only highlight a leader for a decided/final result, not mid-match.

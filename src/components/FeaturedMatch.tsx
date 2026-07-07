@@ -74,7 +74,9 @@ function useLiveFor(match: Match) {
 function HeroCard({ match, status, live }: { match: Match; status: string; live: LiveMatch | null }) {
   const { tz } = useTz();
   const liveFt = live ? liveGoals(match.team1, live) : null;
-  const goals = liveFt ?? match.score?.ft ?? null;
+  // Show the extra-time aggregate for a finished ET tie (else 90'); a live match
+  // uses the in-play score.
+  const goals = liveFt ?? match.score?.et ?? match.score?.ft ?? null;
   const showScore = goals != null;
 
   return (
