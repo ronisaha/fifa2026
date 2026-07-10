@@ -656,8 +656,17 @@
       "team2Flag": "🇧🇪",
       "team1Slug": "spain",
       "team2Slug": "belgium",
-      "finished": false,
-      "score": null
+      "finished": true,
+      "score": {
+        "ft": [
+          2,
+          1
+        ],
+        "ht": [
+          1,
+          1
+        ]
+      }
     },
     {
       "num": 99,
@@ -698,11 +707,11 @@
       "localTime": "14:00 UTC-5",
       "venue": "Dallas (Arlington)",
       "team1": "France",
-      "team2": "W98",
+      "team2": "Spain",
       "team1Flag": "🇫🇷",
-      "team2Flag": "",
+      "team2Flag": "🇪🇸",
       "team1Slug": "france",
-      "team2Slug": null,
+      "team2Slug": "spain",
       "finished": false,
       "score": null
     },
