@@ -4404,10 +4404,37 @@
     "team2Slug": "england",
     "team1Flag": "🇳🇴",
     "team2Flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        1,
+        1
+      ],
+      "ht": [
+        1,
+        1
+      ],
+      "et": [
+        1,
+        2
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Andreas Schjelderup",
+        "minute": "36"
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Jude Bellingham",
+        "minute": "45"
+      },
+      {
+        "name": "Jude Bellingham",
+        "minute": "93"
+      }
+    ]
   },
   {
     "id": 100,
@@ -4464,11 +4491,11 @@
     "localTime": "15:00 UTC-4",
     "offsetLabel": "UTC-4",
     "venue": "Atlanta",
-    "team1": "W99",
+    "team1": "England",
     "team2": "W100",
-    "team1Slug": null,
+    "team1Slug": "england",
     "team2Slug": null,
-    "team1Flag": "",
+    "team1Flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
     "team2Flag": "",
     "finished": false,
     "score": null,

@@ -680,8 +680,21 @@
       "team2Flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
       "team1Slug": "norway",
       "team2Slug": "england",
-      "finished": false,
-      "score": null
+      "finished": true,
+      "score": {
+        "ft": [
+          1,
+          1
+        ],
+        "ht": [
+          1,
+          1
+        ],
+        "et": [
+          1,
+          2
+        ]
+      }
     },
     {
       "num": 100,
@@ -721,11 +734,11 @@
       "kickoff": "2026-07-15T19:00:00.000Z",
       "localTime": "15:00 UTC-4",
       "venue": "Atlanta",
-      "team1": "W99",
+      "team1": "England",
       "team2": "W100",
-      "team1Flag": "",
+      "team1Flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
       "team2Flag": "",
-      "team1Slug": null,
+      "team1Slug": "england",
       "team2Slug": null,
       "finished": false,
       "score": null
