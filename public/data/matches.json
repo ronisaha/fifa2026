@@ -4453,10 +4453,41 @@
     "team2Slug": "switzerland",
     "team1Flag": "🇦🇷",
     "team2Flag": "🇨🇭",
-    "finished": false,
-    "score": null,
-    "goals1": [],
-    "goals2": []
+    "finished": true,
+    "score": {
+      "ft": [
+        1,
+        1
+      ],
+      "ht": [
+        1,
+        0
+      ],
+      "et": [
+        3,
+        1
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Alexis Mac Allister",
+        "minute": "10"
+      },
+      {
+        "name": "Julián Álvarez",
+        "minute": "112"
+      },
+      {
+        "name": "Lautaro Martínez",
+        "minute": "120"
+      }
+    ],
+    "goals2": [
+      {
+        "name": "Dan Ndoye",
+        "minute": "67"
+      }
+    ]
   },
   {
     "id": 101,
@@ -4492,11 +4523,11 @@
     "offsetLabel": "UTC-4",
     "venue": "Atlanta",
     "team1": "England",
-    "team2": "W100",
+    "team2": "Argentina",
     "team1Slug": "england",
-    "team2Slug": null,
+    "team2Slug": "argentina",
     "team1Flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
-    "team2Flag": "",
+    "team2Flag": "🇦🇷",
     "finished": false,
     "score": null,
     "goals1": [],

@@ -708,8 +708,21 @@
       "team2Flag": "🇨🇭",
       "team1Slug": "argentina",
       "team2Slug": "switzerland",
-      "finished": false,
-      "score": null
+      "finished": true,
+      "score": {
+        "ft": [
+          1,
+          1
+        ],
+        "ht": [
+          1,
+          0
+        ],
+        "et": [
+          3,
+          1
+        ]
+      }
     }
   ],
   "Semi-final": [
@@ -735,11 +748,11 @@
       "localTime": "15:00 UTC-4",
       "venue": "Atlanta",
       "team1": "England",
-      "team2": "W100",
+      "team2": "Argentina",
       "team1Flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
-      "team2Flag": "",
+      "team2Flag": "🇦🇷",
       "team1Slug": "england",
-      "team2Slug": null,
+      "team2Slug": "argentina",
       "finished": false,
       "score": null
     }
