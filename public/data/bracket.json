@@ -738,8 +738,17 @@
       "team2Flag": "🇪🇸",
       "team1Slug": "france",
       "team2Slug": "spain",
-      "finished": false,
-      "score": null
+      "finished": true,
+      "score": {
+        "ft": [
+          0,
+          2
+        ],
+        "ht": [
+          0,
+          1
+        ]
+      }
     },
     {
       "num": 102,
@@ -764,11 +773,11 @@
       "kickoff": "2026-07-18T21:00:00.000Z",
       "localTime": "17:00 UTC-4",
       "venue": "Miami (Miami Gardens)",
-      "team1": "L101",
+      "team1": "France",
       "team2": "L102",
-      "team1Flag": "",
+      "team1Flag": "🇫🇷",
       "team2Flag": "",
-      "team1Slug": null,
+      "team1Slug": "france",
       "team2Slug": null,
       "finished": false,
       "score": null
@@ -781,11 +790,11 @@
       "kickoff": "2026-07-19T19:00:00.000Z",
       "localTime": "15:00 UTC-4",
       "venue": "New York/New Jersey (East Rutherford)",
-      "team1": "W101",
+      "team1": "Spain",
       "team2": "W102",
-      "team1Flag": "",
+      "team1Flag": "🇪🇸",
       "team2Flag": "",
-      "team1Slug": null,
+      "team1Slug": "spain",
       "team2Slug": null,
       "finished": false,
       "score": null

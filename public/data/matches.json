@@ -4506,10 +4506,29 @@
     "team2Slug": "spain",
     "team1Flag": "🇫🇷",
     "team2Flag": "🇪🇸",
-    "finished": false,
-    "score": null,
+    "finished": true,
+    "score": {
+      "ft": [
+        0,
+        2
+      ],
+      "ht": [
+        0,
+        1
+      ]
+    },
     "goals1": [],
-    "goals2": []
+    "goals2": [
+      {
+        "name": "Mikel Oyarzabal",
+        "minute": "22",
+        "penalty": true
+      },
+      {
+        "name": "Pedro Porro",
+        "minute": "58"
+      }
+    ]
   },
   {
     "id": 102,
@@ -4544,11 +4563,11 @@
     "localTime": "17:00 UTC-4",
     "offsetLabel": "UTC-4",
     "venue": "Miami (Miami Gardens)",
-    "team1": "L101",
+    "team1": "France",
     "team2": "L102",
-    "team1Slug": null,
+    "team1Slug": "france",
     "team2Slug": null,
-    "team1Flag": "",
+    "team1Flag": "🇫🇷",
     "team2Flag": "",
     "finished": false,
     "score": null,
@@ -4566,11 +4585,11 @@
     "localTime": "15:00 UTC-4",
     "offsetLabel": "UTC-4",
     "venue": "New York/New Jersey (East Rutherford)",
-    "team1": "W101",
+    "team1": "Spain",
     "team2": "W102",
-    "team1Slug": null,
+    "team1Slug": "spain",
     "team2Slug": null,
-    "team1Flag": "",
+    "team1Flag": "🇪🇸",
     "team2Flag": "",
     "finished": false,
     "score": null,
