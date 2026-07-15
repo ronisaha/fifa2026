@@ -762,8 +762,17 @@
       "team2Flag": "🇦🇷",
       "team1Slug": "england",
       "team2Slug": "argentina",
-      "finished": false,
-      "score": null
+      "finished": true,
+      "score": {
+        "ft": [
+          1,
+          2
+        ],
+        "ht": [
+          0,
+          0
+        ]
+      }
     }
   ],
   "Match for third place": [
@@ -774,11 +783,11 @@
       "localTime": "17:00 UTC-4",
       "venue": "Miami (Miami Gardens)",
       "team1": "France",
-      "team2": "L102",
+      "team2": "England",
       "team1Flag": "🇫🇷",
-      "team2Flag": "",
+      "team2Flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
       "team1Slug": "france",
-      "team2Slug": null,
+      "team2Slug": "england",
       "finished": false,
       "score": null
     }
@@ -791,11 +800,11 @@
       "localTime": "15:00 UTC-4",
       "venue": "New York/New Jersey (East Rutherford)",
       "team1": "Spain",
-      "team2": "W102",
+      "team2": "Argentina",
       "team1Flag": "🇪🇸",
-      "team2Flag": "",
+      "team2Flag": "🇦🇷",
       "team1Slug": "spain",
-      "team2Slug": null,
+      "team2Slug": "argentina",
       "finished": false,
       "score": null
     }
