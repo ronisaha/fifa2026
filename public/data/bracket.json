@@ -788,8 +788,17 @@
       "team2Flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
       "team1Slug": "france",
       "team2Slug": "england",
-      "finished": false,
-      "score": null
+      "finished": true,
+      "score": {
+        "ft": [
+          4,
+          6
+        ],
+        "ht": [
+          0,
+          4
+        ]
+      }
     }
   ],
   "Final": [
