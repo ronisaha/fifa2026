@@ -814,8 +814,21 @@
       "team2Flag": "🇦🇷",
       "team1Slug": "spain",
       "team2Slug": "argentina",
-      "finished": false,
-      "score": null
+      "finished": true,
+      "score": {
+        "ft": [
+          0,
+          0
+        ],
+        "ht": [
+          0,
+          0
+        ],
+        "et": [
+          1,
+          0
+        ]
+      }
     }
   ]
 }

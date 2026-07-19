@@ -4666,9 +4666,27 @@
     "team2Slug": "argentina",
     "team1Flag": "🇪🇸",
     "team2Flag": "🇦🇷",
-    "finished": false,
-    "score": null,
-    "goals1": [],
+    "finished": true,
+    "score": {
+      "ft": [
+        0,
+        0
+      ],
+      "ht": [
+        0,
+        0
+      ],
+      "et": [
+        1,
+        0
+      ]
+    },
+    "goals1": [
+      {
+        "name": "Ferran Torres",
+        "minute": "106"
+      }
+    ],
     "goals2": []
   }
 ]
