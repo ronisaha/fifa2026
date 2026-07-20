@@ -5,13 +5,15 @@ schedule, results, group standings, knockout bracket, per-team pages, and
 timezone-localized kickoff times. Built with **React + Vite + Tailwind** and
 deployed to **GitHub Pages**.
 
-Data is pre-fetched into static JSON by a scheduled GitHub Action — the browser
-only ever reads local files (no API keys, no CORS, no rate limits).
+Data is pre-fetched into static JSON by a GitHub Action — the browser only ever
+reads local files (no API keys, no CORS, no rate limits). The tournament has
+concluded, so the data-refresh Action is now manual-only (`workflow_dispatch`);
+no automatic scheduler runs it.
 
 ## How it works
 
 ```
-upbound-web/worldcup-live.json  ──(hourly Action)──►  scripts/fetch-data.mjs
+upbound-web/worldcup-live.json  ──(manual Action)──►  scripts/fetch-data.mjs
                                                           │ normalize + compute
                                                           ▼
                                             public/data/*.json (committed)
@@ -24,7 +26,7 @@ upbound-web/worldcup-live.json  ──(hourly Action)──►  scripts/fetch-da
 - **Results:** come from the upbound feed (the API-Football season-scoped overlay is disabled — the free plan blocks the 2026 season). The pipeline keeps optional overlay support (`LIVE_FIXTURES_URL`) for a future paid key.
 - **`scripts/fetch-data.mjs`** downloads the upstream JSON, validates it, and emits the app's own schema:
   - `matches.json`, `teams.json`, `groups.json`, `standings.json` (computed), `bracket.json`, `meta.json`.
-- **Optimization:** the Action runs every 30 min, but the script **skips entirely** unless a match has started or ended since the last sync (tracked via `meta.json → lastFetchAt`). So most ticks are no-ops and the live API's request budget is only spent on match days. Override with `FORCE=1`.
+- **Optimization:** the script **skips entirely** unless a match has started or ended since the last sync (tracked via `meta.json → lastFetchAt`), so a manual run is a no-op once results are already in sync. Override with `FORCE=1`.
 
 ## Local development
 
@@ -62,21 +64,6 @@ so the custom domain persists across Pages deployments). To change or set up a d
 `vite.config.ts` uses `base: '/'` (correct for a custom domain / user page). If you
 deploy to a project subpath instead (`<user>.github.io/fifa2026`), change `base`
 to `'/fifa2026/'`.
-
-## Live scores (optional)
-
-A small [Cloudflare Worker](worker/README.md) proxies [API-Football](https://www.api-football.com/)'s
-`fixtures?live=all` (which **works on the free plan** — it isn't season-scoped) to
-power **real-time in-match scores** in the schedule banner/cards (`/live`). The
-Worker holds the key (off the client), refreshes every ~120s and caps daily calls
-under the free 100/day quota. The site filters the global live feed to the WC match
-by team name. See [`worker/README.md`](worker/README.md) to deploy it.
-
-To enable it on the site, set the build-time env var `VITE_LIVE_API_URL` to the
-Worker URL (locally via `.env`, or as a GitHub repo **Variable** named
-`LIVE_API_URL` for the Actions build). If unset, the banner falls back to the
-periodic data and shows a note about the expected lag. The banner displays how
-fresh the live score is and refreshes while a match is in progress.
 
 ## Notes
 

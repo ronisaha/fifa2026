@@ -29,9 +29,6 @@ jobs:
       - run: npm ci
 
       - run: npm run build
-        env:
-          # Optional: set repo Variable LIVE_API_URL to enable live scores.
-          VITE_LIVE_API_URL: ${{ vars.LIVE_API_URL }}
 
       - uses: actions/configure-pages@v5
 
