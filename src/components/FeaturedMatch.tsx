@@ -6,7 +6,7 @@ import { useTz } from '../lib/tz-context';
 import { formatDateHeading, formatKickoff } from '../lib/time';
 import FlagImg from './FlagImg';
 
-function StatusBadge({ status }: { status: string }) {
+function StatusBadge({ status, match }: { status: string; match: Match }) {
   if (status === 'live') {
     return (
       <span className="inline-flex items-center gap-1.5 rounded-full bg-red-500/15 px-3 py-1 text-xs font-bold uppercase tracking-wide text-red-400">
@@ -16,9 +16,11 @@ function StatusBadge({ status }: { status: string }) {
     );
   }
   if (status === 'finished') {
+    // Settle on the deepest stage played: pens > ET > 90'.
+    const label = match.score?.p ? 'Pens' : match.score?.et ? 'AET' : 'Full time';
     return (
       <span className="rounded-full bg-slate-700/60 px-3 py-1 text-xs font-bold uppercase tracking-wide text-slate-300">
-        Full time
+        {label}
       </span>
     );
   }
@@ -80,7 +82,7 @@ function HeroCard({ match, status }: { match: Match; status: string }) {
             </>
           )}
           <span className="text-slate-600">·</span>
-          <StatusBadge status={status} />
+          <StatusBadge status={status} match={match} />
         </div>
 
         {/* teams + center */}
